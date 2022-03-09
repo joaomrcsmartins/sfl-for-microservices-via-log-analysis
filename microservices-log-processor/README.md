@@ -10,8 +10,9 @@ The setup here detailed is meant for a local environment. Using it in a cloud/cl
 Run the RabbitMQ server using Docker.
 
 ```
-docker run --rm -dp 5672:5672 rabbitmq (--rm to remove the container when stopped, -d to run in detached mode, and -p to publish port 5672)
+docker run --rm -dp 5672:5672 rabbitmq 
 ```
+> --rm to remove the container when stopped, -d to run in detached mode, and -p to publish port 5672
 
 Do not forget to start the server before using the tool. Note also that the default user ```guest:guest``` is used. Outside of local environments another user should be used ([source](https://www.rabbitmq.com/access-control.html#default-state)).
 
@@ -21,9 +22,9 @@ Do not forget to start the server before using the tool. Note also that the defa
 
 Place any configuration for the logstash pipeline here, the input and output sources, as well as the filtering/formatting.
 
-The files must follow the extension **\*.conf**. Follow [docs](https://www.elastic.co/guide/en/logstash/current/configuration-file-structure.html) for further info.
+The files must follow the extension <u>**\*.conf**</u>. Follow [docs](https://www.elastic.co/guide/en/logstash/current/configuration-file-structure.html) for further info.
 
-#### Parsing logs
+### Parsing logs
 
 To parse the log into a structured and standardized format, inside the configuration file, leverage the ```filter``` section to build your *pattern*. In particular, [grok](https://www.elastic.co/guide/en/logstash/8.1/plugins-filters-grok.html) and [dissect](https://www.elastic.co/guide/en/logstash/8.1/plugins-filters-dissect.html).
 
@@ -32,10 +33,12 @@ Example log:
 2014-07-02 20:52:39 DEBUG className:200 - This is debug message
 ```
 Filter section:
-```wget co
+```less
 filter {
   grok {
-    match => {"message" => "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:logLevel}%{SPACE}%{JAVAFILE:className}:%{NUMBER:logLine} - %{GREEDYDATA:logMessage}"}
+    match => {
+      "message" => "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:logLevel}%{SPACE}%{JAVAFILE:className}:%{NUMBER:logLine:int} - %{GREEDYDATA:logMessage}"
+    }
   }
 }
 ```
@@ -48,16 +51,8 @@ Logstash output:
   "event": {
     "original": "2014-07-02 20:52:39 DEBUG className:200 - This is debug message\r"
   },
-  "host": {
-    "name": "docker-desktop"
-  },
-  "log": {
-    "file": {
-      "path": "/data/log4jexamples.log"
-    }
-  },
   "logLevel": "DEBUG",
-  "logLine": "200",
+  "logLine": 200,
   "logMessage": "This is debug message\r",
   "message": "2014-07-02 20:52:39 DEBUG className:200 - This is debug message\r",
   "timestamp": "2014-07-02 20:52:39"
@@ -104,7 +99,20 @@ To build the image (first run or if it is modified):
 docker build -t logstash .
 ```
 
-To run the container:
+To run the container, use the command:
+```powershell
+docker run --rm -it --network="host" --mount type=bind,source="$(pwd)"/data,target=/data logstash
 ```
-docker run --rm -it --network="host" logstash
-```
+
+## How to run
+
+The steps to take sequently are:
+
+1. Run the RabbitMQ server in the Docker image.
+2. Run the Python script for the RabbitMQ messages receiver (```rabbit-mq-receive.py```)
+3. Run the Logstash in Docker image
+   1. The file will be read and first results can be seen
+4. Run the Python script for the RabbitMQ messages sender (```rabbit-mq-send.py```)
+   1. The logs will be parsed by Logstash and sent to the receiver
+5. The Logstash instance will keep running, add more logs in ```log4jexamples.log``` or send logs to exchange ```logstash-input``` (follow the script above) in RabbitMQ, to keep processing logs
+6. Stop the receiver program to write the contents in the json file (```logstash-rabbitmq.json```), the messages received meanwhile will be printed in the terminal
