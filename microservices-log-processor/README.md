@@ -13,7 +13,7 @@ Run the RabbitMQ server using Docker.
 docker run --rm -dp 5672:5672 rabbitmq (--rm to remove the container when stopped, -d to run in detached mode, and -p to publish port 5672)
 ```
 
-Do not forget to start the server before using the tool.
+Do not forget to start the server before using the tool. Note also that the default user ```guest:guest``` is used. Outside of local environments another user should be used ([source](https://www.rabbitmq.com/access-control.html#default-state)).
 
 ## Configuring Logstash
 
@@ -63,9 +63,29 @@ Logstash output:
   "timestamp": "2014-07-02 20:52:39"
 }
 ```
+
+By default, logstash produces this json when reading a log:
+```json
+{
+  "@timestamp": "TIMESTAMP_WHEN_PROCESSED",
+  "@version": "1",
+  "event": {
+    "original": "LOG_ENTRY"
+  },
+  "message": "LOG_ENTRY"
+}
+```
+Other fields may appear according to the input plugin used, but those are common.
+
+When matching a pattern in a log, it's possible to store a specific value inside the pattern. For example, the section ```%{LOGLEVEL:log_level}``` if it matches to a log level (info, warn, error,...) stores the value in **log_level**. This way you can extract any info present in the log and present it in any way you want.
+
+If there are two input sources, with different logs, you can use multiple patterns in the grok matcher.
+
+It's also possible to modify the fields already present, rename or remove them. Look into the [mutate](https://www.elastic.co/guide/en/logstash/current/plugins-filters-mutate.html) filter for more details.
+
 ### *pipelines.yml*
 
-To have multiple sources of logs collected by logstash, create a new pipeline specifying the proper configuration.
+It's possible to have multiple pipelines executing in logstash, see [here](https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html#multiple-pipeline-usage) for its usages.
 
 Add new pipelines to logstash in ```logstash/config/pipelines.yml```. 
 
