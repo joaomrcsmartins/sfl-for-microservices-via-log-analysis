@@ -1,7 +1,7 @@
 2014-07-02 20:52:39 DEBUG className:200 - This is debug message
 2014-07-02 20:52:39 DEBUG className:201 - This is debug message2
-2014-07-02 20:52:39 DEBUG HelloExample:19 - This is debug : mkyong
-2014-07-02 20:52:39 INFO  HelloExample:23 - This is info : mkyong
-2014-07-02 20:52:39 WARN  HelloExample:26 - This is warn : mkyong
-2014-07-02 20:52:39 ERROR HelloExample:27 - This is error : mkyong
-2014-07-02 20:52:39 FATAL HelloExample:28 - This is fatal : mkyong
+2014-07-02 20:52:39 DEBUG HelloExample:19 - This is debug
+2014-07-02 20:52:39 INFO  HelloExample:23 - This is info
+2014-07-02 20:52:39 WARN  HelloExample:26 - This is warn
+2014-07-02 20:52:39 ERROR HelloExample:27 - This is error
+2014-07-02 20:52:39 FATAL HelloExample:28 - This is fatal
