@@ -116,3 +116,9 @@ The steps to take sequently are:
    1. The logs will be parsed by Logstash and sent to the receiver
 5. The Logstash instance will keep running, add more logs in ```log4jexamples.log``` or send logs to exchange ```logstash-input``` (follow the script above) in RabbitMQ, to keep processing logs
 6. Stop the receiver program to write the contents in the json file (```logstash-rabbitmq.json```), the messages received meanwhile will be printed in the terminal
+
+## Versions
+
+* ELK: v8.0.1
+* Logstash: OSS version, v8.0.1
+* RabbitMQ: latest
