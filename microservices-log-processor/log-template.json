@@ -1,0 +1,21 @@
+{
+    "correlationID": "[REQUIRED] <string> of the request id that started the invocation chain",
+    "durationProcessing": "[OPTIONAL] <number> of the duration, in milliseconds, taken to fulfill the logged request/method",
+    "spanID": "[OPTIONAL] <string> of the span ID of the service",
+    "endpoint": "[OPTIONAL] <string> of the endpoint that invoked the logged activity",
+    "httpCode": "[OPTIONAL] <int> of the http status code produced by the request",
+    "instanceIP": "[OPTIONAL] <string> of the instance ip where the microservice is running",
+    "invocationChain": [
+        {
+            "fileName": "[OPTIONAL] <string> of the file/class name/path where the method is invoked",
+            "line": "[OPTIONAL] <integer> of the line of the logged activity",
+            "methodName":"[OPTIONAL] <string> of the method invoked"
+        }
+    ],
+    "logLevel": "[OPTIONAL] <string> of log level: TRACE, DEBUG, INFO, WARN, ERROR, or FATAL",
+    "message": "[OPTIONAL] <string> of a message explaining the logged activity",
+    "microserviceName": "[REQUIRED] <string> of the microservice name",
+    "parentSpanID": "[OPTIONAL] <string> of the span ID of the parent service that invoked the current service",
+    "timestamp": "[REQUIRED] <string> of the timestamp, in ISO 8601 format and in UTC time standard, when the logged activity occured",
+    "user": "[OPTIONAL] <string> of the user name or id associated to the user that initiated the logged request"
+}
