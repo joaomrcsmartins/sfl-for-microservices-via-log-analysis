@@ -3,7 +3,7 @@
     "durationProcessing": "[OPTIONAL] <number> of the duration, in milliseconds, taken to fulfill the logged request/method",
     "spanID": "[OPTIONAL] <string> of the span ID of the service",
     "endpoint": "[OPTIONAL] <string> of the endpoint that invoked the logged activity",
-    "httpCode": "[OPTIONAL] <int> of the http status code produced by the request",
+    "httpCode": "[OPTIONAL] <integer> of the http status code produced by the request",
     "instanceIP": "[OPTIONAL] <string> of the instance ip where the microservice is running",
     "invocationChain": [
         {
