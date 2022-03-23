@@ -6,7 +6,7 @@ from pika.spec import BasicProperties,Basic
 from sfldebug.tools.parse_message import parse_mq_message, flush_mq_messages
 
 def setup_mq_channel(callback: Callable[[Channel, Basic.Deliver, BasicProperties, Any], None], host: str = 'localhost', 
-    exchange: str = 'logstash-output', routing_key: str = 'logstash-output') -> pika.channel.Channel:
+    exchange: str = 'logstash-output', routing_key: str = 'logstash-output') -> Channel:
     """Setup message queue connection using RabbitMQ and returns the channel ready for consuming messages. 
     Define the exchange name and the callback upon message receival.
 
@@ -15,6 +15,9 @@ def setup_mq_channel(callback: Callable[[Channel, Basic.Deliver, BasicProperties
         host (str): target to host to setup connection (default 'localhost')
         exchange (str): name of the mq exchange to setup connection (default 'logstash-output')
         routing_key (str): name of the routing key for the mq exchange (default 'logstash-output')
+    
+    Returns:
+        Channel: mq channel ready to start consuming
     """
     # Open connection in the host
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=host))
