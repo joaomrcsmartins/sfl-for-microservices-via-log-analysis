@@ -109,10 +109,10 @@ docker run --rm -it --network="host" --mount type=bind,source="$(pwd)"/data,targ
 The steps to take sequently are:
 
 1. Run the RabbitMQ server in the Docker image.
-2. Run the Python script for the RabbitMQ messages receiver (```rabbit-mq-receive.py```)
+2. Run the Python script for the RabbitMQ messages receiver (```rabbit_mq_receive.py```)
 3. Run the Logstash in Docker image
    1. The file will be read and first results can be seen
-4. Run the Python script for the RabbitMQ messages sender (```rabbit-mq-send.py```)
+4. Run the Python script for the RabbitMQ messages sender (```rabbit_mq_send.py```)
    1. The logs will be parsed by Logstash and sent to the receiver
 5. The Logstash instance will keep running, add more logs in ```log4jexamples.log``` or send logs to exchange ```logstash-input``` (follow the script above) in RabbitMQ, to keep processing logs
 6. Stop the receiver program to write the contents in the json file (```logstash-rabbitmq.json```), the messages received meanwhile will be printed in the terminal
