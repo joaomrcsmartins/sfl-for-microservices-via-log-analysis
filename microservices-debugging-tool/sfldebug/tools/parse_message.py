@@ -1,20 +1,19 @@
 import json
-import pika.channel.Channel as Channel
-import pika.spec.Basic.Deliver as Deliver
-import pika.spec.BasicProperties as BasicProperties
+from pika.channel import Channel
+from pika.spec import BasicProperties,Basic
  
-from tools.entity import build_entity, parse_entities
+from sfldebug.tools.entity import build_entity, parse_entities
 
-entities = None
+entities = []
 
-def parse_mq_message(channel: Channel, method: Deliver, properties: BasicProperties, body):
+def parse_mq_message(channel: Channel, method: Basic.Deliver, properties: BasicProperties, body):
     """Callback to parse messages coming from MQ channel.
 
     Args:
         channel (pika.channel.Channel): message queue channel (ignored)
         method (pika.spec.Basic.Deliver): AMQP specification (ignored)
         properties (pika.spec.BasicProperties): AMQP specification (ignored)
-        body (Any): contents of the message
+        body (any): contents of the message
     """
     json_body = json.loads(body)
     entity = build_entity(json_body)
@@ -26,7 +25,3 @@ def flush_mq_messages():
     with open('entities-records.json','w') as f:
         json_entities = {"entities": parsed_entities}
         f.write(json.dumps(json_entities, indent=2, sort_keys=True))
-
-def __init__():
-    """Initialize entities"""
-    entities = []

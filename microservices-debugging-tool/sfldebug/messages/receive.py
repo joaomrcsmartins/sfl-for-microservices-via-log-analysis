@@ -1,12 +1,11 @@
-import typing.Callable as Callable
+from typing import Any, Callable
 import pika
-import pika.channel.Channel as Channel
-import pika.spec.Basic.Deliver as Deliver
-import pika.spec.BasicProperties as BasicProperties
+from pika.channel import Channel
+from pika.spec import BasicProperties,Basic
 
-from tools.parse_message import parse_mq_message, flush_mq_messages
+from sfldebug.tools.parse_message import parse_mq_message, flush_mq_messages
 
-def setup_mq_channel(callback: Callable[[Channel, Deliver, BasicProperties, Any], None], host: str = 'localhost', 
+def setup_mq_channel(callback: Callable[[Channel, Basic.Deliver, BasicProperties, Any], None], host: str = 'localhost', 
     exchange: str = 'logstash-output', routing_key: str = 'logstash-output') -> pika.channel.Channel:
     """Setup message queue connection using RabbitMQ and returns the channel ready for consuming messages. 
     Define the exchange name and the callback upon message receival.
@@ -48,12 +47,11 @@ def receive_mq_messages(channel: Channel):
         channel.start_consuming()
     except KeyboardInterrupt:
         flush_mq_messages()
-        pass
     except OSError:
         # TODO handle interruption
         pass
 
-def receive():
+def receive_mq():
     """Default receiver, relies on MQ channel."""
     channel = setup_mq_channel(parse_mq_message)
     receive_mq_messages(channel)
