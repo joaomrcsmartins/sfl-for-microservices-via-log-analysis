@@ -1,13 +1,14 @@
-from typing import Any, Callable
+from typing import Callable
 import pika
 from pika.channel import Channel
-from pika.spec import BasicProperties,Basic
 
 from sfldebug.tools.parse_message import parse_mq_message, flush_mq_messages
 
-def setup_mq_channel(callback: Callable[[Channel, Basic.Deliver, BasicProperties, Any], None], host: str = 'localhost', 
-    exchange: str = 'logstash-output', routing_key: str = 'logstash-output') -> Channel:
-    """Setup message queue connection using RabbitMQ and returns the channel ready for consuming messages. 
+
+def setup_mq_channel(callback: Callable,
+                     host: str = 'localhost', exchange: str = 'logstash-output',
+                     routing_key: str = 'logstash-output') -> Channel:
+    """Setup message queue connection for RabbitMQ. Returns a channel ready for consuming messages.
     Define the exchange name and the callback upon message receival.
 
     Args:
@@ -15,7 +16,7 @@ def setup_mq_channel(callback: Callable[[Channel, Basic.Deliver, BasicProperties
         host (str): target to host to setup connection (default 'localhost')
         exchange (str): name of the mq exchange to setup connection (default 'logstash-output')
         routing_key (str): name of the routing key for the mq exchange (default 'logstash-output')
-    
+
     Returns:
         Channel: mq channel ready to start consuming
     """
@@ -25,23 +26,26 @@ def setup_mq_channel(callback: Callable[[Channel, Basic.Deliver, BasicProperties
 
     # Define the exchange, and the appropriate params
     # By default logstash creates durable exchanges
-    channel.exchange_declare(exchange=exchange, exchange_type='direct', durable=True)
+    channel.exchange_declare(
+        exchange=exchange, exchange_type='direct', durable=True)
 
     result = channel.queue_declare(queue='', exclusive=True)
     queue_name = result.method.queue
 
     # Bind the queue to receive logs from logstash with the appropriate routing key
-    channel.queue_bind(exchange=exchange, queue=queue_name, routing_key=routing_key)
-    
+    channel.queue_bind(exchange=exchange, queue=queue_name,
+                       routing_key=routing_key)
+
     # Define the action upon receiving a message
     channel.basic_consume(
         queue=queue_name, on_message_callback=callback, auto_ack=True)
 
     return channel
 
+
 def receive_mq_messages(channel: Channel):
-    """Start consuming messages from the channel and keep it open until there is an keyboard interruption or an error.
-    
+    """Start consuming messages from the channel, keeping it open until there is an interruption.
+
     Args:
         channel (pika.channel.Channel): channel to start consuming messages from (required)
     """
@@ -53,6 +57,7 @@ def receive_mq_messages(channel: Channel):
     except OSError:
         # TODO handle interruption
         pass
+
 
 def receive_mq():
     """Default receiver, relies on MQ channel."""

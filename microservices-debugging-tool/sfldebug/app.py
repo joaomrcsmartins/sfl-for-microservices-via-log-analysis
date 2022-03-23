@@ -1,5 +1,6 @@
 import sfldebug.messages.receive as message_receive
 
+
 def run():
     """Execute the debugging application, by receiving and processing incoming messages.
     Once received, process entities associated to each message (log)
