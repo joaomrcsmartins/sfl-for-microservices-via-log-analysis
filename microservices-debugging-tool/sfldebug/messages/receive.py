@@ -2,7 +2,7 @@ from typing import Callable
 import pika
 from pika.channel import Channel
 
-from sfldebug.tools.parse_message import parse_mq_message, flush_mq_messages
+from sfldebug.messages.parse_message import parse_mq_message, flush_mq_messages
 
 
 def setup_mq_channel(callback: Callable,
