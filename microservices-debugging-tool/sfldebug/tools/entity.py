@@ -1,4 +1,12 @@
+from __future__ import annotations
+from enum import Enum
 from typing import Any, List, Set
+
+
+class EntityType(str, Enum):
+    """Enum for the entity type."""
+    SERVICE = 'SERVICE'
+    METHOD = 'METHOD'
 
 
 class Entity:
@@ -12,53 +20,72 @@ class Entity:
         children (List[str]): list of children entities hashes
     """
 
-    def __init__(self, request_id: str, name: str):
+    def __init__(self, request_id: str, name: str, entity_type: EntityType = None):
         self.request_id = request_id
         self.name = name
+        self.entity_type = entity_type
         self.parent: Entity = None
         self.children: List[Entity] = []
+
+    def set_parent(self, parent: Entity = None):
+        """Setter for the Entity parent
+
+        Args:
+            parent (Entity, optional): Parent entity to be set. Defaults to None.
+        """
+        self.parent = parent
+
+    def set_children(self, children: List[Entity] = None):
+        """Setter for the Entity children
+
+        Args:
+            children (Entity, optional): Children entities to be set. Defaults to None.
+        """
+        self.children = children
 
 
 class ServiceEntity(Entity):
     """ServiceEntity subclass of Entity, specific to service entities.
 
     Args:
-        endpoint (str): endpoint of the resource targeted in the service
-        instance_ip (str): IP address of the instance where the service is running
-        span_id (str): ID of the span where the service is currently running
-        parent_span_id (str): ID of the parent span of the service who invoked the current service
-        http_code (int): HTTP code relative to the request
-        user (str): username or id to identify the client who started the request
+        endpoint (List[str]): endpoint of the resource targeted in the service
+        instance_ip (List[str]): IP address of the instance where the service is running
+        span_id (List[str]): ID of the span where the service is currently running
+        parent_span_id (List[str]): ID of the parent span of the service who
+        invoked the current service
+        http_code (List[int]): HTTP code relative to the request
+        user (List[str]): username or id to identify the client who started the request
     """
 
-    def __init__(self, request_id: str, name: str, endpoint: str, instance_ip: str,
-                 span_id: str, parent_span_id: str, http_code: int, user: str):
+    def __init__(self, request_id: str, name: str, endpoint: List[str], instance_ip: List[str],
+                 span_id: List[str], parent_span_id: List[str], http_code: List[int],
+                 user: List[str]):
         self.endpoint = endpoint
         self.instance_ip = instance_ip
         self.span_id = span_id
         self.parent_span_id = parent_span_id
         self.http_code = http_code
         self.user = user
-        Entity.__init__(self, request_id, name)
+        Entity.__init__(self, request_id, name, EntityType.SERVICE)
 
 
 class MethodEntity(Entity):
     """MethodEntity subclass of Entity, specific to method entities.
 
     Args:
-        timestamp (str): timestamp string of the logged entity, formatted in ISO8601
-        log_level (str): level of the log
-        message (str): logged message
+        timestamp (List[str]): timestamp string of the logged entity, formatted in ISO8601
+        log_level (List[str]): level of the log
+        message (List[str]): logged message
         invocation_chain: invocation chain of the methods, starting by the top-level method invoked
     """
 
-    def __init__(self, request_id: str, name: str, timestamp: str, log_level: str,
-                 message: str, invocation_chain):
+    def __init__(self, request_id: str, name: str, timestamp: List[str], log_level: List[str],
+                 message: List[str], invocation_chain: List[Any]):
         self.timestamp = timestamp
         self.log_level = log_level
         self.message = message
         self.invocation_chain = invocation_chain
-        Entity.__init__(self, request_id, name)
+        Entity.__init__(self, request_id, name, EntityType.METHOD)
 
 
 def extract_field(field: str, obj: Any) -> Any | None:
@@ -105,8 +132,8 @@ def build_entity(log_data: Any) -> None:  # Set[Entity]:
     parent_span_id = extract_field('parentSpanID', log_data)
     http_code = extract_field('httpCode', log_data)
     user = extract_field('user', log_data)
-    service_entity = ServiceEntity(correlation_id, microservice_name,
-                                   endpoint, instance_ip, span_id, parent_span_id, http_code, user)
+    service_entity = ServiceEntity(correlation_id, microservice_name, [endpoint],
+                                   [instance_ip], [span_id], [parent_span_id], [http_code], [user])
 
     # Create a method entity and extract method specific fields
     method_entity: MethodEntity
@@ -121,15 +148,22 @@ def build_entity(log_data: Any) -> None:  # Set[Entity]:
         log_level = extract_field('logLevel', log_data)
         message = extract_field('message', log_data)
         method_entity = MethodEntity(correlation_id, method_name,
-                                     timestamp, log_level, message, invocation_chain)
+                                     [timestamp], [log_level], [message], invocation_chain)
     else:
         method_entity = None
 
     entities = set()
     entities.add(service_entity)
     if method_entity is not None:
-        service_entity.children.append(method_entity.__hash__())
-        method_entity.parent = service_entity.__hash__()
+
+        # consider entity type in the hash
+        method_entity_hash = hash(
+            method_entity.request_id + method_entity.name + str(method_entity.entity_type))
+        service_entity_hash = hash(
+            service_entity.request_id + service_entity.name + str(service_entity.entity_type))
+
+        service_entity.children.append(method_entity_hash)
+        method_entity.parent = service_entity_hash
 
         entities.add(method_entity)
 
@@ -137,7 +171,9 @@ def build_entity(log_data: Any) -> None:  # Set[Entity]:
 
 
 def parse_unique_entities(entities: Set[Entity]) -> Set[Entity]:
-    """Merge references to the same entities and return the set of unique entity references
+    """Merge references to the same entities and return the set of unique entity references.
+    Two references belong to the same entity if they have the same request id, entity type and name.
+    In each entity store the collection of information that the references contain.
 
     Args:
         entities (Set[Entity]): set of captured entities in the logs
@@ -145,5 +181,122 @@ def parse_unique_entities(entities: Set[Entity]) -> Set[Entity]:
     Returns:
         Set[Entity]: parsed set of entities contain a reference per unique entity
     """
-    # TODO aggregate references to the same entities and return the resulting collection
-    return entities
+
+    unique_entities = {}
+
+    for entity in entities:
+
+        unique_hash = hash(entity.request_id +
+                           entity.name + str(entity.entity_type))
+        entity_present = unique_hash in unique_entities
+        if entity_present:
+
+            updated_entity = merge_entity(entity, unique_entities[unique_hash])
+            unique_entities[unique_hash] = updated_entity
+
+        else:
+            unique_entities[unique_hash] = entity
+
+    return set(unique_entities.values())
+
+
+def merge_attributes(new_attribute: List[Any], old_attribute: List[Any]) -> List[Any]:
+    """Merge lists of attributes without type checking the lists contents.
+
+    Args:
+        new_attribute (List[Any]): new attributes to be merged
+        old_attribute (List[Any]): old attributes to be merged
+
+    Returns:
+        List[Any]: merged list of attributes
+    """
+    if new_attribute is None:
+        return old_attribute
+    if old_attribute is None:
+        return new_attribute
+
+    merged_attributes = old_attribute + new_attribute
+    return merged_attributes
+
+
+def merge_service_entity(new_entity: ServiceEntity, old_entity: ServiceEntity) -> Entity:
+    """Merge service entities, by creating a new service entity with attributes merged.
+
+    Args:
+        new_entity (ServiceEntity): the new service entity to be merged
+        old_entity (ServiceEntity): the old service entity to be merged
+
+    Returns:
+        Entity: the merged entity resulting of merging the input entities
+    """
+
+    new_endpoint = merge_attributes(new_entity.endpoint, old_entity.endpoint)
+    new_instance_ip = merge_attributes(
+        new_entity.instance_ip, old_entity.instance_ip)
+    new_span_id = merge_attributes(new_entity.span_id, old_entity.span_id)
+    new_parent_span_id = merge_attributes(
+        new_entity.parent_span_id, old_entity.parent_span_id)
+    new_http_code = merge_attributes(
+        new_entity.http_code, old_entity.http_code)
+    new_user = merge_attributes(new_entity.user, old_entity.user)
+
+    request_id = old_entity.request_id
+    name = old_entity.name
+
+    new_service_entity = ServiceEntity(request_id, name, new_endpoint, new_instance_ip,
+                                       new_span_id, new_parent_span_id, new_http_code, new_user)
+
+    return new_service_entity
+
+
+def merge_method_entity(new_entity: MethodEntity, old_entity: MethodEntity) -> Entity:
+    """Merge method entities, by creating a new method entity with attributes merged.
+
+    Args:
+        new_entity (MethodEntity): the new method entity to be merged
+        old_entity (MethodEntity): the old method entity to be merged
+
+    Returns:
+        Entity: the merged entity resulting of merging the input entities
+    """
+
+    new_timestamp = merge_attributes(
+        new_entity.timestamp, old_entity.timestamp)
+    new_log_level = merge_attributes(
+        new_entity.log_level, old_entity.log_level)
+    new_message = merge_attributes(new_entity.message, old_entity.message)
+    new_invocation_chain = merge_attributes(
+        new_entity.invocation_chain, old_entity.invocation_chain)
+
+    request_id = old_entity.request_id
+    name = old_entity.name
+
+    new_method_entity = MethodEntity(
+        request_id, name, new_timestamp, new_log_level, new_message, new_invocation_chain)
+
+    return new_method_entity
+
+
+def merge_entity(new_entity: Entity, old_entity: Entity) -> Entity:
+    """Merge entities, by creating a new entity with attributes merged.
+
+    Args:
+        new_entity (Entity): the new entity to be merged
+        old_entity (Entity): the old entity to be merged
+
+    Returns:
+        Entity: the entity resulting of merging the input entities
+    """
+    new_entity: Entity
+    if new_entity.entity_type is EntityType.SERVICE:
+        new_entity = merge_service_entity(new_entity, old_entity)
+    else:
+        new_entity = merge_method_entity(new_entity, old_entity)
+
+    children = merge_attributes(new_entity.children, old_entity.children)
+    new_entity.set_children(children)
+
+    parent = old_entity.parent
+    new_entity.set_parent(parent)
+
+    return new_entity
