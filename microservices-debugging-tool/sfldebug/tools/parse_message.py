@@ -2,7 +2,7 @@ import json
 from pika.channel import Channel
 from pika.spec import BasicProperties, Basic
 
-from sfldebug.tools.entity import build_entity, parse_unique_entities
+from sfldebug.entity import build_entity, parse_unique_entities
 
 entities = set()
 
