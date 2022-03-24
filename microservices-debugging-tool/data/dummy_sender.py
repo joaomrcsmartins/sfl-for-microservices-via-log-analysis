@@ -10,7 +10,8 @@ connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
 
-with open(os.path.join(__location__, 'dummy_log_data.json'), 'r', encoding='utf-8') as log_file:
+with open(os.path.join(__location__, 'dummy_log_hierarchy.json'), 'r',
+          encoding='utf-8') as log_file:
 
     channel.exchange_declare(exchange='logstash-output',
                              exchange_type='direct', durable=True)
