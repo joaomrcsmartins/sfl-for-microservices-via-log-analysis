@@ -23,10 +23,14 @@ def parse_mq_message(channel: Channel, method: Basic.Deliver, properties: BasicP
     entities.update(log_entities)
 
 
-def flush_mq_messages():
-    """Once the connection is finished, parse collected entities and write to file"""
+def flush_mq_messages(file_id: str):
+    """Once the connection is finished, parse collected entities and write to file
+
+    Args:
+        file_id (str): id of entities to record in a unique file
+    """
     parsed_entities = parse_unique_entities(entities)
-    with open('entities-records.json', 'w', encoding='utf-8') as file:
+    with open('entities-records-'+file_id+'.json', 'w', encoding='utf-8') as file:
 
         json_entities = {"entities": []}
         for entity in parsed_entities:

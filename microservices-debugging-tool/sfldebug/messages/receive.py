@@ -1,12 +1,12 @@
 from typing import Callable
+import multiprocessing as mp
 import pika
 from pika.channel import Channel
 
 from sfldebug.messages.parse_message import parse_mq_message, flush_mq_messages
 
 
-def setup_mq_channel(callback: Callable,
-                     host: str = 'localhost', exchange: str = 'logstash-output',
+def setup_mq_channel(callback: Callable, host: str = 'localhost', exchange: str = 'logstash-output',
                      routing_key: str = 'logstash-output') -> Channel:
     """Setup message queue connection for RabbitMQ. Returns a channel ready for consuming messages.
     Define the exchange name and the callback upon message receival.
@@ -28,6 +28,7 @@ def setup_mq_channel(callback: Callable,
     # By default logstash creates durable exchanges
     channel.exchange_declare(
         exchange=exchange, exchange_type='direct', durable=True)
+    channel.exchange = exchange  # Note: adding property to instance, not part of class
 
     result = channel.queue_declare(queue='', exclusive=True)
     queue_name = result.method.queue
@@ -43,23 +44,44 @@ def setup_mq_channel(callback: Callable,
     return channel
 
 
-def receive_mq_messages(channel: Channel):
+def receive_mq_messages(callback: Callable, host: str = 'localhost',
+                        exchange: str = 'logstash-output', routing_key: str = 'logstash-output'):
     """Start consuming messages from the channel, keeping it open until there is an interruption.
 
     Args:
-        channel (pika.channel.Channel): channel to start consuming messages from (required)
+        Args:
+        callback (callable): function to be called when a message is received (required)
+        host (str): target to host to setup connection (default 'localhost')
+        exchange (str): name of the mq exchange to setup connection (default 'logstash-output')
+        routing_key (str): name of the routing key for the mq exchange (default 'logstash-output')
     """
+    channel = setup_mq_channel(callback, host, exchange, routing_key)
+    print('"{}" - Waiting for logs. To exit press CTRL+C'.format(channel.exchange))
     try:
-        print('Waiting for logs. To exit press CTRL+C')
         channel.start_consuming()
     except KeyboardInterrupt:
-        flush_mq_messages()
-    except OSError:
-        # TODO handle interruption
-        pass
+        print('"{}" - Terminating connection!'.format(channel.exchange))
+        channel.close()
+        print('"{}" - Flushing messages collected'.format(channel.exchange))
+        flush_mq_messages(exchange)
 
 
 def receive_mq():
     """Default receiver, relies on MQ channel."""
-    channel = setup_mq_channel(parse_mq_message)
-    receive_mq_messages(channel)
+
+    # Receive messages from both channel simultaneously, with multiprocessing
+    good_receiver_process = mp.Process(
+        target=receive_mq_messages, args=(parse_mq_message,),
+        kwargs={'exchange': 'logstash-output-good'})
+    faulty_receiver_process = mp.Process(
+        target=receive_mq_messages, args=(parse_mq_message,),
+        kwargs={'exchange': 'logstash-output-faulty'})
+
+    try:
+        good_receiver_process.start()
+        faulty_receiver_process.start()
+        good_receiver_process.join()
+        faulty_receiver_process.join()
+    except KeyboardInterrupt:
+        # TODO improve error handling
+        pass
