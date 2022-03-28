@@ -44,12 +44,13 @@ def setup_mq_channel(callback: Callable, host: str = 'localhost', exchange: str 
     return channel
 
 
-def receive_mq_messages(callback: Callable, host: str = 'localhost',
+def receive_mq_messages(queue: mp.Queue, callback: Callable, host: str = 'localhost',
                         exchange: str = 'logstash-output', routing_key: str = 'logstash-output'):
     """Start consuming messages from the channel, keeping it open until there is an interruption.
 
     Args:
         Args:
+        queue (Queue): shared queue to store the received entities
         callback (callable): function to be called when a message is received (required)
         host (str): target to host to setup connection (default 'localhost')
         exchange (str): name of the mq exchange to setup connection (default 'logstash-output')
@@ -60,22 +61,30 @@ def receive_mq_messages(callback: Callable, host: str = 'localhost',
     try:
         channel.start_consuming()
     except KeyboardInterrupt:
+        # TODO improve communications interruption handling
         print('"{}" - Terminating connection!'.format(channel.exchange))
         channel.close()
         print('"{}" - Flushing messages collected'.format(channel.exchange))
-        flush_mq_messages(exchange)
+        ret = queue.get()
+        ret[exchange] = flush_mq_messages(exchange)
+        queue.put(ret)
 
 
-def receive_mq():
+def receive_mq(good_entities_id: str, faulty_entities_id: str) -> dict:
     """Default receiver, relies on MQ channel."""
+
+    queue = mp.Queue()
+    return_entities = {good_entities_id: set(), faulty_entities_id: set()}
+    queue.put(return_entities)
 
     # Receive messages from both channel simultaneously, with multiprocessing
     good_receiver_process = mp.Process(
-        target=receive_mq_messages, args=(parse_mq_message,),
-        kwargs={'exchange': 'logstash-output-good'})
+        target=receive_mq_messages, args=(queue, parse_mq_message),
+        kwargs={'exchange': good_entities_id})
+
     faulty_receiver_process = mp.Process(
-        target=receive_mq_messages, args=(parse_mq_message,),
-        kwargs={'exchange': 'logstash-output-faulty'})
+        target=receive_mq_messages, args=(queue, parse_mq_message),
+        kwargs={'exchange': faulty_entities_id})
 
     try:
         good_receiver_process.start()
@@ -84,4 +93,4 @@ def receive_mq():
         faulty_receiver_process.join()
     except KeyboardInterrupt:
         # TODO improve error handling
-        pass
+        return queue.get()
