@@ -2,10 +2,10 @@ from typing import Set
 from sfldebug.entity import Entity
 
 default_analysis_format = {
-    'n_good_executed': 0,
-    'n_good_passed': 0,
-    'n_faulty_executed': 0,
-    'n_faulty_passed': 0
+    'good_executed': 0,
+    'good_passed': 0,
+    'faulty_executed': 0,
+    'faulty_passed': 0
 }
 
 unique_executions: Set[str] = set()
@@ -22,7 +22,8 @@ def increment_execution(entities_analyzed: dict, entities: Set[Entity], executio
         execution_key (str): key to increment in
     """
     for entity in entities:
-        key = "{}_{}".format(entity.name, entity.__hash__())
+        key = "{}-{}-{}".format(entity.entity_type,
+                                entity.name, entity.request_id)
         unique_executions.add(entity.request_id)
         if key in entities_analyzed:
             entities_analyzed[key][execution_key] += 1
@@ -46,15 +47,15 @@ def analyze_entities(good_entities: Set[Entity], faulty_entities: Set[Entity]) -
     """
     entities_analyzed: dict = {}
 
-    increment_execution(entities_analyzed, good_entities, 'n_good_executed')
+    increment_execution(entities_analyzed, good_entities, 'good_executed')
     increment_execution(entities_analyzed, faulty_entities,
-                        'n_faulty_executed')
+                        'faulty_executed')
 
     n_unique_executions = len(unique_executions)
     for entity in entities_analyzed.values():
-        entity['n_good_passed'] = n_unique_executions - \
-            entity['n_good_executed']
-        entity['n_faulty_passed'] = n_unique_executions - \
-            entity['n_faulty_executed']
+        entity['good_passed'] = n_unique_executions - \
+            entity['good_executed']
+        entity['faulty_passed'] = n_unique_executions - \
+            entity['faulty_executed']
 
     return entities_analyzed
