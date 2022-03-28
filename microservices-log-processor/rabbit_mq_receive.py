@@ -1,3 +1,4 @@
+# pylint: disable=C0111
 import json
 import pika
 
@@ -26,10 +27,9 @@ json_logfile = {"logs": []}
 # Callback when a message is received, prints the logs in stdout and writes to the log file
 
 
-def callback(ch, method, properties, body):
-    del ch, method, properties
+def callback(cha, method, properties, body):
+    del cha, method, properties
     json_body = json.loads(body)
-    print(json.dumps(json_body, indent=2, sort_keys=True))
     json_logfile['logs'].append(json_body)
 
 
