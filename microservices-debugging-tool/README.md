@@ -1,3 +1,5 @@
+# Microservices Debugging Tool
+
 ## Prerequisites
 
 * Python 3.X
@@ -11,6 +13,6 @@
 ## Running the application
 
 1. You can activate the virtual environment with pipenv: ```pipenv shell```
-2. And inside start the application: ```python main.py```
+   1. And inside start the application: ```python main.py```
 
-1. Or instead, simply execute: ```pipenv run python main.py```
+2. Or instead, simply execute: ```pipenv run python main.py```

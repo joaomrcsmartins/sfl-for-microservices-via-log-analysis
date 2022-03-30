@@ -16,7 +16,7 @@ docker run --rm -dp 5672:5672 rabbitmq
 
 > --rm to remove the container when stopped, -d to run in detached mode, and -p to publish port 5672
 
-Do not forget to start the server before using the tool. Note also that the default user ```guest:guest``` is used. Outside of local environments another user should be used ([source](https://www.rabbitmq.com/access-control.html#default-state)).
+Do not forget to start the server before using the tool. Note that the default user ```guest:guest``` is used. Outside of local environments, another user should be used ([source](https://www.rabbitmq.com/access-control.html#default-state)).
 
 ## Configuring Logstash
 
@@ -28,7 +28,7 @@ The files must follow the extension **\*.conf**. Follow [docs](https://www.elast
 
 ### Parsing logs
 
-To parse the log into a structured and standardized format, inside the configuration file, leverage the ```filter``` section to build your *pattern*. In particular, [grok](https://www.elastic.co/guide/en/logstash/8.1/plugins-filters-grok.html) and [dissect](https://www.elastic.co/guide/en/logstash/8.1/plugins-filters-dissect.html).
+To parse the log into a structured and standardized format, leverage the ```filter``` section inside the configuration file to build your *pattern*. In particular, [grok](https://www.elastic.co/guide/en/logstash/8.1/plugins-filters-grok.html) and [dissect](https://www.elastic.co/guide/en/logstash/8.1/plugins-filters-dissect.html).
 
 Example log:
 
@@ -66,7 +66,7 @@ Logstash output:
 }
 ```
 
-By default, logstash produces this json when reading a log:
+By default, logstash produces this JSON when reading a log:
 
 ```json
 {
@@ -81,19 +81,19 @@ By default, logstash produces this json when reading a log:
 
 Other fields may appear according to the input plugin used, but those are common.
 
-When matching a pattern in a log, it's possible to store a specific value inside the pattern. For example, the section ```%{LOGLEVEL:log_level}``` if it matches to a log level (info, warn, error,...) stores the value in **log_level**. This way you can extract any info present in the log and present it in any way you want.
+When matching a pattern in a log, it's possible to store a specific value inside the pattern. For example, the section ```%{LOGLEVEL:log_level}``` if it matches a log level (info, warn, error,...) stores the value in **log_level**. This way, you can extract any info present in the log and present it in any way you want.
 
-If there are two input sources, with different logs, you can use multiple patterns in the grok matcher.
+If there are two input sources with different logs, you can use multiple patterns in the grok matcher.
 
 It's also possible to modify the fields already present, rename or remove them. Look into the [mutate](https://www.elastic.co/guide/en/logstash/current/plugins-filters-mutate.html) filter for more details.
 
 ### *pipelines.yml*
 
-It's possible to have multiple pipelines executing in logstash, see [here](https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html#multiple-pipeline-usage) for its usages.
+It's possible to have multiple pipelines executing in logstash. See [here](https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html#multiple-pipeline-usage) for its usages.
 
 Add new pipelines to logstash in ```logstash/config/pipelines.yml```.
 
-Simple configuration is to add to the file:
+A simple configuration is to add to the file:
 
 ```yaml
 - pipeline.id: PIPELINE_ID_HERE
@@ -118,16 +118,16 @@ docker run --rm -it --network="host" --mount type=bind,source="$(pwd)"/data,targ
 
 ## How to run
 
-The steps to take sequently are:
+The steps to take sequentially are:
 
 1. Run the RabbitMQ server in the Docker image.
 2. Run the Python script for the RabbitMQ messages receiver (```rabbit_mq_receive.py```)
-3. Run the Logstash in Docker image
-   1. The file will be read and first results can be seen
+3. Run the Logstash in the Docker image
+   1. The file will be read, and the first results can be seen
 4. Run the Python script for the RabbitMQ messages sender (```rabbit_mq_send.py```)
    1. The logs will be parsed by Logstash and sent to the receiver
-5. The Logstash instance will keep running, add more logs in ```log4jexamples.log``` or send logs to exchange ```logstash-input``` (follow the script above) in RabbitMQ, to keep processing logs
-6. Stop the receiver program to write the contents in the json file (```logstash-rabbitmq.json```), the messages received meanwhile will be printed in the terminal
+5. The Logstash instance will keep running, add more logs in ```log4jexamples.log``` or send logs to exchange ```logstash-input``` (follow the script above) in RabbitMQ to keep processing logs
+6. Stop the receiver program to write the contents in the JSON file (```logstash-rabbitmq.json```), the messages received meanwhile will be printed in the terminal
 
 ## Versions
 
