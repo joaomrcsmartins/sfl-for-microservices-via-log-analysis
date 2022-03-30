@@ -1,5 +1,5 @@
 from functools import cmp_to_key
-from typing import Dict, List
+from typing import List
 
 from sfldebug.tools.ranking_metrics import RankingMetrics
 from sfldebug.tools.ranking_merge import RankMergeOperator
@@ -34,28 +34,24 @@ def rank_entity(entity_analytics: dict, ranking_metrics: List[RankingMetrics],
     return ranking_merge_op(rankings)
 
 
-def cmp_entities(ent1: Dict[str, float], ent2: Dict[str, float]) -> int:
-    """Custom comparator for entities rankings, which contain only a single pair (key,value).
-    The key is assumed to be of str type, and the value of float type
+def cmp_entities(ent1: dict, ent2: dict) -> int:
+    """Custom comparator for entities rankings.
+    It is assumed the ranking is associated to key 'entity_rank'
 
     Args:
-        ent1 (Dict[str,float]): Entity ranking to be compared
-        ent2 (Dict[str,float]): Other entity ranking to be compared
+        ent1 (dict): Entity ranking to be compared
+        ent2 (dict): Other entity ranking to be compared
 
     Returns:
-        int: 1 if ent1 has lower ranking or key higher, -1 if ent1 has higher ranking or key lower,
-        0 if both ent are equal
+        int: 1 if ent1 has lower ranking, -1 if ent1 has higher ranking,
+        0 if both rankings are equal
     """
-    key1, value1 = list(ent1.items())[0]
-    key2, value2 = list(ent2.items())[0]
+    rank1 = ent1['entity_rank']
+    rank2 = ent2['entity_rank']
 
-    if value1 < value2:
+    if rank1 < rank2:
         return 1
-    elif value1 > value2:
-        return -1
-    elif key1 > key2:
-        return 1
-    elif key1 < key2:
+    elif rank1 > rank2:
         return -1
     return 0
 
@@ -75,12 +71,13 @@ def rank(entities_analytics: dict, ranking_metrics: List[RankingMetrics],
         metrics' rankings. Defaults to RankMergeOperator.AVG.
 
     Returns:
-        List[dict]: list of rankings for each entity, sorted by rank in descending order
+        List[dict]: list of entities ranked by fault location probability, in descending order
     """
     entities_ranking = []
-    for key, analytics in entities_analytics.items():
+    for analytics in entities_analytics.values():
         entity_rank = rank_entity(analytics, ranking_metrics, ranking_merge_op)
-        entities_ranking.append({key: entity_rank})
+        entities_ranking.append(
+            {'entity_rank': entity_rank, 'properties': analytics['properties']})
 
     cmp_entity_rank = cmp_to_key(cmp_entities)
     entities_ranking.sort(key=cmp_entity_rank)

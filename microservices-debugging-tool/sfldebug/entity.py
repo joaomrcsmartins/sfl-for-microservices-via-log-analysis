@@ -45,6 +45,15 @@ class Entity:
         """
         self.children_names = children_names
 
+    def get_properties(self) -> dict:
+        """Returns dict with Entity properties.
+
+        Returns:
+            dict: entity properties contained in a dict
+        """
+        return {'name': self.name, 'parent_name': self.parent_name,
+                'children_names': self.children_names, 'entity_type': self.entity_type}
+
     def __hash__(self) -> int:
         return hash(self.request_id + self.name + self.entity_type + self.parent_name)
 
@@ -73,6 +82,13 @@ class ServiceEntity(Entity):
         self.user = user
         Entity.__init__(self, request_id, name, EntityType.SERVICE)
 
+    def get_properties(self) -> dict:
+        service_properties = {'endpoint': self.endpoint, 'instance_ip': self.instance_ip,
+                              'span_id': self.span_id, 'parent_span_id': self.parent_span_id,
+                              'http_code': self.http_code, 'user': self.user, }
+
+        return super().get_properties() | service_properties
+
 
 class MethodEntity(Entity):
     """MethodEntity subclass of Entity, specific to method entities.
@@ -91,6 +107,12 @@ class MethodEntity(Entity):
         self.message = message
         self.invocation_chain = invocation_chain
         Entity.__init__(self, request_id, name, EntityType.METHOD)
+
+    def get_properties(self) -> dict:
+        method_properties = {'timestamp': self.timestamp, 'log_level': self.log_level,
+                             'message': self.message, 'invocation_chain': self.invocation_chain}
+
+        return super().get_properties() | method_properties
 
 
 def build_entity(log_data: Any) -> Set[Entity]:

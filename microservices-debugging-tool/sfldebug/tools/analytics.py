@@ -22,14 +22,14 @@ def increment_execution(entities_analyzed: dict, entities: Set[Entity], executio
         execution_key (str): key to increment in
     """
     for entity in entities:
-        key = "{}-{}-{}".format(entity.entity_type,
-                                entity.name, entity.request_id)
+        key = "{}".format(entity.__hash__())
         unique_executions.add(entity.request_id)
         if key in entities_analyzed:
             entities_analyzed[key][execution_key] += 1
         else:
             new_entity_analysis = default_analysis_format.copy()
             new_entity_analysis[execution_key] += 1
+            new_entity_analysis['properties'] = entity.get_properties()
             entities_analyzed[key] = new_entity_analysis
 
 
