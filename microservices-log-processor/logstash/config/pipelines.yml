@@ -1,3 +1,6 @@
-- pipeline.id: file-logstash-rabbitmq
-  path.config: "/usr/share/logstash/pipeline/logstash-rabbitmq.conf"
+#- pipeline.id: file-logstash-rabbitmq
+#  path.config: "/usr/share/logstash/pipeline/logstash-rabbitmq.conf"
+- pipeline.id: logtstash-sfl-demo-petpapet
+  path.config: "/usr/share/logstash/pipeline/logstash-sfl-demo.conf"
+
   
