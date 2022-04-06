@@ -31,7 +31,7 @@ if __name__ == '__main__':
     first_sender = mp.Process(
         target=dummy_sender, args=('dummy_log_hierarchy.json','logstash-output-good',))
     second_sender = mp.Process(
-        target=dummy_sender, args=('dummy_log_data.json','logstash-output-faulty',))
+        target=dummy_sender, args=('dummy_log_data.json','logstash-output-bad',))
 
     first_sender.start()
     second_sender.start()

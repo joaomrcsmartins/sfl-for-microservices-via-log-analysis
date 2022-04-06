@@ -30,7 +30,7 @@ def setup_mq_channel(callback: Callable, host: str = 'localhost', exchange: str 
         exchange=exchange, exchange_type='direct', durable=True)
     channel.exchange = exchange  # Note: adding property to instance, not part of class
 
-    result = channel.queue_declare(queue='', exclusive=True)
+    result = channel.queue_declare(queue='')
     queue_name = result.method.queue
 
     # Bind the queue to receive logs from logstash with the appropriate routing key
