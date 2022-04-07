@@ -80,11 +80,11 @@ def receive_mq(good_entities_id: str, faulty_entities_id: str) -> dict:
     # Receive messages from both channel simultaneously, with multiprocessing
     good_receiver_process = mp.Process(
         target=receive_mq_messages, args=(queue, parse_mq_message),
-        kwargs={'exchange': good_entities_id})
+        kwargs={'exchange': good_entities_id, 'routing_key': good_entities_id})
 
     faulty_receiver_process = mp.Process(
         target=receive_mq_messages, args=(queue, parse_mq_message),
-        kwargs={'exchange': faulty_entities_id})
+        kwargs={'exchange': faulty_entities_id, 'routing_key': faulty_entities_id})
 
     try:
         good_receiver_process.start()
