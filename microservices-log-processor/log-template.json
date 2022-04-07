@@ -6,7 +6,8 @@
     "httpCode": "[OPTIONAL] <integer> of the http status code produced by the request",
     "instanceIP": "[OPTIONAL] <string> of the instance ip where the microservice is running",
     "methodInvocation": {
-        "fileName": "[OPTIONAL] <string> of the file/class name/path where the method is invoked",
+        "fileName": "[OPTIONAL] <string> of the file name/path where the method is invoked",
+        "className": "[OPTIONAL] <string> of the class name/path where the method is invoked",
         "line": "[OPTIONAL] <integer> of the line of the logged activity",
         "methodName": "[OPTIONAL] <string> of the method invoked"
     },

@@ -10,7 +10,7 @@ channel = connection.channel()
 
 # extracted from https://www.ibm.com/docs/en/zos/2.1.0?topic=problems-example-log-file
 with open(os.path.join(__location__,
-    'data/rabbitmq/ibmlogexamples.log'), 'r', encoding='utf-8') as log_file:
+                       'data/rabbitmq/ibmlogexamples.log'), 'r', encoding='utf-8') as log_file:
 
     channel.exchange_declare(exchange='logstash-input', exchange_type='direct')
 

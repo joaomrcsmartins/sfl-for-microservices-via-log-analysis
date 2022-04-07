@@ -8,6 +8,7 @@ import pika
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
+
 def dummy_sender(filename: str, exchange: str):
 
     connection = pika.BlockingConnection(
@@ -17,21 +18,22 @@ def dummy_sender(filename: str, exchange: str):
     with open(os.path.join(__location__, filename), 'r', encoding='utf-8') as log_file:
 
         channel.exchange_declare(exchange=exchange,
-                                exchange_type='direct', durable=True)
+                                 exchange_type='direct', durable=True)
 
         data = json.load(log_file)
 
         for log in data:
             channel.basic_publish(exchange=exchange,
-                                routing_key=exchange, body=json.dumps(log))
+                                  routing_key=exchange, body=json.dumps(log))
             print('Sent :: {}'.format(json.dumps(log)))
         connection.close()
 
+
 if __name__ == '__main__':
     first_sender = mp.Process(
-        target=dummy_sender, args=('dummy_log_hierarchy.json','logstash-output-good',))
+        target=dummy_sender, args=('dummy_log_hierarchy.json', 'logstash-output-good',))
     second_sender = mp.Process(
-        target=dummy_sender, args=('dummy_log_data.json','logstash-output-bad',))
+        target=dummy_sender, args=('dummy_log_data.json', 'logstash-output-bad',))
 
     first_sender.start()
     second_sender.start()
