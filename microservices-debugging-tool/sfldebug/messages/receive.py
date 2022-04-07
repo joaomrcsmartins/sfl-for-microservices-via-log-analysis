@@ -71,7 +71,20 @@ def receive_mq_messages(queue: mp.Queue, callback: Callable, host: str = 'localh
 
 
 def receive_mq(good_entities_id: str, faulty_entities_id: str) -> dict:
-    """Default receiver, relies on MQ channel."""
+    """Receives log data through MQ channels.
+    Each channel receives the messages and sends the data to a parser.
+    The channels are set up in different processes for concurrent receival of messages.
+    Returns a set with the parsed data for the 'good' and 'faulty' entities.
+
+    Args:
+        good_entities_id (str): name of the exchange where the good entities' log data will
+        originate from
+        faulty_entities_id (str): name of the exchange where the faulty entities' log data will
+        originate from
+
+    Returns:
+        dict: set with the parsed data for the 'good' and 'faulty' entities
+    """
 
     queue = mp.Queue()
     return_entities = {good_entities_id: set(), faulty_entities_id: set()}
