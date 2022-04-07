@@ -23,9 +23,12 @@ def increment_execution(entities_analyzed: dict, entities: Set[Entity], executio
     """
     for entity in entities:
         key = "{}".format(entity.__hash__())
-        unique_executions.add(entity.request_id)
+
+        unique_executions.update([ref['request_id']
+                                 for ref in entity.references])
         if key in entities_analyzed:
             entities_analyzed[key][execution_key] += 1
+            entities_analyzed[key]['properties']['references'] += entity.references
         else:
             new_entity_analysis = default_analysis_format.copy()
             new_entity_analysis[execution_key] += 1
@@ -47,9 +50,9 @@ def analyze_entities(good_entities: Set[Entity], faulty_entities: Set[Entity]) -
     """
     entities_analyzed: dict = {}
 
-    increment_execution(entities_analyzed, good_entities, 'good_executed')
     increment_execution(entities_analyzed, faulty_entities,
                         'faulty_executed')
+    increment_execution(entities_analyzed, good_entities, 'good_executed')
 
     n_unique_executions = len(unique_executions)
     for entity in entities_analyzed.values():
