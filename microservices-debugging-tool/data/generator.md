@@ -14,14 +14,11 @@ To generate dummy data use the generator at [json-generator](https://json-genera
     endpoint: '/{{lorem(1, "words")}}',
     httpCode: '{{integer(400, 518)}}',
     instanceIP: '{{integer(0, 255)}}.{{integer(0, 255)}}.{{integer(0, 255)}}.{{integer(0, 255)}}',
-    invocationChain: [
-      '{{repeat(0,3)}}',
-        {
-            fileName: '{{lorem(1, "words")}}',
-            line: '{{integer(1, 1000)}}',
-            methodName: '{{lorem(1, "words")}}'
-        }
-    ],
+    methodInvocation: {
+      fileName: '{{lorem(1, "words")}}',
+      line: '{{integer(1, 1000)}}',
+      methodName: '{{lorem(1, "words")}}'
+    },
     logLevel: '{{random("TRACE","INFO","DEBUG","WARN","ERROR","FATAL")}}',
     message: '{{lorem()}}',
     microserviceName: '{{lorem(1, "words")}}',

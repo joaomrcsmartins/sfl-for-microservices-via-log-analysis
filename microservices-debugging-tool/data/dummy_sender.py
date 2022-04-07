@@ -23,7 +23,7 @@ def dummy_sender(filename: str, exchange: str):
 
         for log in data:
             channel.basic_publish(exchange=exchange,
-                                routing_key='logstash-output', body=json.dumps(log))
+                                routing_key=exchange, body=json.dumps(log))
             print('Sent :: {}'.format(json.dumps(log)))
         connection.close()
 

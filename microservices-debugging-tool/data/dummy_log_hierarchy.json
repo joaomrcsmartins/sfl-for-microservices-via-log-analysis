@@ -1,162 +1,125 @@
 [
-    {
-      "correlationID": "d15a355f-b4af-4719-8732-c82aa551c1ae",
-      "durationProcessing": 8142,
-      "spanID": "4656501d-5619-4dcc-b445-c59be741d91f",
-      "endpoint": "/dolore",
-      "httpCode": 442,
-      "instanceIP": "63.59.219.248",
-      "invocationChain": [],
-      "logLevel": "DEBUG",
-      "message": "Veniam quis Lorem deserunt culpa exercitation non ullamco esse consequat cupidatat ea nulla laborum.",
-      "microserviceName": "ullamco",
-      "parentSpanID": "fbfa08d2-a76a-4b67-8041-27f735d55d31",
-      "timestamp": "2016-03-18T07:04:36 -00:00",
-      "user": "esse"
+  {
+    "correlationID": "d15a355f-b4af-4719-8732-c82aa551c1ae",
+    "durationProcessing": 8142,
+    "spanID": "4656501d-5619-4dcc-b445-c59be741d91f",
+    "endpoint": "/dolore",
+    "httpCode": 442,
+    "instanceIP": "63.59.219.248",
+    "logLevel": "DEBUG",
+    "message": "Veniam quis Lorem deserunt culpa exercitation non ullamco esse consequat cupidatat ea nulla laborum.",
+    "microserviceName": "ullamco",
+    "parentSpanID": "fbfa08d2-a76a-4b67-8041-27f735d55d31",
+    "timestamp": "2016-03-18T07:04:36 -00:00",
+    "user": "esse"
+  },
+  {
+    "correlationID": "d15a355f-b4af-4719-8732-c82aa551c1ae",
+    "durationProcessing": 5630,
+    "spanID": "2d4ec88a-4308-4595-aab5-4f8ccd38d416",
+    "endpoint": "/laboris",
+    "httpCode": 451,
+    "instanceIP": "188.153.223.149",
+    "methodInvocation": {
+      "fileName": "veniam",
+      "line": 23,
+      "methodName": "velit"
     },
-    {
-      "correlationID": "d15a355f-b4af-4719-8732-c82aa551c1ae",
-      "durationProcessing": 5630,
-      "spanID": "2d4ec88a-4308-4595-aab5-4f8ccd38d416",
-      "endpoint": "/laboris",
-      "httpCode": 451,
-      "instanceIP": "188.153.223.149",
-      "invocationChain": [
-        {
-          "fileName": "veniam",
-          "line": 23,
-          "methodName": "velit"
-        },
-        {
-          "fileName": "elit",
-          "line": 587,
-          "methodName": "aute"
-        },
-        {
-          "fileName": "laboris",
-          "line": 77,
-          "methodName": "occaecat"
-        }
-      ],
-      "logLevel": "INFO",
-      "message": "Proident dolor nulla elit esse veniam consequat laborum culpa consectetur non minim consectetur labore.",
-      "microserviceName": "ullamco",
-      "parentSpanID": "226eddc7-b72e-46c0-818e-cb93ec53d612",
-      "timestamp": "2012-10-10T05:44:14 -01:00",
-      "user": "nisi"
+    "logLevel": "INFO",
+    "message": "Proident dolor nulla elit esse veniam consequat laborum culpa consectetur non minim consectetur labore.",
+    "microserviceName": "ullamco",
+    "parentSpanID": "226eddc7-b72e-46c0-818e-cb93ec53d612",
+    "timestamp": "2012-10-10T05:44:14 -01:00",
+    "user": "nisi"
+  },
+  {
+    "correlationID": "9e27c6dc-66a0-4815-898b-b6ab52cd5703",
+    "durationProcessing": 1800,
+    "spanID": "1670575d-82ee-4d89-957f-448f0dadbe3f",
+    "endpoint": "/esse",
+    "httpCode": 405,
+    "instanceIP": "199.242.110.25",
+    "logLevel": "TRACE",
+    "message": "Duis ullamco aliquip dolore minim eiusmod cupidatat aliquip commodo pariatur ullamco.",
+    "microserviceName": "anim",
+    "parentSpanID": "1a0b1a64-a5c1-45c7-948b-136842a2f831",
+    "timestamp": "2020-07-28T05:56:28 -01:00",
+    "user": "occaecat"
+  },
+  {
+    "correlationID": "9e27c6dc-66a0-4815-898b-b6ab52cd5703",
+    "durationProcessing": 8139,
+    "spanID": "ddd94ca5-dabd-46fa-966f-ce9bd401c621",
+    "endpoint": "/exercitation",
+    "httpCode": 509,
+    "instanceIP": "234.87.189.190",
+    "methodInvocation": {
+      "fileName": "tempor",
+      "line": 211,
+      "methodName": "nisi"
     },
-    {
-      "correlationID": "9e27c6dc-66a0-4815-898b-b6ab52cd5703",
-      "durationProcessing": 1800,
-      "spanID": "1670575d-82ee-4d89-957f-448f0dadbe3f",
-      "endpoint": "/esse",
-      "httpCode": 405,
-      "instanceIP": "199.242.110.25",
-      "invocationChain": [],
-      "logLevel": "TRACE",
-      "message": "Duis ullamco aliquip dolore minim eiusmod cupidatat aliquip commodo pariatur ullamco.",
-      "microserviceName": "anim",
-      "parentSpanID": "1a0b1a64-a5c1-45c7-948b-136842a2f831",
-      "timestamp": "2020-07-28T05:56:28 -01:00",
-      "user": "occaecat"
+    "logLevel": "INFO",
+    "message": "Id eu elit adipisicing non.",
+    "microserviceName": "anim",
+    "parentSpanID": "edcaf64f-1067-453b-b968-90f8be72b821",
+    "timestamp": "2011-09-04T20:39:33 -01:00",
+    "user": "non"
+  },
+  {
+    "correlationID": "5e146512-006c-4749-884e-9a7d572ad2ff",
+    "durationProcessing": 9067,
+    "spanID": "16729bcf-1d6b-4b56-975e-3f2df09602f3",
+    "endpoint": "/minim",
+    "httpCode": 430,
+    "instanceIP": "243.147.166.53",
+    "methodInvocation": {
+      "fileName": "aliqua",
+      "line": 715,
+      "methodName": "ipsum"
     },
-    {
-      "correlationID": "9e27c6dc-66a0-4815-898b-b6ab52cd5703",
-      "durationProcessing": 8139,
-      "spanID": "ddd94ca5-dabd-46fa-966f-ce9bd401c621",
-      "endpoint": "/exercitation",
-      "httpCode": 509,
-      "instanceIP": "234.87.189.190",
-      "invocationChain": [
-        {
-          "fileName": "tempor",
-          "line": 211,
-          "methodName": "nisi"
-        },
-        {
-          "fileName": "occaecat",
-          "line": 605,
-          "methodName": "ad"
-        }
-      ],
-      "logLevel": "INFO",
-      "message": "Id eu elit adipisicing non.",
-      "microserviceName": "anim",
-      "parentSpanID": "edcaf64f-1067-453b-b968-90f8be72b821",
-      "timestamp": "2011-09-04T20:39:33 -01:00",
-      "user": "non"
+    "logLevel": "FATAL",
+    "message": "Consequat nisi in aute laboris fugiat qui sunt culpa Lorem commodo.",
+    "microserviceName": "eu",
+    "parentSpanID": "6441883a-f342-4db1-95a8-4c67f056de90",
+    "timestamp": "2022-01-04T15:55:09 -00:00",
+    "user": "adipisicing"
+  },
+  {
+    "correlationID": "5e146512-006c-4749-884e-9a7d572ad2ff",
+    "durationProcessing": 7254,
+    "spanID": "459fccc5-84a9-4dc5-8a7e-ff089c62998a",
+    "endpoint": "/adipisicing",
+    "httpCode": 446,
+    "instanceIP": "47.29.146.146",
+    "methodInvocation": {
+      "fileName": "enim",
+      "line": 927,
+      "methodName": "magna"
     },
-    {
-      "correlationID": "5e146512-006c-4749-884e-9a7d572ad2ff",
-      "durationProcessing": 9067,
-      "spanID": "16729bcf-1d6b-4b56-975e-3f2df09602f3",
-      "endpoint": "/minim",
-      "httpCode": 430,
-      "instanceIP": "243.147.166.53",
-      "invocationChain": [
-        {
-          "fileName": "aliqua",
-          "line": 715,
-          "methodName": "ipsum"
-        }
-      ],
-      "logLevel": "FATAL",
-      "message": "Consequat nisi in aute laboris fugiat qui sunt culpa Lorem commodo.",
-      "microserviceName": "eu",
-      "parentSpanID": "6441883a-f342-4db1-95a8-4c67f056de90",
-      "timestamp": "2022-01-04T15:55:09 -00:00",
-      "user": "adipisicing"
+    "logLevel": "TRACE",
+    "message": "Adipisicing reprehenderit adipisicing aliquip exercitation sint sit tempor eiusmod adipisicing non non.",
+    "microserviceName": "eu",
+    "parentSpanID": "cccc0243-8176-42b1-b150-e06e5fa6376e",
+    "timestamp": "2016-10-09T13:11:49 -01:00",
+    "user": "aute"
+  },
+  {
+    "correlationID": "5e146512-006c-4749-884e-9a7d572ad2ff",
+    "durationProcessing": 6954,
+    "spanID": "2d74fa7b-210b-456c-89aa-a6d26529ad10",
+    "endpoint": "/Lorem",
+    "httpCode": 508,
+    "instanceIP": "9.235.233.71",
+    "methodInvocation": {
+      "fileName": "fugiat",
+      "line": 321,
+      "methodName": "sunt"
     },
-    {
-      "correlationID": "5e146512-006c-4749-884e-9a7d572ad2ff",
-      "durationProcessing": 7254,
-      "spanID": "459fccc5-84a9-4dc5-8a7e-ff089c62998a",
-      "endpoint": "/adipisicing",
-      "httpCode": 446,
-      "instanceIP": "47.29.146.146",
-      "invocationChain": [
-        {
-          "fileName": "enim",
-          "line": 927,
-          "methodName": "magna"
-        },
-        {
-          "fileName": "mollit",
-          "line": 781,
-          "methodName": "consectetur"
-        },
-        {
-          "fileName": "ipsum",
-          "line": 45,
-          "methodName": "commodo"
-        }
-      ],
-      "logLevel": "TRACE",
-      "message": "Adipisicing reprehenderit adipisicing aliquip exercitation sint sit tempor eiusmod adipisicing non non.",
-      "microserviceName": "eu",
-      "parentSpanID": "cccc0243-8176-42b1-b150-e06e5fa6376e",
-      "timestamp": "2016-10-09T13:11:49 -01:00",
-      "user": "aute"
-    },
-    {
-      "correlationID": "5e146512-006c-4749-884e-9a7d572ad2ff",
-      "durationProcessing": 6954,
-      "spanID": "2d74fa7b-210b-456c-89aa-a6d26529ad10",
-      "endpoint": "/Lorem",
-      "httpCode": 508,
-      "instanceIP": "9.235.233.71",
-      "invocationChain": [
-        {
-          "fileName": "fugiat",
-          "line": 321,
-          "methodName": "sunt"
-        }
-      ],
-      "logLevel": "WARN",
-      "message": "Elit aliquip nulla enim veniam labore qui.",
-      "microserviceName": "eu",
-      "parentSpanID": "fa7996be-7e12-4309-84f1-908e4aa07e21",
-      "timestamp": "2010-12-16T00:45:44 -00:00",
-      "user": "deserunt"
-    }
-  ]
+    "logLevel": "WARN",
+    "message": "Elit aliquip nulla enim veniam labore qui.",
+    "microserviceName": "eu",
+    "parentSpanID": "fa7996be-7e12-4309-84f1-908e4aa07e21",
+    "timestamp": "2010-12-16T00:45:44 -00:00",
+    "user": "deserunt"
+  }
+]
