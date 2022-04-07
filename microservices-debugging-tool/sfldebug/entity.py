@@ -97,20 +97,20 @@ class MethodEntity(Entity):
         timestamp (List[str]): timestamp string of the logged entity, formatted in ISO8601
         log_level (List[str]): level of the log
         message (List[str]): logged message
-        invocation_chain: invocation chain of the methods, starting by the top-level method invoked
+        method_invocation: invocation of a methods, specifying the file, class and method names.
     """
 
     def __init__(self, request_id: str, name: str, timestamp: List[str], log_level: List[str],
-                 message: List[str], invocation_chain: List[Any]):
+                 message: List[str], method_invocation: dict):
         self.timestamp = timestamp
         self.log_level = log_level
         self.message = message
-        self.invocation_chain = invocation_chain
+        self.method_invocation = method_invocation
         Entity.__init__(self, request_id, name, EntityType.METHOD)
 
     def get_properties(self) -> dict:
         method_properties = {'timestamp': self.timestamp, 'log_level': self.log_level,
-                             'message': self.message, 'invocation_chain': self.invocation_chain}
+                             'message': self.message, 'method_invocation': self.method_invocation}
 
         return super().get_properties() | method_properties
 
@@ -148,18 +148,15 @@ def build_entity(log_data: Any) -> Set[Entity]:
 
     # Create a method entity and extract method specific fields
     method_entity: MethodEntity
-    invocation_chain = extract_field('invocationChain', log_data)
-    missing_chain = invocation_chain is None
-    empty_chain = len(invocation_chain) == 0
-    if not missing_chain and not empty_chain:
-        method_invoked = invocation_chain[0]
-        method_name: str = extract_field('methodName', method_invoked)
-
+    method_invocation = extract_field('methodInvocation', log_data)
+    missing_chain = method_invocation is None
+    if not missing_chain:
+        method_name: str = extract_field('methodName', method_invocation)
         timestamp = extract_field('timestamp', log_data)
         log_level = extract_field('logLevel', log_data)
         message = extract_field('message', log_data)
         method_entity = MethodEntity(correlation_id, method_name,
-                                     [timestamp], [log_level], [message], invocation_chain)
+                                     [timestamp], [log_level], [message], method_invocation)
     else:
         method_entity = None
 
@@ -250,14 +247,13 @@ def merge_method_entity(new_entity: MethodEntity, old_entity: MethodEntity) -> E
     new_log_level = merge_attributes(
         new_entity.log_level, old_entity.log_level)
     new_message = merge_attributes(new_entity.message, old_entity.message)
-    new_invocation_chain = merge_attributes(
-        new_entity.invocation_chain, old_entity.invocation_chain)
 
+    method_invocation = old_entity.method_invocation
     request_id = old_entity.request_id
     name = old_entity.name
 
     new_method_entity = MethodEntity(
-        request_id, name, new_timestamp, new_log_level, new_message, new_invocation_chain)
+        request_id, name, new_timestamp, new_log_level, new_message, method_invocation)
 
     return new_method_entity
 

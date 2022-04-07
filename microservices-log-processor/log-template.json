@@ -5,13 +5,11 @@
     "endpoint": "[OPTIONAL] <string> of the endpoint that invoked the logged activity",
     "httpCode": "[OPTIONAL] <integer> of the http status code produced by the request",
     "instanceIP": "[OPTIONAL] <string> of the instance ip where the microservice is running",
-    "invocationChain": [
-        {
-            "fileName": "[OPTIONAL] <string> of the file/class name/path where the method is invoked",
-            "line": "[OPTIONAL] <integer> of the line of the logged activity",
-            "methodName":"[OPTIONAL] <string> of the method invoked"
-        }
-    ],
+    "methodInvocation": {
+        "fileName": "[OPTIONAL] <string> of the file/class name/path where the method is invoked",
+        "line": "[OPTIONAL] <integer> of the line of the logged activity",
+        "methodName": "[OPTIONAL] <string> of the method invoked"
+    },
     "logLevel": "[OPTIONAL] <string> of log level: TRACE, DEBUG, INFO, WARN, ERROR, or FATAL",
     "message": "[OPTIONAL] <string> of a message explaining the logged activity",
     "microserviceName": "[REQUIRED] <string> of the microservice name",
