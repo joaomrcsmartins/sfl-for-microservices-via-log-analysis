@@ -66,11 +66,12 @@ def receive_mq_messages(queue: mp.Queue, callback: Callable, host: str = 'localh
         channel.close()
         print('"{}" - Flushing messages collected'.format(channel.exchange))
         ret = queue.get()
-        ret[exchange] = flush_mq_messages(exchange)
+        exec_id = ret['execution_id']
+        ret[exchange] = flush_mq_messages(exchange, exec_id)
         queue.put(ret)
 
 
-def receive_mq(good_entities_id: str, faulty_entities_id: str) -> dict:
+def receive_mq(good_entities_id: str, faulty_entities_id: str, execution_id: str) -> dict:
     """Receives log data through MQ channels.
     Each channel receives the messages and sends the data to a parser.
     The channels are set up in different processes for concurrent receival of messages.
@@ -87,7 +88,8 @@ def receive_mq(good_entities_id: str, faulty_entities_id: str) -> dict:
     """
 
     queue = mp.Queue()
-    return_entities = {good_entities_id: set(), faulty_entities_id: set()}
+    return_entities = {good_entities_id: set(), faulty_entities_id: set(),
+                       'execution_id': execution_id}
     queue.put(return_entities)
 
     # Receive messages from both channel simultaneously, with multiprocessing

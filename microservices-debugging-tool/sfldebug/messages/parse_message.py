@@ -4,7 +4,7 @@ from pika.channel import Channel
 from pika.spec import BasicProperties, Basic
 
 from sfldebug.entity import build_entity, parse_unique_entities, Entity
-from sfldebug.tools.writer import write_json_to_file
+from sfldebug.tools.writer import write_results_to_file
 entities = set()
 
 
@@ -24,11 +24,12 @@ def parse_mq_message(channel: Channel, method: Basic.Deliver, properties: BasicP
     entities.update(log_entities)
 
 
-def flush_mq_messages(file_id: str) -> Set[Entity]:
+def flush_mq_messages(file_id: str, exec_id: str) -> Set[Entity]:
     """Once the connection is finished, parse collected entities and write to file
 
     Args:
         file_id (str): id of entities to record in a unique file
+        exec_id (str): id of the execution to sort results
     """
     parsed_entities = parse_unique_entities(entities)
 
@@ -37,5 +38,5 @@ def flush_mq_messages(file_id: str) -> Set[Entity]:
         json_entities['entities'].append(entity.__dict__)
 
     filename = 'entities-records-' + file_id
-    write_json_to_file(json_entities, filename)
+    write_results_to_file(json_entities, filename, exec_id)
     return parsed_entities
