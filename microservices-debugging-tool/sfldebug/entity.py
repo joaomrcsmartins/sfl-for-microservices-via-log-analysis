@@ -1,8 +1,8 @@
 from __future__ import annotations
 from enum import Enum
-from typing import Any, List, Set
+from typing import Any, Set
 
-from sfldebug.tools.object import extract_field, merge_attributes
+from sfldebug.tools.object import extract_field
 
 
 class EntityType(str, Enum):
@@ -16,13 +16,13 @@ class Entity:
 
     Params:
         name (str): particular name of the entity
-        references (List[dict]): list of references captured belonging to the same entity
+        references (dict[str,dict]): dict of references captured belonging to the same entity
         entity_type (EntityType): enum member of EntityType (defaults to EntityType.SERVICE)
         parent_name (str): parent entity name
         children_names (Set[str]): set of children entities names
     """
 
-    def __init__(self, name: str, references: List[dict],
+    def __init__(self, name: str, references: dict[str, dict],
                  entity_type: EntityType = EntityType.SERVICE):
         self.name = name
         self.references = references
@@ -30,11 +30,11 @@ class Entity:
         self.parent_name: str = ''
         self.children_names: Set[str] = set()
 
-    def set_references(self, references: List[dict]):
+    def set_references(self, references: dict[str, dict]):
         """Setter for the Entity references
 
         Args:
-            references (List[dict]): List of references of the entity to be set
+            references (dict[str,dict]): List of references of the entity to be set
         """
         self.references = references
 
@@ -87,7 +87,8 @@ class ServiceEntity(Entity):
                  span_id: str, parent_span_id: str, http_code: int,
                  user: str):
 
-        references: List[dict] = [{
+        references: dict[str, dict] = {}
+        references[request_id] = {
             'request_id': request_id,
             'endpoint': endpoint,
             'instance_ip': instance_ip,
@@ -95,7 +96,7 @@ class ServiceEntity(Entity):
             'parent_span_id': parent_span_id,
             'http_code': http_code,
             'user': user
-        }]
+        }
         Entity.__init__(self, name, references, EntityType.SERVICE)
 
 
@@ -114,13 +115,14 @@ class MethodEntity(Entity):
 
     def __init__(self, name: str, request_id: str, timestamp: str, log_level: str,
                  message: str, method_invocation: dict):
-        references: List[dict] = [{
+        references: dict[str, dict] = {}
+        references[request_id] = {
             'request_id': request_id,
             'timestamp': timestamp,
             'log_level': log_level,
             'message': message,
             'method_invocation': method_invocation,
-        }]
+        }
         Entity.__init__(self, name, references, EntityType.METHOD)
 
 
@@ -213,11 +215,7 @@ def merge_entity(new_entity: Entity, old_entity: Entity) -> Entity:
     Returns:
         Entity: the entity resulting of merging the input entities
     """
-
-    references = merge_attributes(new_entity.references, old_entity.references)
-    new_entity.set_references(references)
-
-    children_names = new_entity.children_names.union(old_entity.children_names)
-    new_entity.set_children_names(children_names)
+    new_entity.references.update(old_entity.references)
+    new_entity.children_names.update(old_entity.children_names)
 
     return new_entity

@@ -24,14 +24,18 @@ def increment_execution(entities_analyzed: dict, entities: Set[Entity], executio
     for entity in entities:
         key = "{}".format(entity.__hash__())
 
-        unique_executions.update([ref['request_id']
-                                 for ref in entity.references])
+        entity_requests = entity.references.keys()
+        unique_executions.update(entity_requests)
+        times_executed = len(entity_requests)
         if key in entities_analyzed:
-            entities_analyzed[key][execution_key] += 1
-            entities_analyzed[key]['properties']['references'] += entity.references
+            entities_analyzed[key][execution_key] += times_executed
+            entities_analyzed[key]['properties']['references'].update(
+                entity.references)
+            entities_analyzed[key]['properties']['children_names'].update(
+                entity.children_names)
         else:
             new_entity_analysis = default_analysis_format.copy()
-            new_entity_analysis[execution_key] += 1
+            new_entity_analysis[execution_key] += times_executed
             new_entity_analysis['properties'] = entity.get_properties()
             entities_analyzed[key] = new_entity_analysis
 
