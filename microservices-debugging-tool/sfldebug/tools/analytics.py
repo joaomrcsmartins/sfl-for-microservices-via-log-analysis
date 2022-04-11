@@ -1,5 +1,6 @@
 from typing import Set
 from sfldebug.entity import Entity
+from sfldebug.tools.object import merge_into_list
 
 default_analysis_format = {
     'good_executed': 0,
@@ -29,10 +30,20 @@ def increment_execution(entities_analyzed: dict, entities: Set[Entity], executio
         times_executed = len(entity_requests)
         if key in entities_analyzed:
             entities_analyzed[key][execution_key] += times_executed
-            entities_analyzed[key]['properties']['references'].update(
-                entity.references)
-            entities_analyzed[key]['properties']['children_names'].update(
-                entity.children_names)
+
+            entity_analyzed_refs = entities_analyzed[key]['properties']['references']
+            entity_refs = entity.references
+            # references of the same entity that are related to different requests
+            missing_references = {k: entity_refs.get(
+                k) for k in entity_refs.keys() - entity_analyzed_refs.keys()}
+            # references of the same entity that are related to the same request
+            merged_references = {k: merge_into_list(entity_refs.get(k), entity_analyzed_refs.get(
+                k)) for k in entity_refs.keys() & entity_analyzed_refs.keys()}
+            entity_analyzed_refs.update(missing_references)
+            entity_analyzed_refs.update(merged_references)
+
+            entity_analyzed_children = entities_analyzed[key]['properties']['children_names']
+            entity_analyzed_children.update(entity.children_names)
         else:
             new_entity_analysis = default_analysis_format.copy()
             new_entity_analysis[execution_key] += times_executed
