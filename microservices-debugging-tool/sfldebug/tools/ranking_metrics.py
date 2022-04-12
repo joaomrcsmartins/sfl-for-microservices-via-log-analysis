@@ -35,7 +35,12 @@ def __executed_fraction(executed: int, not_executed: int) -> float:
 
 def tarantula(entity_analytics: dict) -> float:
     """Tarantula ranking metric.
-    See more in: TBA
+
+    James A. Jones, Mary Jean Harrold, and John Stasko.
+    2002. Visualization of test information to assist fault localization.
+    In "Proceedings of the 24th International Conference on Software Engineering" (ICSE '02).
+    Association for Computing Machinery, New York, NY, USA, 467-477.
+    DOI: https://doi.org/10.1145/581339.581397
 
     Args:
         entity_analytics (dict): analytics of the entity, when it is executed or not in good and
@@ -57,7 +62,11 @@ def tarantula(entity_analytics: dict) -> float:
 
 def jaccard(entity_analytics: dict) -> float:
     """Jaccard ranking metric.
-    See more in: TBA
+
+    M. Y. Chen, E. Kiciman, E. Fratkin, A. Fox and E. Brewer.
+    "Pinpoint: problem determination in large, dynamic Internet services."
+    Proceedings International Conference on Dependable Systems and Networks 2002, pp. 595-604.
+    DOI: 10.1109/DSN.2002.1029005.
 
     Args:
         entity_analytics (dict): analytics of the entity, when it is executed or not in good and
@@ -76,7 +85,12 @@ def jaccard(entity_analytics: dict) -> float:
 
 def ochiai(entity_analytics: dict) -> float:
     """Ochiai ranking metric.
-    See more in: TBA
+
+    Meyer, Andréia da Silva et al.
+    Comparison of similarity coefficients used for cluster analysis with dominant markers in maize
+    (Zea mays L).
+    Genetics and Molecular Biology, 2004, v.27, n.1, pp. 83-91.
+    DOI: https://doi.org/10.1590/S1415-47572004000100014>.
 
     Args:
         entity_analytics (dict): analytics of the entity, when it is executed or not in good and
@@ -98,7 +112,10 @@ def ochiai(entity_analytics: dict) -> float:
 
 def zoltar(entity_analytics: dict) -> float:
     """Zoltar ranking metric.
-    See more in: TBA
+
+    R. Abreu, P. Zoeteweij and A. J. C. v. Gemund, "Localizing Software Faults Simultaneously."
+    2009 Ninth International Conference on Quality Software, 2009, pp. 367-376.
+    DOI: 10.1109/QSIC.2009.55.
 
     Args:
         entity_analytics (dict): analytics of the entity, when it is executed or not in good and
@@ -120,8 +137,12 @@ def zoltar(entity_analytics: dict) -> float:
 
 
 def op_metric(entity_analytics: dict) -> float:
-    """O^p ranking metric.
-    See more in: TBA
+    """O^p ranking metric. Works better for multiple-fault programs.
+
+    Lee Naish, Hua Jie Lee, and Kotagiri Ramamohanarao.
+    2011. A model for spectra-based software diagnosis.
+    ACM Trans. Softw. Eng. Methodol. 20, 3, Article 11 (August 2011), 32 pages.
+    DOI: https://doi.org/10.1145/2000791.2000795
 
     Args:
         entity_analytics (dict): analytics of the entity, when it is executed or not in good and
@@ -141,8 +162,12 @@ def op_metric(entity_analytics: dict) -> float:
 
 
 def o_metric(entity_analytics: dict) -> float:
-    """O ranking metric.
-    See more in: TBA
+    """O ranking metric. Optimal for single-fault programs.
+
+    Lee Naish, Hua Jie Lee, and Kotagiri Ramamohanarao.
+    2011. A model for spectra-based software diagnosis.
+    ACM Trans. Softw. Eng. Methodol. 20, 3, Article 11 (August 2011), 32 pages.
+    DOI: https://doi.org/10.1145/2000791.2000795
 
     Args:
         entity_analytics (dict): analytics of the entity, when it is executed or not in good and
@@ -162,7 +187,11 @@ def o_metric(entity_analytics: dict) -> float:
 
 def kulczynksi2(entity_analytics: dict) -> float:
     """Kulczynski2 ranking metric.
-    See more in: TBA
+
+    L. Naish, H. J. Lee and K. Ramamohanarao, "Spectral Debugging with Weights and Incremental
+    Ranking."
+    2009 16th Asia-Pacific Software Engineering Conference, 2009, pp. 168-175.
+    DOI: 10.1109/APSEC.2009.32.
 
     Args:
         entity_analytics (dict): analytics of the entity, when it is executed or not in good and
@@ -182,7 +211,11 @@ def kulczynksi2(entity_analytics: dict) -> float:
 
 def mccon(entity_analytics: dict) -> float:
     """Mccon ranking metric.
-    See more in: TBA
+
+    L. Naish, H. J. Lee and K. Ramamohanarao, "Spectral Debugging with Weights and Incremental
+    Ranking."
+    2009 16th Asia-Pacific Software Engineering Conference, 2009, pp. 168-175.
+    DOI: 10.1109/APSEC.2009.32.
 
     Args:
         entity_analytics (dict): analytics of the entity, when it is executed or not in good and
@@ -205,7 +238,11 @@ def mccon(entity_analytics: dict) -> float:
 
 def dstar(entity_analytics: dict) -> float:
     """Dstar (D*) ranking metric.
-    See more in: TBA
+    Manipulate 'star_factor' to increase suspiciouness weight on executions in faulty cases.
+
+    W. E. Wong, V. Debroy, Y. Li and R. Gao. "Software Fault Localization Using DStar (D*)."
+    2012 IEEE Sixth International Conference on Software Security and Reliability, 2012, pp. 21-30.
+    DOI: 10.1109/SERE.2012.12.
 
     Args:
         entity_analytics (dict): analytics of the entity, when it is executed or not in good and
@@ -226,7 +263,11 @@ def dstar(entity_analytics: dict) -> float:
 
 def minus(entity_analytics: dict) -> float:
     """Minus ranking metric.
-    See more in: TBA
+
+    Jian Xu, Zhenyu Zhang, W.K. Chan, T.H. Tse, Shanping Li.
+    A general noise-reduction framework for fault localization of Java programs.
+    Information and Software Technology, V.55, I.5, 2013, pp. 880-896.
+    DOI: https://doi.org/10.1016/j.infsof.2012.08.006.
 
     Args:
         entity_analytics (dict): analytics of the entity, when it is executed or not in good and
