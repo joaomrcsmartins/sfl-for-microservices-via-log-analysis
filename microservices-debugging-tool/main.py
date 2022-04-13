@@ -1,19 +1,33 @@
-import uuid
-import sfldebug.messages.receive as message_receive
-import sfldebug.tools.analytics as a
-import sfldebug.sfl as sfl
+from uuid import uuid4
+from sfldebug.tools.logger import config_logging
+from sfldebug.messages.receive import receive_mq
+from sfldebug.tools.analytics import analyze_entities
+from sfldebug.sfl import rank
 from sfldebug.tools.ranking_metrics import RankingMetrics
+from sfldebug.tools.ranking_merge import RankMergeOperator
 from sfldebug.tools.writer import write_results_to_file
 
 if __name__ == '__main__':
-    # TODO once messages are not received in MQ, add following steps
+    # TODO command line arguments
     GOOD_ENTITIES_ID = 'logstash-output-good'
     FAULTY_ENTITIES_ID = 'logstash-output-bad'
-    EXECUTION_ID = str(uuid.uuid4())
-    entities = message_receive.receive_mq(
+    RANKING_METRICS = [RankingMetrics.MINUS]
+    RANKING_MERGE_OPERATOR = RankMergeOperator.AVG
+
+    EXECUTION_ID = str(uuid4())
+
+    # configure logging for the execution
+    config_logging(EXECUTION_ID)
+
+    # receive logs and parse into entities
+    entities = receive_mq(
         GOOD_ENTITIES_ID, FAULTY_ENTITIES_ID, EXECUTION_ID)
-    entities_analytics = a.analyze_entities(
+
+    # analyze entity statistics, hit spectra
+    entities_analytics = analyze_entities(
         entities[GOOD_ENTITIES_ID], entities[FAULTY_ENTITIES_ID])
-    entities_ranked = sfl.rank(
-        entities_analytics, [RankingMetrics.OCHIAI, RankingMetrics.JACCARD])
+
+    # rank each entity according to the selected metrics
+    entities_ranked = rank(
+        entities_analytics, RANKING_METRICS, RANKING_MERGE_OPERATOR)
     write_results_to_file(entities_ranked, 'entities-ranking', EXECUTION_ID)
