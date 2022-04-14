@@ -22,37 +22,18 @@ class Entity:
         children_names (Set[str]): set of children entities names
     """
 
-    def __init__(self, name: str, references: dict[str, dict],
-                 entity_type: EntityType = EntityType.SERVICE):
+    def __init__(
+        self,
+        name: str,
+        references: dict[str, dict],
+        entity_type: EntityType = EntityType.SERVICE
+    ) -> None:
+
         self.name = name
         self.references = references
         self.entity_type = entity_type
         self.parent_name: str = ''
         self.children_names: Set[str] = set()
-
-    def set_references(self, references: dict[str, dict]):
-        """Setter for the Entity references
-
-        Args:
-            references (dict[str,dict]): List of references of the entity to be set
-        """
-        self.references = references
-
-    def set_parent_name(self, parent_name: str):
-        """Setter for the Entity parent name
-
-        Args:
-            parent_name (str, optional): Parent entity name to be set.
-        """
-        self.parent_name = parent_name
-
-    def set_children_names(self, children_names: Set[str]):
-        """Setter for the Entity children names
-
-        Args:
-            children_names (Set[str], optional): Children entities names to be set.
-        """
-        self.children_names = children_names
 
     def get_properties(self) -> dict:
         """Returns dict with Entity properties.
@@ -83,9 +64,17 @@ class ServiceEntity(Entity):
         user (str): username or id to identify the client who started the request
     """
 
-    def __init__(self,  name: str, request_id: str, endpoint: str, instance_ip: str,
-                 span_id: str, parent_span_id: str, http_code: int,
-                 user: str):
+    def __init__(
+        self,
+        name: str,
+        request_id: str,
+        endpoint: str,
+        instance_ip: str,
+        span_id: str,
+        parent_span_id: str,
+        http_code: int,
+        user: str
+    ) -> None:
 
         references: dict[str, dict] = {}
         references[request_id] = {
@@ -113,8 +102,16 @@ class MethodEntity(Entity):
         names.
     """
 
-    def __init__(self, name: str, request_id: str, timestamp: str, log_level: str,
-                 message: str, method_invocation: dict):
+    def __init__(
+        self,
+        name: str,
+        request_id: str,
+        timestamp: str,
+        log_level: str,
+        message: str,
+        method_invocation: dict
+    ) -> None:
+
         references: dict[str, dict] = {}
         references[request_id] = {
             'request_id': request_id,
@@ -140,8 +137,9 @@ def build_entity(log_data: Any) -> Set[Entity]:
         Set[Entity]: set of entities generated from parsing the log data
     """
     # Extract required fields
-    correlation_id: str = extract_field('correlationID', log_data)
-    microservice_name: str = extract_field('microserviceName', log_data)
+    correlation_id: Optional[str] = extract_field('correlationID', log_data)
+    microservice_name: Optional[str] = extract_field(
+        'microserviceName', log_data)
     if correlation_id is None or microservice_name is None:
         # TODO handle missing required arguments
         logger.error(('Required parameters are missing. ''Correlation ID is "%s". '
@@ -167,7 +165,8 @@ def build_entity(log_data: Any) -> Set[Entity]:
     method_entity: MethodEntity
     method_invocation = extract_field('methodInvocation', log_data)
     if method_invocation is not None:
-        method_name: str = extract_field('methodName', method_invocation)
+        method_name: Optional[str] = extract_field(
+            'methodName', method_invocation)
         timestamp = extract_field('timestamp', log_data)
         log_level = extract_field('logLevel', log_data)
         message = extract_field('message', log_data)
@@ -221,7 +220,10 @@ def parse_unique_entities(entities: Set[Entity]) -> Set[Entity]:
     return set(unique_entities.values())
 
 
-def merge_entity(new_entity: Entity, old_entity: Entity) -> Entity:
+def merge_entity(
+    new_entity: Entity,
+    old_entity: Entity
+) -> Entity:
     """Merge entities, by adding the old entities' attributes to the new.
 
     Args:

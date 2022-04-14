@@ -6,8 +6,11 @@ from sfldebug.tools.ranking_merge import RankMergeOperator
 from sfldebug.tools.logger import logger
 
 
-def rank_entity(entity_analytics: dict, ranking_metrics: List[RankingMetrics],
-                ranking_merge_op: RankMergeOperator) -> float:
+def rank_entity(
+    entity_analytics: dict,
+    ranking_metrics: List[RankingMetrics],
+    ranking_merge_op: RankMergeOperator
+) -> float:
     """Ranks a entity according to the metrics provided and returns the probability value.
     Requires also a ranking merge operator to merge the results of different metrics.
     If there is only one ranking metric to be applied, the ranking merge operator is ignored.
@@ -38,7 +41,10 @@ def rank_entity(entity_analytics: dict, ranking_metrics: List[RankingMetrics],
     return ranking_merge_op(rankings)
 
 
-def cmp_entities(ent1: dict, ent2: dict) -> int:
+def cmp_entities(
+    ent1: dict,
+    ent2: dict
+) -> int:
     """Custom comparator for entities rankings.
     It is assumed the ranking is associated to key 'entity_rank'
 
@@ -60,8 +66,11 @@ def cmp_entities(ent1: dict, ent2: dict) -> int:
     return 0
 
 
-def rank(entities_analytics: dict, ranking_metrics: List[RankingMetrics],
-         ranking_merge_op: RankMergeOperator = RankMergeOperator.AVG) -> List[dict]:
+def rank(
+    entities_analytics: dict,
+    ranking_metrics: List[RankingMetrics],
+    ranking_merge_op: RankMergeOperator = RankMergeOperator.AVG
+) -> List[dict]:
     """Ranks all the entities, according to the analytics and the ranking metrics provided.
     Requires also a ranking merge operator to merge the results of different metrics.
     Returns a list of dict, each containing the entity id (key) and resulting ranking.

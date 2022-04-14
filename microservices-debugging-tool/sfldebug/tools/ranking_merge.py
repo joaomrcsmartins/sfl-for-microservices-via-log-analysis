@@ -11,3 +11,6 @@ class RankMergeOperator(Enum):
     """
     AVG = fmean
     MEDIAN = median
+
+    def __call__(self, *args):
+        return self.value(args)

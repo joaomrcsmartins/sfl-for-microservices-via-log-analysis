@@ -1,4 +1,5 @@
-from typing import Set
+from typing import Any, Set
+
 from sfldebug.entity import Entity
 from sfldebug.tools.object import merge_into_list
 from sfldebug.tools.logger import logger
@@ -13,7 +14,11 @@ default_analysis_format = {
 unique_executions: Set[str] = set()
 
 
-def increment_execution(entities_analyzed: dict, entities: Set[Entity], execution_key: str):
+def increment_execution(
+    entities_analyzed: dict,
+    entities: Set[Entity],
+    execution_key: str
+) -> None:
     """Increment the number of 'execution_key' in 'entities_analyzed' for each elem of 'entities'.
     If the element is not in 'entities_analyzed', it is created and added with the increment.
     Modifies the dict in 'entities_analyzed'.
@@ -46,13 +51,16 @@ def increment_execution(entities_analyzed: dict, entities: Set[Entity], executio
             entity_analyzed_children = entities_analyzed[key]['properties']['children_names']
             entity_analyzed_children.update(entity.children_names)
         else:
-            new_entity_analysis = default_analysis_format.copy()
+            new_entity_analysis: dict[str, Any] = default_analysis_format.copy()
             new_entity_analysis[execution_key] += times_executed
             new_entity_analysis['properties'] = entity.get_properties()
             entities_analyzed[key] = new_entity_analysis
 
 
-def analyze_entities(good_entities: Set[Entity], faulty_entities: Set[Entity]) -> dict:
+def analyze_entities(
+    good_entities: Set[Entity],
+    faulty_entities: Set[Entity]
+) -> dict[str, dict[str, Any]]:
     """Analyzes executions of entities. Returns a dict with analytics for each entity.
     Each element contains the number of times each entity is executed or pass in a good or faulty
     execution.
@@ -64,7 +72,7 @@ def analyze_entities(good_entities: Set[Entity], faulty_entities: Set[Entity]) -
     Returns:
         dict: contains for each entity the execution analytics in good and faulty settings
     """
-    entities_analyzed: dict = {}
+    entities_analyzed: dict[str, dict[str, Any]] = {}
 
     increment_execution(entities_analyzed, faulty_entities,
                         'faulty_executed')

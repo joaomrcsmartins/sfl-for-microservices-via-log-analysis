@@ -314,3 +314,6 @@ class RankingMetrics(Enum):
     MCCON = mccon
     DSTAR = dstar
     MINUS = minus
+
+    def __call__(self, *args):
+        return self.value(args)

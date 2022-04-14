@@ -1,6 +1,6 @@
 import os
 import json
-from typing import Any
+from typing import Any, List
 
 from sfldebug.tools.logger import logger
 
@@ -14,14 +14,18 @@ class SetEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, o)
 
 
-def write_results_to_file(json_body: dict, filename: str, execution_id: str,
-                       indent: int = 2) -> None:
+def write_results_to_file(
+    json_body: dict | List,
+    filename: str,
+    execution_id: str,
+    indent: int = 2
+) -> None:
     """Writes results into a file in a 'results' folder located in the project directory.
     Converts dict objects into a json file.
     If the file/folders do not exist, they are created.
 
     Args:
-        json_body (dict): dict body to be written in the json file
+        json_body (dict | List): dict body to be written in the json file
         filename (str): name of the file to be written
         execution_id (str): id of the execution to sort results from different executions
         indent (int, optional): file indentation. Defaults to 2.

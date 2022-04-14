@@ -1,7 +1,10 @@
-from typing import Any, List
+from typing import Any, List, Optional
 
 
-def extract_field(field: str, obj: Any) -> Any | None:
+def extract_field(
+    field: str,
+    obj: Any
+) -> Optional[Any]:
     """Simple field extraction function that returns none if the field is not present in the object.
 
     Args:
@@ -17,7 +20,10 @@ def extract_field(field: str, obj: Any) -> Any | None:
         return None
 
 
-def merge_lists(new_list: List[Any], old_list: List[Any]) -> List[Any]:
+def merge_lists(
+    new_list: List[Any],
+    old_list: List[Any]
+) -> List[Any]:
     """Merge lists without type checking the lists contents.
 
     Args:
@@ -57,7 +63,10 @@ def make_list(obj: Any) -> List[Any]:
         return [obj]
 
 
-def merge_into_list(obj1: Any, obj2: Any) -> List[Any]:
+def merge_into_list(
+    obj1: Any,
+    obj2: Any
+) -> List[Any]:
     """Merge two objects into a single list.
     First convert each obj into a list and then merge them.
 

@@ -5,10 +5,16 @@ from pika.spec import BasicProperties, Basic
 
 from sfldebug.entity import build_entity, parse_unique_entities, Entity
 from sfldebug.tools.writer import write_results_to_file
+
 entities = set()
 
 
-def parse_mq_message(channel: Channel, method: Basic.Deliver, properties: BasicProperties, body):
+def parse_mq_message(
+    channel: Channel,
+    method: Basic.Deliver,
+    properties: BasicProperties,
+    body
+) -> None:
     """Callback to parse messages coming from MQ channel.
 
     Args:
@@ -19,24 +25,33 @@ def parse_mq_message(channel: Channel, method: Basic.Deliver, properties: BasicP
     """
     del channel, method, properties  # ignore unused arguments
     json_body = json.loads(body)
-    print('Received message.')
     log_entities = build_entity(json_body)
     entities.update(log_entities)
 
 
-def flush_mq_messages(file_id: str, exec_id: str) -> Set[Entity]:
+def flush_mq_messages(
+    file_id: str = 'default',
+    exec_id: str = 'default',
+    write_to_file: bool = True
+) -> Set[Entity]:
     """Once the connection is finished, parse collected entities and write to file
 
     Args:
         file_id (str): id of entities to record in a unique file
         exec_id (str): id of the execution to sort results
+        write_to_file (bool, optional): if True, writes the parsed contents to a file. Defaults to
+        True.
+
+    Returns:
+        Set[Entity]: set of parsed entities from the messages received
     """
     parsed_entities = parse_unique_entities(entities)
 
-    json_entities = {"entities": []}
-    for entity in parsed_entities:
-        json_entities['entities'].append(entity.__dict__)
+    if write_to_file:
+        json_entities = {"entities": []}
+        for entity in parsed_entities:
+            json_entities['entities'].append(entity.__dict__)
 
-    filename = 'entities-records-' + file_id
-    write_results_to_file(json_entities, filename, exec_id)
+        filename = 'entities-records-' + file_id
+        write_results_to_file(json_entities, filename, exec_id)
     return parsed_entities
