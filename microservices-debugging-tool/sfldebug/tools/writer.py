@@ -2,6 +2,8 @@ import os
 import json
 from typing import Any
 
+from sfldebug.tools.logger import logger
+
 
 class SetEncoder(json.JSONEncoder):
     """Simple set encoder to transform sets into list when encoding to json"""
@@ -31,5 +33,5 @@ def write_results_to_file(json_body: dict, filename: str, execution_id: str,
     with open(os.path.join(project_dir, filename), 'w', encoding='utf-8') as file:
         file.write(json.dumps(json_body, indent=indent,
                    sort_keys=True, cls=SetEncoder))
-    print('Execution ID: <{}>. Data wrote to: {}'.format(
-        execution_id, filename))
+    logger.info('Data wrote to: %s. Execution ID: <%s>',
+                filename, execution_id)

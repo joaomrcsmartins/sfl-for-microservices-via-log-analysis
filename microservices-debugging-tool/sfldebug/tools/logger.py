@@ -1,13 +1,19 @@
 import logging
 import os
+import sys
+
+logger: logging.Logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
-def config_logging(execution_id: str) -> None:
-    """Configure logging. Set up log directory if it does not exist.
-    Sets up a file handler to store the logs in a file.
-    Configures formats and makes logging properly configured.
-    To log import module 'logging' and use the log available.
-    E.g.: 'logging.info("This is a info log")'
+def config_logger(
+    execution_id: str
+) -> None:
+    """Configure the application logger.
+    Sets up log directory if it does not exist.
+    Sets up a file handler to store the logs in a file and stream handler for the console/terminal.
+    To log import the logger from this module
+    E.g.: 'from sfldebug.tools.logger import logger'
 
     Args:
         execution_id (str): id of the execution to be logged in a specific file
@@ -17,5 +23,15 @@ def config_logging(execution_id: str) -> None:
     filename = execution_id + '.log'
     file_handler = logging.FileHandler(
         filename=os.path.join(logs_dir, filename))
-    logging.basicConfig(format='%(asctime)s :: %(levelname)s :: %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG, handlers=[file_handler])
+    console_handler = logging.StreamHandler(sys.stdout)
+
+    log_formatter = logging.Formatter(
+        fmt='%(asctime)s :: %(levelname)s :: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(log_formatter)
+    console_handler.setLevel(logging.DEBUG)
+    console_handler.setFormatter(log_formatter)
+
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)

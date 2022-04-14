@@ -2,6 +2,8 @@ from enum import Enum
 import math
 from typing import Tuple
 
+from sfldebug.tools.logger import logger
+
 
 def __break_entity_analytics(entity_analytics: dict) -> Tuple[int, int, int, int]:
     """Breaks known dict values and returns them in a tuple shape.
@@ -17,6 +19,11 @@ def __break_entity_analytics(entity_analytics: dict) -> Tuple[int, int, int, int
     good_passed = entity_analytics['good_passed']
     faulty_executed = entity_analytics['faulty_executed']
     faulty_passed = entity_analytics['faulty_passed']
+    logger.debug('break entity: %s-"%s" EP-%d NP-%d EF-%d NF-%d',
+                 entity_analytics['properties']['parent_name'],
+                 entity_analytics['properties']['name'],
+                 good_executed, good_passed, faulty_executed, faulty_passed)
+
     return good_executed, good_passed, faulty_executed, faulty_passed
 
 

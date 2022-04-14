@@ -1,8 +1,8 @@
-from __future__ import annotations
 from enum import Enum
-from typing import Any, Set
+from typing import Any, Optional, Set
 
 from sfldebug.tools.object import extract_field
+from sfldebug.tools.logger import logger
 
 
 class EntityType(str, Enum):
@@ -144,6 +144,8 @@ def build_entity(log_data: Any) -> Set[Entity]:
     microservice_name: str = extract_field('microserviceName', log_data)
     if correlation_id is None or microservice_name is None:
         # TODO handle missing required arguments
+        logger.error(('Required parameters are missing. ''Correlation ID is "%s". '
+                      'Microservice name is "%s"'), correlation_id, microservice_name)
         raise NameError(
             'correlation_ID or microservice_name not present in: {}'.format(log_data))
 
@@ -156,6 +158,8 @@ def build_entity(log_data: Any) -> Set[Entity]:
     user = extract_field('user', log_data)
     service_entity = ServiceEntity(microservice_name, correlation_id,
                                    endpoint, instance_ip, span_id, parent_span_id, http_code, user)
+    logger.debug('Created Service Entity for microservice "%s" in request "%s"',
+                 microservice_name, correlation_id)
 
     entities = set()
 
@@ -167,9 +171,18 @@ def build_entity(log_data: Any) -> Set[Entity]:
         timestamp = extract_field('timestamp', log_data)
         log_level = extract_field('logLevel', log_data)
         message = extract_field('message', log_data)
+        if method_name is None:
+            # TODO handle missing required arguments
+            logger.error(('Missing method name in request "%s" in service "%s"'),
+                         correlation_id, microservice_name)
+            raise NameError(
+                'method_name not present in: {}'.format(log_data))
         method_entity = MethodEntity(
             method_name, correlation_id, timestamp, log_level, message, method_invocation)
         service_entity.children_names.add(method_entity.name)
+        logger.debug('Created Method Entity for method "%s" in request "%s"',
+                     method_name, correlation_id)
+
         method_entity.parent_name = service_entity.name
         entities.add(method_entity)
 
@@ -202,6 +215,9 @@ def parse_unique_entities(entities: Set[Entity]) -> Set[Entity]:
         else:
             unique_entities[unique_hash] = entity
 
+    logger.info(('Merged entity references. ''Number of entities before merging: %d. '
+                'Number of entities post merging: %d'),
+                len(entities), len(unique_entities))
     return set(unique_entities.values())
 
 

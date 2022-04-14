@@ -1,5 +1,6 @@
 from uuid import uuid4
-from sfldebug.tools.logger import config_logging
+
+from sfldebug.tools.logger import config_logger
 from sfldebug.messages.receive import receive_mq
 from sfldebug.tools.analytics import analyze_entities
 from sfldebug.sfl import rank
@@ -11,13 +12,13 @@ if __name__ == '__main__':
     # TODO command line arguments
     GOOD_ENTITIES_ID = 'logstash-output-good'
     FAULTY_ENTITIES_ID = 'logstash-output-bad'
-    RANKING_METRICS = [RankingMetrics.MINUS]
+    RANKING_METRICS = [RankingMetrics.OCHIAI, RankingMetrics.JACCARD]
     RANKING_MERGE_OPERATOR = RankMergeOperator.AVG
 
     EXECUTION_ID = str(uuid4())
 
     # configure logging for the execution
-    config_logging(EXECUTION_ID)
+    config_logger(EXECUTION_ID)
 
     # receive logs and parse into entities
     entities = receive_mq(
