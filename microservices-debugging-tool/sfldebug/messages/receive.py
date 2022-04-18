@@ -6,8 +6,8 @@ from pika import BlockingConnection, ConnectionParameters
 from pika.adapters.blocking_connection import BlockingChannel
 from pika.exchange_type import ExchangeType
 
-from sfldebug.messages.parse_message import parse_mq_message, flush_mq_messages
 from sfldebug.tools.logger import config_logger, logger
+from sfldebug.messages.parse_message import parse_mq_message, flush_mq_messages
 from sfldebug.entity import Entity
 
 
@@ -49,7 +49,7 @@ def setup_mq_channel(
     channel.basic_consume(
         queue=queue_name, on_message_callback=callback, auto_ack=True)
 
-    logger.debug('Channel set up for exchange "%s", type "%s", routing key "%s", and host "%s"',
+    logger.debug('Channel set up for exchange "%s", type "%s", routing key "%s", and host "%s".',
                  exchange, ExchangeType.direct, routing_key, host)
     return channel
 
@@ -71,18 +71,17 @@ def receive_mq_messages(
         exchange (str): name of the mq exchange to setup connection (default 'logstash-output')
         routing_key (str): name of the routing key for the mq exchange (default 'logstash-output')
     """
-    config_logger(execution_id) # necessary when using multiprocessesing
+    config_logger(execution_id)  # necessary when using multiprocessesing
 
     channel = setup_mq_channel(callback, host, exchange, routing_key)
-    logger.info('"%s" - Waiting for logs. Press CTRL+C to terminate', exchange)
+    logger.info('"%s" - Waiting for logs. Press CTRL+C to terminate.', exchange)
     try:
         channel.start_consuming()
     except KeyboardInterrupt:
-        # TODO improve communications interruption handling
         logger.info(
             '"%s" - Terminating connection... Flushing collected messages!', exchange)
         channel.close()
-        logger.info('"%s" - Flushed collected messages', exchange)
+        logger.info('"%s" - Flushed collected messages.', exchange)
     return flush_mq_messages(exchange, execution_id)
 
 
@@ -107,11 +106,11 @@ def receive_mq(
         dict: set with the parsed data for the 'good' and 'faulty' entities
     """
 
-    # silence mp logging when KeyboardInterrupt happens. Remember to comment when debugging
+    # stop mp logging on KeyboardInterrupts. Comment when debugging
     mp.log_to_stderr(logging.NOTSET)
     with mp.Pool(2) as pool:
 
-        logger.info('Opening channels: "%s" and "%s"',
+        logger.info('Opening channels: "%s" and "%s".',
                     good_entities_id, faulty_entities_id)
 
         good_entities_process = pool.apply_async(
@@ -122,14 +121,14 @@ def receive_mq(
             receive_mq_messages,
             args=(execution_id, parse_mq_message),
             kwds={'exchange': faulty_entities_id, 'routing_key': faulty_entities_id})
+
         good_entities: Set[Entity] = set()
         faulty_entities: Set[Entity] = set()
         try:
             good_entities_process.wait()
             faulty_entities_process.wait()
         except KeyboardInterrupt:
-            # TODO improve error handling
-            logger.debug("Keyboard Interruption on MQ receivers.")
+            logger.debug('Keyboard Interruption on MQ receivers.')
             good_entities = good_entities_process.get()
             faulty_entities = faulty_entities_process.get()
 

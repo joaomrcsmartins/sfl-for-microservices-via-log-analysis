@@ -2,6 +2,7 @@ from enum import Enum
 import math
 from typing import Tuple
 
+from sfldebug.tools.object import extract_field
 from sfldebug.tools.logger import logger
 
 
@@ -14,15 +15,19 @@ def __break_entity_analytics(entity_analytics: dict) -> Tuple[int, int, int, int
     Returns:
         Tuple[int, int, int, int]: the values of the dict returned in a tuple
     """
-    # TODO fault tolerance /handling
-    good_executed = entity_analytics['good_executed']
-    good_passed = entity_analytics['good_passed']
-    faulty_executed = entity_analytics['faulty_executed']
-    faulty_passed = entity_analytics['faulty_passed']
-    logger.debug('break entity: %s-"%s" EP-%d NP-%d EF-%d NF-%d',
+    good_executed = extract_field('good_executed', entity_analytics)
+    good_passed = extract_field('good_passed', entity_analytics)
+    faulty_executed = extract_field('faulty_executed', entity_analytics)
+    faulty_passed = extract_field('faulty_passed', entity_analytics)
+    logger.debug('Break entity: %s-"%s" GE-%d GP-%d FE-%d FP-%d.',
                  entity_analytics['properties']['parent_name'],
                  entity_analytics['properties']['name'],
                  good_executed, good_passed, faulty_executed, faulty_passed)
+
+    # check if any of the analytics attributes is None
+    if any(v is None for v in [good_executed, good_passed, faulty_executed, faulty_passed]):
+        raise AttributeError('Entity analytics is faulty. Name: {}'.format(
+            entity_analytics['properties']['name']))
 
     return good_executed, good_passed, faulty_executed, faulty_passed
 
@@ -304,16 +309,29 @@ class RankingMetrics(Enum):
     """Ranking metrics enum to easily access and add more ranking metrics.
     Each elem refers to the ranking metric function.
     """
-    TARANTULA = tarantula
-    JACCARD = jaccard
-    OCHIAI = ochiai
-    ZOLTAR = zoltar
-    OP = op_metric
-    O = o_metric
-    KULCZYNSKI2 = kulczynksi2
-    MCCON = mccon
-    DSTAR = dstar
-    MINUS = minus
+    TARANTULA = 'TARANTULA'
+    JACCARD = 'JACCARD'
+    OCHIAI = 'OCHIAI'
+    ZOLTAR = 'ZOLTAR'
+    OP = 'OP'
+    O = 'O'
+    KULCZYNSKI2 = 'KULCZYNSKI2'
+    MCCON = 'MCCON'
+    DSTAR = 'DSTAR'
+    MINUS = 'MINUS'
 
     def __call__(self, *args):
-        return self.value(args)
+        metrics = {
+            'TARANTULA': tarantula,
+            'JACCARD': jaccard,
+            'OCHIAI': ochiai,
+            'ZOLTAR': zoltar,
+            'OP': op_metric,
+            'O': o_metric,
+            'KULCZYNSKI2': kulczynksi2,
+            'MCCON': mccon,
+            'DSTAR': dstar,
+            'MINUS': minus
+        }
+        return metrics[self.value](*args)
+

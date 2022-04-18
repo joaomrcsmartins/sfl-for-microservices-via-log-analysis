@@ -4,6 +4,7 @@ from typing import List
 from sfldebug.tools.ranking_metrics import RankingMetrics
 from sfldebug.tools.ranking_merge import RankMergeOperator
 from sfldebug.tools.logger import logger
+from sfldebug.tools.object import cmp_entities
 
 
 def rank_entity(
@@ -33,37 +34,13 @@ def rank_entity(
     rankings = []
     for ranking_metric in ranking_metrics:
         entity_rank = ranking_metric(entity_analytics)
-        logger.debug('Calculated ranking using metric "%s" is: %d',
-                     ranking_metric.__name__, entity_rank)
+        logger.debug('Calculated ranking using metric "%s" is: %f.',
+                     ranking_metric.name, entity_rank)
         rankings.append(entity_rank)
-    logger.debug('Merging ranking using operator: "%s"',
-                 ranking_merge_op.__name__)
+
+    logger.debug('Merging ranking using operator: "%s".',
+                 ranking_merge_op.name)
     return ranking_merge_op(rankings)
-
-
-def cmp_entities(
-    ent1: dict,
-    ent2: dict
-) -> int:
-    """Custom comparator for entities rankings.
-    It is assumed the ranking is associated to key 'entity_rank'
-
-    Args:
-        ent1 (dict): Entity ranking to be compared
-        ent2 (dict): Other entity ranking to be compared
-
-    Returns:
-        int: 1 if ent1 has lower ranking, -1 if ent1 has higher ranking,
-        0 if both rankings are equal
-    """
-    rank1 = ent1['entity_rank']
-    rank2 = ent2['entity_rank']
-
-    if rank1 < rank2:
-        return 1
-    elif rank1 > rank2:
-        return -1
-    return 0
 
 
 def rank(
@@ -86,9 +63,10 @@ def rank(
     Returns:
         List[dict]: list of entities ranked by fault location probability, in descending order
     """
+    logger.info('Ranking entities using ranking metrics: %s.',
+                [metric.name for metric in ranking_metrics])
+
     entities_ranking = []
-    logger.info('Ranking entities using ranking metrics: %s',
-                [metric.__name__ for metric in ranking_metrics])
     for analytics in entities_analytics.values():
         entity_rank = rank_entity(analytics, ranking_metrics, ranking_merge_op)
         entities_ranking.append(
@@ -96,5 +74,5 @@ def rank(
 
     cmp_entity_rank = cmp_to_key(cmp_entities)
     entities_ranking.sort(key=cmp_entity_rank)
-    logger.info('Entities ranking and sorting complete')
+    logger.info('Entities ranking and sorting complete.')
     return entities_ranking

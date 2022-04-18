@@ -9,8 +9,12 @@ class RankMergeOperator(Enum):
         AVG: calculates the average/mean of the rankings
         MEDIAN: calculates the median of the rankings
     """
-    AVG = fmean
-    MEDIAN = median
+    AVG = 'AVG'
+    MEDIAN = 'MEDIAN'
 
     def __call__(self, *args):
-        return self.value(args)
+        merge_ops = {
+            'AVG': fmean,
+            'MEDIAN': median
+        }
+        return merge_ops[self.value](*args)

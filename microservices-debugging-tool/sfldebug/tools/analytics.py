@@ -11,6 +11,7 @@ default_analysis_format = {
     'faulty_passed': 0
 }
 
+# each unique execution has a unique request/correlation id
 unique_executions: Set[str] = set()
 
 
@@ -22,6 +23,7 @@ def increment_execution(
     """Increment the number of 'execution_key' in 'entities_analyzed' for each elem of 'entities'.
     If the element is not in 'entities_analyzed', it is created and added with the increment.
     Modifies the dict in 'entities_analyzed'.
+    It also updates the references and children names of the analyzed entities.
 
     Args:
         entities_analyzed (dict): dict to be modified with each entity analytics
@@ -29,31 +31,36 @@ def increment_execution(
         execution_key (str): key to increment in
     """
     for entity in entities:
-        key = "{}".format(entity.__hash__())
+        key = '{}'.format(entity.__hash__())
 
         entity_requests = entity.references.keys()
         unique_executions.update(entity_requests)
+
         times_executed = len(entity_requests)
         if key in entities_analyzed:
-            entities_analyzed[key][execution_key] += times_executed
+            stored_entity = entities_analyzed[key]
+            stored_entity[execution_key] += times_executed
 
-            entity_analyzed_refs = entities_analyzed[key]['properties']['references']
+            analyzed_entity_refs = stored_entity['properties']['references']
             entity_refs = entity.references
             # references of the same entity that are related to different requests
             missing_references = {k: entity_refs.get(
-                k) for k in entity_refs.keys() - entity_analyzed_refs.keys()}
+                k) for k in entity_refs.keys() - analyzed_entity_refs.keys()}
             # references of the same entity that are related to the same request
-            merged_references = {k: merge_into_list(entity_refs.get(k), entity_analyzed_refs.get(
-                k)) for k in entity_refs.keys() & entity_analyzed_refs.keys()}
-            entity_analyzed_refs.update(missing_references)
-            entity_analyzed_refs.update(merged_references)
-
-            entity_analyzed_children = entities_analyzed[key]['properties']['children_names']
-            entity_analyzed_children.update(entity.children_names)
+            merged_references = {k: merge_into_list(entity_refs.get(k), analyzed_entity_refs.get(
+                k)) for k in entity_refs.keys() & analyzed_entity_refs.keys()}
+            # add missing references to the stored entity
+            analyzed_entity_refs.update(missing_references)
+            analyzed_entity_refs.update(merged_references)
+            # add missing children names to the stored entity
+            analyzed_entity_children = stored_entity['properties']['children_names']
+            analyzed_entity_children.update(entity.children_names)
         else:
+            # if not analyzed before, create a new entry with the first references
             new_entity_analysis: dict[str, Any] = default_analysis_format.copy()
             new_entity_analysis[execution_key] += times_executed
             new_entity_analysis['properties'] = entity.get_properties()
+            # and add it to the analyzed entities set
             entities_analyzed[key] = new_entity_analysis
 
 
@@ -76,10 +83,10 @@ def analyze_entities(
 
     increment_execution(entities_analyzed, faulty_entities,
                         'faulty_executed')
-    logger.info('Analyzed execution of faulty entities')
+    logger.info('Analyzed execution of faulty entities.')
 
     increment_execution(entities_analyzed, good_entities, 'good_executed')
-    logger.info('Analyzed execution of good entities')
+    logger.info('Analyzed execution of good entities.')
 
     n_unique_executions = len(unique_executions)
     for entity in entities_analyzed.values():
@@ -88,5 +95,5 @@ def analyze_entities(
         entity['faulty_passed'] = n_unique_executions - \
             entity['faulty_executed']
     logger.info(
-        'Finished analyzing all entities. Number of unique executions: %d', n_unique_executions)
+        'Finished analyzing all entities. Number of unique executions: %d.', n_unique_executions)
     return entities_analyzed

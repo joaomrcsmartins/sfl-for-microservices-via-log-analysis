@@ -203,7 +203,6 @@ def parse_unique_entities(entities: Set[Entity]) -> Set[Entity]:
     unique_entities = {}
 
     for entity in entities:
-        # TODO check if hash is enough to distinguish method entities
         unique_hash = entity.__hash__()
         entity_present = unique_hash in unique_entities
         if entity_present:
@@ -215,7 +214,7 @@ def parse_unique_entities(entities: Set[Entity]) -> Set[Entity]:
             unique_entities[unique_hash] = entity
 
     logger.info(('Merged entity references. ''Number of entities before merging: %d. '
-                'Number of entities post merging: %d'),
+                'Number of entities post merging: %d.'),
                 len(entities), len(unique_entities))
     return set(unique_entities.values())
 

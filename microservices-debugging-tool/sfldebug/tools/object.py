@@ -16,8 +16,7 @@ def extract_field(
     """
     if field in obj:
         return obj[field]
-    else:
-        return None
+    return None
 
 
 def merge_lists(
@@ -55,12 +54,11 @@ def make_list(obj: Any) -> List[Any]:
     """
     if isinstance(obj, list):
         return obj
-    elif isinstance(obj, (tuple, set)):
+    if isinstance(obj, (tuple, set)):
         return list(obj)
-    elif obj is None:
+    if obj is None:
         return []
-    else:
-        return [obj]
+    return [obj]
 
 
 def merge_into_list(
@@ -81,3 +79,28 @@ def merge_into_list(
     obj2_list = make_list(obj2)
 
     return merge_lists(obj1_list, obj2_list)
+
+
+def cmp_entities(
+    ent1: dict,
+    ent2: dict
+) -> int:
+    """Custom comparator for entities rankings.
+    It is assumed the ranking is associated to key 'entity_rank'
+
+    Args:
+        ent1 (dict): Entity ranking to be compared
+        ent2 (dict): Other entity ranking to be compared
+
+    Returns:
+        int: 1 if ent1 has lower ranking, -1 if ent1 has higher ranking,
+        0 if both rankings are equal
+    """
+    rank1 = ent1['entity_rank']
+    rank2 = ent2['entity_rank']
+
+    if rank1 < rank2:
+        return 1
+    if rank1 > rank2:
+        return -1
+    return 0
