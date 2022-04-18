@@ -79,6 +79,10 @@ def analyze_entities(
     Returns:
         dict: contains for each entity the execution analytics in good and faulty settings
     """
+    if len(good_entities) == 0 and len(faulty_entities) == 0:
+        raise RuntimeError(
+            'Good and faulty entities are empty, aborting execution.')
+
     entities_analyzed: dict[str, dict[str, Any]] = {}
 
     increment_execution(entities_analyzed, faulty_entities,

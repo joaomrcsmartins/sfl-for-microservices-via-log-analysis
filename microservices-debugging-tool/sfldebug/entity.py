@@ -127,6 +127,9 @@ def build_entity(log_data: Any) -> Set[Entity]:
     """Generates and returns the entities present in log object.
     Each log object refers to a entity, with more or less specificity.
 
+    If an entity misses required arguments, return empty set or only service entity,
+    when possible.
+
     Ex.: if the log points to a method, generate method and service entities.
     If the log points to a service, generate only a service entity.
 
@@ -141,11 +144,10 @@ def build_entity(log_data: Any) -> Set[Entity]:
     microservice_name: Optional[str] = extract_field(
         'microserviceName', log_data)
     if correlation_id is None or microservice_name is None:
-        # TODO handle missing required arguments
-        logger.error(('Required parameters are missing. ''Correlation ID is "%s". '
-                      'Microservice name is "%s"'), correlation_id, microservice_name)
-        raise NameError(
-            'correlation_ID or microservice_name not present in: {}'.format(log_data))
+        logger.warning(('Required parameters are missing. ''Correlation ID is "%s". '
+                        'Microservice name is "%s"' 'Skipping service entity creation.'),
+                       correlation_id, microservice_name)
+        return set()
 
     # Create service entity and extract service specific fields
     endpoint = extract_field('endpoint', log_data)
@@ -156,7 +158,7 @@ def build_entity(log_data: Any) -> Set[Entity]:
     user = extract_field('user', log_data)
     service_entity = ServiceEntity(microservice_name, correlation_id,
                                    endpoint, instance_ip, span_id, parent_span_id, http_code, user)
-    logger.debug('Created Service Entity for microservice "%s" in request "%s"',
+    logger.debug('Created Service Entity for microservice "%s" in request "%s".',
                  microservice_name, correlation_id)
 
     entities = set()
@@ -170,20 +172,24 @@ def build_entity(log_data: Any) -> Set[Entity]:
         timestamp = extract_field('timestamp', log_data)
         log_level = extract_field('logLevel', log_data)
         message = extract_field('message', log_data)
-        if method_name is None:
-            # TODO handle missing required arguments
-            logger.error(('Missing method name in request "%s" in service "%s"'),
-                         correlation_id, microservice_name)
-            raise NameError(
-                'method_name not present in: {}'.format(log_data))
-        method_entity = MethodEntity(
-            method_name, correlation_id, timestamp, log_level, message, method_invocation)
-        service_entity.children_names.add(method_entity.name)
-        logger.debug('Created Method Entity for method "%s" in request "%s"',
-                     method_name, correlation_id)
+        try:
+            if method_name is None:
+                raise NameError(
+                    'method_name not present in: {}'.format(log_data))
 
-        method_entity.parent_name = service_entity.name
-        entities.add(method_entity)
+            method_entity = MethodEntity(
+                method_name, correlation_id, timestamp, log_level, message, method_invocation)
+            service_entity.children_names.add(method_entity.name)
+            logger.debug('Created Method Entity for method "%s" in request "%s".',
+                         method_name, correlation_id)
+
+            method_entity.parent_name = service_entity.name
+            entities.add(method_entity)
+        except NameError as err:
+            logger.error('Name Error caught: %s.', err)
+            logger.warning(('Missing method name in request "%s" in service "%s". '
+                            'Skipping method entity creation.'),
+                           correlation_id, microservice_name)
 
     entities.add(service_entity)
     return entities
