@@ -1,50 +1,58 @@
 from functools import cmp_to_key
 from typing import List
 
-from sfldebug.tools.ranking_metrics import RankingMetrics
+from sfldebug.tools.ranking_metrics import RankingMetrics, normalize_rankings
 from sfldebug.tools.ranking_merge import RankMergeOperator
 from sfldebug.tools.logger import logger
 from sfldebug.tools.object import cmp_entities
 
 
-def rank_entity(
-    entity_analytics: dict,
+def rank_entities(
+    entities_analytics: List[dict],
     ranking_metrics: List[RankingMetrics],
     ranking_merge_op: RankMergeOperator
-) -> float:
-    """Ranks a entity according to the metrics provided and returns the probability value.
-    Requires also a ranking merge operator to merge the results of different metrics.
-    If there is only one ranking metric to be applied, the ranking merge operator is ignored.
+) -> List[dict]:
+    """Ranks entities using the metrics passed as arguments.
+    For each metric, the rankings are calculated and then normalized, if needed.
+    For each entity, the rankings are merged according to the operator passed as argument.
+    Return a list of entities final rankings and its properties.
 
     Args:
-        entity_analytics (dict): analytics of a entity, containing count of good and faulty
-        executions and non-executions
-        ranking_metrics (List[RankingMetrics]): list of ranking metrics to be applied to the entity
-        analytics
-        ranking_merge_op (RankMergeOperator): ranking merge operator to aggregate the metrics'
-        rankings
+        entities_analytics (List[dict]): list of analytics and properties for each entity
+        ranking_metrics (List[RankingMetrics]): list of ranking metric to rank each entity
+        ranking_merge_op (RankMergeOperator): operator to merge the rankings of each entity
 
     Returns:
-        float: the ranking given to the entity, given its analytics
+        List[dict]: list of final rankings for each entity and its properties
     """
+    metrics_rankings = dict(
+        zip(ranking_metrics, [[] for i in ranking_metrics]))
+    for metric in ranking_metrics:
 
-    if len(ranking_metrics) == 1:
-        return ranking_metrics[0](entity_analytics)
+        metric_rankings = [metric(entity)
+                           for entity in entities_analytics]
 
-    rankings = []
-    for ranking_metric in ranking_metrics:
-        entity_rank = ranking_metric(entity_analytics)
-        logger.debug('Calculated ranking using metric "%s" is: %f.',
-                     ranking_metric.name, entity_rank)
-        rankings.append(entity_rank)
+        metric_rankings = normalize_rankings(metric_rankings, metric)
+
+        metrics_rankings[metric] = metric_rankings
 
     logger.debug('Merging ranking using operator: "%s".',
                  ranking_merge_op.name)
-    return ranking_merge_op(rankings)
+    entities_rankings = []
+    for index, entity_analytics in enumerate(entities_analytics):
+
+        entity_rankings = [rank_list[index]
+                           for rank_list in metrics_rankings.values()]
+
+        entities_rankings.append(
+            {'entity_rank': ranking_merge_op(entity_rankings),
+             'properties': entity_analytics['properties']})
+
+    return entities_rankings
 
 
 def rank(
-    entities_analytics: dict,
+    entities_analytics: dict[str, dict],
     ranking_metrics: List[RankingMetrics],
     ranking_merge_op: RankMergeOperator = RankMergeOperator.AVG
 ) -> List[dict]:
@@ -66,11 +74,11 @@ def rank(
     logger.info('Ranking entities using ranking metrics: %s.',
                 [metric.name for metric in ranking_metrics])
 
-    entities_ranking = []
-    for analytics in entities_analytics.values():
-        entity_rank = rank_entity(analytics, ranking_metrics, ranking_merge_op)
-        entities_ranking.append(
-            {'entity_rank': entity_rank, 'properties': analytics['properties']})
+    # unpack the values of each entity analytics into a list
+    entities_analytics_unpacked = list(entities_analytics.values())
+
+    entities_ranking = rank_entities(
+        entities_analytics_unpacked, ranking_metrics, ranking_merge_op)
 
     cmp_entity_rank = cmp_to_key(cmp_entities)
     entities_ranking.sort(key=cmp_entity_rank)

@@ -1,6 +1,6 @@
 from enum import Enum
 import math
-from typing import Tuple
+from typing import List, Tuple
 
 from sfldebug.tools.object import extract_field
 from sfldebug.tools.logger import logger
@@ -305,7 +305,7 @@ def minus(entity_analytics: dict) -> float:
     return first_part - second_part
 
 
-class RankingMetrics(Enum):
+class RankingMetrics(str, Enum):
     """Ranking metrics enum to easily access and add more ranking metrics.
     Each elem refers to the ranking metric function.
     """
@@ -320,18 +320,43 @@ class RankingMetrics(Enum):
     DSTAR = 'DSTAR'
     MINUS = 'MINUS'
 
-    def __call__(self, *args):
-        metrics = {
-            'TARANTULA': tarantula,
-            'JACCARD': jaccard,
-            'OCHIAI': ochiai,
-            'ZOLTAR': zoltar,
-            'OP': op_metric,
-            'O': o_metric,
-            'KULCZYNSKI2': kulczynksi2,
-            'MCCON': mccon,
-            'DSTAR': dstar,
-            'MINUS': minus
-        }
-        return metrics[self.value](*args)
+    __METRICS__ = {
+        'TARANTULA': tarantula,
+        'JACCARD': jaccard,
+        'OCHIAI': ochiai,
+        'ZOLTAR': zoltar,
+        'OP': op_metric,
+        'O': o_metric,
+        'KULCZYNSKI2': kulczynksi2,
+        'MCCON': mccon,
+        'DSTAR': dstar,
+        'MINUS': minus
+    }
 
+    def __call__(self, *args):
+        ranking = self.__METRICS__[self.value](*args)
+        logger.debug('Calculated ranking using metric "%s" is: %f.',
+                     self.value, ranking)
+        return ranking
+
+
+def normalize_rankings(rankings: List[float], metric: RankingMetrics) -> List[float]:
+    """Normalize a list of rankings of known metrics into a common probabilistic range, [0, 1].
+    If the metric is already in that range, returns the rankings.
+
+    Args:
+        rankings (List[float]): list of rankings to be normalized
+        metric (RankingMetrics): type of metric the ranking is evaluated
+
+    Returns:
+        List[float]: the rankings normalized into the range [0, 1]
+    """
+    # range is [-1, 1]
+    if metric in [RankingMetrics.MCCON, RankingMetrics.MINUS]:
+        return [(ranking + 1)/2 for ranking in rankings]
+
+    # range is {-1} ^ [0, +N[ OR [-1, +N[ OR [0, +N[
+    if metric in [RankingMetrics.O, RankingMetrics.OP, RankingMetrics.DSTAR]:
+        max_ranking = max(rankings)
+        return [rank/max_ranking if rank != -1 else 0 for rank in rankings]
+    return rankings

@@ -12,9 +12,10 @@ class RankMergeOperator(Enum):
     AVG = 'AVG'
     MEDIAN = 'MEDIAN'
 
+    __MERGE_OPS__ = {
+        'AVG': fmean,
+        'MEDIAN': median
+    }
+
     def __call__(self, *args):
-        merge_ops = {
-            'AVG': fmean,
-            'MEDIAN': median
-        }
-        return merge_ops[self.value](*args)
+        return self.__MERGE_OPS__[self.value](*args)
