@@ -307,7 +307,7 @@ def minus(entity_analytics: dict) -> float:
 
 class RankingMetrics(str, Enum):
     """Ranking metrics enum to easily access and add more ranking metrics.
-    Each elem refers to the ranking metric function.
+    Each element refers to the ranking metric function.
     """
     TARANTULA = 'TARANTULA'
     JACCARD = 'JACCARD'
