@@ -2,7 +2,7 @@ import os
 import json
 from typing import Any, List
 
-from sfldebug.tools.logger import logger
+import sfldebug.tools.logger as sfl_logger
 
 
 class SetEncoder(json.JSONEncoder):
@@ -37,5 +37,5 @@ def write_results_to_file(
     with open(os.path.join(project_dir, filename), 'w', encoding='utf-8') as file:
         file.write(json.dumps(json_body, indent=indent,
                    sort_keys=True, cls=SetEncoder))
-    logger.info('Data wrote to: %s. Execution ID: <%s>.',
-                filename, execution_id)
+    sfl_logger.logger.info('Data wrote to: %s. Execution ID: <%s>.',
+                           filename, execution_id)

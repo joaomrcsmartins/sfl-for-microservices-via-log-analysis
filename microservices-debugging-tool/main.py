@@ -2,7 +2,7 @@
 from typing import List, Optional
 from uuid import uuid4
 
-from sfldebug.tools.logger import config_logger
+import sfldebug.tools.logger as sfl_logger
 from sfldebug.messages.receive import receive_mq
 from sfldebug.analytics import analyze_entities
 from sfldebug.sfl import rank
@@ -53,7 +53,7 @@ def run(
     entities_ranked: Optional[List[dict]] = None
     try:
         # configure logging for the execution
-        config_logger(execution_id)
+        sfl_logger.config_logger(execution_id)
 
         # receive logs and parse into entities
         entities = receive_mq(

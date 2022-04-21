@@ -2,7 +2,7 @@ from typing import Any, Set
 
 from sfldebug.entity import Entity
 from sfldebug.tools.object import merge_into_list
-from sfldebug.tools.logger import logger
+import sfldebug.tools.logger as sfl_logger
 
 default_analysis_format = {
     'good_executed': 0,
@@ -87,10 +87,10 @@ def analyze_entities(
 
     increment_execution(entities_analyzed, faulty_entities,
                         'faulty_executed')
-    logger.info('Analyzed execution of faulty entities.')
+    sfl_logger.logger.info('Analyzed execution of faulty entities.')
 
     increment_execution(entities_analyzed, good_entities, 'good_executed')
-    logger.info('Analyzed execution of good entities.')
+    sfl_logger.logger.info('Analyzed execution of good entities.')
 
     n_unique_executions = len(unique_executions)
     for entity in entities_analyzed.values():
@@ -98,6 +98,6 @@ def analyze_entities(
             entity['good_executed']
         entity['faulty_passed'] = n_unique_executions - \
             entity['faulty_executed']
-    logger.info(
+    sfl_logger.logger.info(
         'Finished analyzing all entities. Number of unique executions: %d.', n_unique_executions)
     return entities_analyzed

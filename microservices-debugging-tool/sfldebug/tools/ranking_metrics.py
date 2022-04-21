@@ -3,7 +3,7 @@ import math
 from typing import List, Tuple
 
 from sfldebug.tools.object import extract_field
-from sfldebug.tools.logger import logger
+import sfldebug.tools.logger as sfl_logger
 
 
 def __break_entity_analytics(entity_analytics: dict) -> Tuple[int, int, int, int]:
@@ -19,10 +19,10 @@ def __break_entity_analytics(entity_analytics: dict) -> Tuple[int, int, int, int
     good_passed = extract_field('good_passed', entity_analytics)
     faulty_executed = extract_field('faulty_executed', entity_analytics)
     faulty_passed = extract_field('faulty_passed', entity_analytics)
-    logger.debug('Break entity: %s-"%s" GE-%d GP-%d FE-%d FP-%d.',
-                 entity_analytics['properties']['parent_name'],
-                 entity_analytics['properties']['name'],
-                 good_executed, good_passed, faulty_executed, faulty_passed)
+    sfl_logger.logger.debug('Break entity: %s-"%s" GE-%d GP-%d FE-%d FP-%d.',
+                            entity_analytics['properties']['parent_name'],
+                            entity_analytics['properties']['name'],
+                            good_executed, good_passed, faulty_executed, faulty_passed)
 
     # check if any of the analytics attributes is None
     if any(v is None for v in [good_executed, good_passed, faulty_executed, faulty_passed]):
@@ -335,8 +335,8 @@ class RankingMetrics(str, Enum):
 
     def __call__(self, *args):
         ranking = self.__METRICS__[self.value](*args)
-        logger.debug('Calculated ranking using metric "%s" is: %f.',
-                     self.value, ranking)
+        sfl_logger.logger.debug('Calculated ranking using metric "%s" is: %f.',
+                                self.value, ranking)
         return ranking
 
 

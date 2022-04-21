@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Any, Optional, Set
 
 from sfldebug.tools.object import extract_field
-from sfldebug.tools.logger import logger
+import sfldebug.tools.logger as sfl_logger
 
 
 class EntityType(str, Enum):
@@ -144,9 +144,9 @@ def build_entity(log_data: Any) -> Set[Entity]:
     microservice_name: Optional[str] = extract_field(
         'microserviceName', log_data)
     if correlation_id is None or microservice_name is None:
-        logger.warning(('Required parameters are missing. ''Correlation ID is "%s". '
-                        'Microservice name is "%s"' 'Skipping service entity creation.'),
-                       correlation_id, microservice_name)
+        sfl_logger.logger.warning(('Required parameters are missing. ''Correlation ID is "%s". '
+                                   'Microservice name is "%s"' 'Skipping service entity creation.'),
+                                  correlation_id, microservice_name)
         return set()
 
     # Create service entity and extract service specific fields
@@ -158,8 +158,8 @@ def build_entity(log_data: Any) -> Set[Entity]:
     user = extract_field('user', log_data)
     service_entity = ServiceEntity(microservice_name, correlation_id,
                                    endpoint, instance_ip, span_id, parent_span_id, http_code, user)
-    logger.debug('Created Service Entity for microservice "%s" in request "%s".',
-                 microservice_name, correlation_id)
+    sfl_logger.logger.debug('Created Service Entity for microservice "%s" in request "%s".',
+                            microservice_name, correlation_id)
 
     entities = set()
 
@@ -180,16 +180,16 @@ def build_entity(log_data: Any) -> Set[Entity]:
             method_entity = MethodEntity(
                 method_name, correlation_id, timestamp, log_level, message, method_invocation)
             service_entity.children_names.add(method_entity.name)
-            logger.debug('Created Method Entity for method "%s" in request "%s".',
-                         method_name, correlation_id)
+            sfl_logger.logger.debug('Created Method Entity for method "%s" in request "%s".',
+                                    method_name, correlation_id)
 
             method_entity.parent_name = service_entity.name
             entities.add(method_entity)
         except NameError as err:
-            logger.error('Name Error caught: %s.', err)
-            logger.warning(('Missing method name in request "%s" in service "%s". '
-                            'Skipping method entity creation.'),
-                           correlation_id, microservice_name)
+            sfl_logger.logger.error('Name Error caught: %s.', err)
+            sfl_logger.logger.warning(('Missing method name in request "%s" in service "%s". '
+                                       'Skipping method entity creation.'),
+                                      correlation_id, microservice_name)
 
     entities.add(service_entity)
     return entities
@@ -219,9 +219,9 @@ def parse_unique_entities(entities: Set[Entity]) -> Set[Entity]:
         else:
             unique_entities[unique_hash] = entity
 
-    logger.info(('Merged entity references. ''Number of entities before merging: %d. '
-                'Number of entities post merging: %d.'),
-                len(entities), len(unique_entities))
+    sfl_logger.logger.info(('Merged entity references. ''Number of entities before merging: %d. '
+                            'Number of entities post merging: %d.'),
+                           len(entities), len(unique_entities))
     return set(unique_entities.values())
 
 

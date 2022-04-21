@@ -3,7 +3,7 @@ from typing import List
 
 from sfldebug.tools.ranking_metrics import RankingMetrics, normalize_rankings
 from sfldebug.tools.ranking_merge import RankMergeOperator
-from sfldebug.tools.logger import logger
+import sfldebug.tools.logger as sfl_logger
 from sfldebug.tools.object import cmp_entities
 
 
@@ -36,8 +36,8 @@ def rank_entities(
 
         metrics_rankings[metric] = metric_rankings
 
-    logger.debug('Merging ranking using operator: "%s".',
-                 ranking_merge_op.name)
+    sfl_logger.logger.debug('Merging ranking using operator: "%s".',
+                            ranking_merge_op.name)
     entities_rankings = []
     for index, entity_analytics in enumerate(entities_analytics):
 
@@ -71,8 +71,8 @@ def rank(
     Returns:
         List[dict]: list of entities ranked by fault location probability, in descending order
     """
-    logger.info('Ranking entities using ranking metrics: %s.',
-                [metric.name for metric in ranking_metrics])
+    sfl_logger.logger.info('Ranking entities using ranking metrics: %s.',
+                           [metric.name for metric in ranking_metrics])
 
     # unpack the values of each entity analytics into a list
     entities_analytics_unpacked = list(entities_analytics.values())
@@ -82,5 +82,5 @@ def rank(
 
     cmp_entity_rank = cmp_to_key(cmp_entities)
     entities_ranking.sort(key=cmp_entity_rank)
-    logger.info('Entities ranking and sorting complete.')
+    sfl_logger.logger.info('Entities ranking and sorting complete.')
     return entities_ranking
