@@ -104,3 +104,27 @@ def cmp_entities(
     if rank1 > rank2:
         return -1
     return 0
+
+def cmp_deltas(
+    eval1: dict,
+    eval2: dict
+) -> int:
+    """Custom comparator for entities rankings deltas.
+    It is assumed the ranking delta is associated to key 'delta_entity'
+
+    Args:
+        eval1 (dict): Entity ranking delta to be compared
+        eval2 (dict): Other entity ranking delta to be compared
+
+    Returns:
+        int: 1 if eval1 has lower delta, -1 if eval1 has higher delta,
+        0 if both deltas are equal
+    """
+    rank1 = eval1['delta_entity']
+    rank2 = eval2['delta_entity']
+
+    if rank1 < rank2:
+        return 1
+    if rank1 > rank2:
+        return -1
+    return 0
