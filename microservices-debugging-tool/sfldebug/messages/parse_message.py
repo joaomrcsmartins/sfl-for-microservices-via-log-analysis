@@ -1,12 +1,31 @@
 import json
 from typing import Set
 from pika.channel import Channel
+from pika.adapters.blocking_connection import BlockingChannel
 from pika.spec import BasicProperties, Basic
 
 from sfldebug.entity import build_entity, parse_unique_entities, Entity
 from sfldebug.tools.writer import write_results_to_file
 
 entities = set()
+
+
+def channel_stop(
+    channel: BlockingChannel,
+    method: Basic.Deliver,
+    properties: BasicProperties,
+    body
+) -> None:
+    """Callback to stop channel consuming and break I/O loop.
+
+    Args:
+        channel (BlockingChannel): message queue channel to be shutdown
+        method (Basic.Deliver): AMQP specification (ignored)
+        properties (BasicProperties): AMQP specification (ignored)
+        body (any): AMQP specification (ignored)
+    """
+    del method, properties, body
+    channel.stop_consuming()
 
 
 def parse_mq_message(

@@ -4,10 +4,9 @@ import logging
 from typing import Callable, Set
 from pika import BlockingConnection, ConnectionParameters
 from pika.adapters.blocking_connection import BlockingChannel
-from pika.exchange_type import ExchangeType
 
-from sfldebug.tools.logger import config_logger, logger
-from sfldebug.messages.parse_message import parse_mq_message, flush_mq_messages
+import sfldebug.tools.logger as sfl_logger
+import sfldebug.messages.parse_message as pm
 from sfldebug.entity import Entity
 
 
@@ -35,8 +34,7 @@ def setup_mq_channel(
 
     # Define the exchange, and the appropriate params
     # By default logstash creates durable exchanges
-    channel.exchange_declare(
-        exchange=exchange, exchange_type=ExchangeType.direct, durable=True)
+    channel.exchange_declare(exchange=exchange, durable=True)
 
     result = channel.queue_declare(queue='')
     queue_name = result.method.queue
@@ -49,8 +47,17 @@ def setup_mq_channel(
     channel.basic_consume(
         queue=queue_name, on_message_callback=callback, auto_ack=True)
 
-    logger.debug('Channel set up for exchange "%s", type "%s", routing key "%s", and host "%s".',
-                 exchange, ExchangeType.direct, routing_key, host)
+    # Define the action to stop consuming when a message through 'channel-stop' is received
+    channel.exchange_declare(exchange='channel-stop', durable=True)
+    stop_queue = channel.queue_declare(queue='channel-stop')
+    stop_queue_name = stop_queue.method.queue
+    channel.queue_bind(exchange='channel-stop',
+                       routing_key='', queue=stop_queue_name)
+    channel.basic_consume('channel-stop', pm.channel_stop, auto_ack=True)
+
+    sfl_logger.logger.debug(
+        'Channel set up for exchange "%s", type "direct", routing key "%s", and host "%s".',
+        exchange, routing_key, host)
     return channel
 
 
@@ -71,18 +78,21 @@ def receive_mq_messages(
         exchange (str): name of the mq exchange to setup connection (default 'logstash-output')
         routing_key (str): name of the routing key for the mq exchange (default 'logstash-output')
     """
-    config_logger(execution_id)  # necessary when using multiprocessesing
+    sfl_logger.config_logger(
+        execution_id)  # necessary when using multiprocessesing
 
     channel = setup_mq_channel(callback, host, exchange, routing_key)
-    logger.info('"%s" - Waiting for logs. Press CTRL+C to terminate.', exchange)
+    sfl_logger.logger.info(
+        '"%s" - Waiting for logs. Press CTRL+C to terminate.', exchange)
     try:
         channel.start_consuming()
     except KeyboardInterrupt:
-        logger.info(
-            '"%s" - Terminating connection... Flushing collected messages!', exchange)
-        channel.close()
-        logger.info('"%s" - Flushed collected messages.', exchange)
-    return flush_mq_messages(exchange, execution_id)
+        sfl_logger.logger.debug(
+            '"%s" - Terminating connection from keyboard interruption.', exchange)
+    sfl_logger.logger.info(
+        '"%s" - Terminating connection... Flushing collected messages!', exchange)
+    channel.close()
+    return pm.flush_mq_messages(exchange, execution_id)
 
 
 def receive_mq(
@@ -110,16 +120,16 @@ def receive_mq(
     mp.log_to_stderr(logging.NOTSET)
     with mp.Pool(2) as pool:
 
-        logger.info('Opening channels: "%s" and "%s".',
-                    good_entities_id, faulty_entities_id)
+        sfl_logger.logger.info('Opening channels: "%s" and "%s".',
+                               good_entities_id, faulty_entities_id)
 
         good_entities_process = pool.apply_async(
             receive_mq_messages,
-            args=(execution_id, parse_mq_message),
+            args=(execution_id, pm.parse_mq_message),
             kwds={'exchange': good_entities_id, 'routing_key': good_entities_id})
         faulty_entities_process = pool.apply_async(
             receive_mq_messages,
-            args=(execution_id, parse_mq_message),
+            args=(execution_id, pm.parse_mq_message),
             kwds={'exchange': faulty_entities_id, 'routing_key': faulty_entities_id})
 
         good_entities: Set[Entity] = set()
@@ -128,9 +138,9 @@ def receive_mq(
             good_entities_process.wait()
             faulty_entities_process.wait()
         except KeyboardInterrupt:
-            logger.debug('Keyboard Interruption on MQ receivers.')
-            good_entities = good_entities_process.get()
-            faulty_entities = faulty_entities_process.get()
+            sfl_logger.logger.debug('Keyboard Interruption on MQ receivers.')
+        good_entities = good_entities_process.get()
+        faulty_entities = faulty_entities_process.get()
 
-        logger.info('Message receiving complete.')
+        sfl_logger.logger.info('Message receiving complete.')
         return {good_entities_id: good_entities, faulty_entities_id: faulty_entities}
