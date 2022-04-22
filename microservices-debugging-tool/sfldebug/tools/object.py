@@ -123,8 +123,8 @@ def cmp_deltas(
     rank1 = eval1['delta_entity']
     rank2 = eval2['delta_entity']
 
-    if rank1 < rank2:
-        return 1
     if rank1 > rank2:
+        return 1
+    if rank1 < rank2:
         return -1
     return 0

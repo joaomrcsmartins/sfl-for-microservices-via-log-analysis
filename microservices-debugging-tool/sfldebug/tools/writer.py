@@ -33,9 +33,8 @@ def write_results_to_file(
     project_dir = os.path.join(os.getcwd(), 'results', execution_id)
     os.makedirs(project_dir, exist_ok=True)
 
-    filename += '.json'
+    filename += '.json' if not filename.endswith('.json') else ''
     with open(os.path.join(project_dir, filename), 'w', encoding='utf-8') as file:
-        file.write(json.dumps(json_body, indent=indent,
-                   sort_keys=True, cls=SetEncoder))
+        file.write(json.dumps(json_body, indent=indent, cls=SetEncoder))
     sfl_logger.logger.info('Data wrote to: %s. Execution ID: <%s>.',
                            filename, execution_id)

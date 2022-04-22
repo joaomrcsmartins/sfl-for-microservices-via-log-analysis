@@ -18,18 +18,18 @@ GOOD_LOGS_PATH = 'good_logs_path'
 FAULTY_LOGS_PATH = 'faulty_logs_path'
 FAULTY_ENTITIES = 'faulty_entities'
 SCENARIO_KEYS = [GOOD_LOGS_PATH, FAULTY_LOGS_PATH, FAULTY_ENTITIES]
-LOG_PROCESSING_TIMEOUT_SECONDS = 6
+LOG_PROCESSING_TIMEOUT_SECONDS = 4
 DEFAULT_PARENT_ENTITY_WEIGHT = 0.4
 
 
-def get_scenario(sc_filename: str) -> dict:
+def get_scenario(sc_filepath: str) -> dict:
     """Open the file and read the scenario contents in JSON format.
     Each file should contain 3 attributes/keys. One for the good logs file path.
     Another for the bad logs file path. And a third for the list of faulty entities expected to be
     found during the execution of the scenario.
 
     Args:
-        sc_filename (str): name of the file with the scenario contents
+        sc_filepath (str): the file path with the scenario contents
 
     Raises:
         AttributeError: If any of the required attributes is missing, an exception is raised
@@ -37,13 +37,13 @@ def get_scenario(sc_filename: str) -> dict:
     Returns:
         dict: return the read scenario in a python object
     """
-    with open(os.path.join(os.getcwd(), sc_filename), 'r', encoding='utf-8') as scenario_file:
+    with open(sc_filepath, 'r', encoding='utf-8') as scenario_file:
         scenario: dict = json.load(scenario_file)
 
         # check if any of the required attributes is None
         if any(key not in scenario.keys() for key in SCENARIO_KEYS):
             raise AttributeError(
-                'Scenario in "{}" misses at least one of the scenario keys.'.format(sc_filename))
+                'Scenario in "{}" misses at least one of the scenario keys.'.format(sc_filepath))
         return scenario
 
 
@@ -83,11 +83,12 @@ def launch_scenario(scenario: dict) -> None:
 
         for log in log_file:
             channel.basic_publish(exchange=bad_logs_exchange,
-                                  routing_key=good_logs_exchange, body=log)
+                                  routing_key=bad_logs_exchange, body=log)
     # wait for log processing
     time.sleep(LOG_PROCESSING_TIMEOUT_SECONDS)
-    print('Sending channel shutdown signal.')
+    print('Sending channel shutdown signals.')
     channel.exchange_declare(exchange='channel-stop', durable=True)
+    channel.basic_publish(exchange='channel-stop', routing_key='', body='')
     channel.basic_publish(exchange='channel-stop', routing_key='', body='')
     connection.close()
 
@@ -117,10 +118,10 @@ def evaluate_scenario(
     faulty_entities: List[dict] = scenario[FAULTY_ENTITIES]
     total_faulty_entities = len(faulty_entities)
 
-    evaluated_entities = evaluate_ranked_entities(
-        ranked_entities, faulty_entities, total_faulty_entities)
-
     total_ranked_entities = len(ranked_entities)
+    evaluated_entities = evaluate_ranked_entities(
+        ranked_entities, faulty_entities, total_ranked_entities)
+
     scenario_evaluation = {'evaluated_entities': [],
                            'total_scenario_accuracy': 0}
     for i, eval_entity in enumerate(evaluated_entities):
@@ -136,16 +137,15 @@ def evaluate_scenario(
             {
                 'name': eval_entity['name'],
                 'ranking_value': eval_entity['ranking_entity'],
-                'ranking_position': delta_entity + 1,
+                'ranking_position': delta_entity + i + 1,
                 'accuracy': eval_accuracy
             })
-        print('Entity "{}" was ranked in {} place, with value {}, and it has {}% accuracy.'.format(
-            eval_entity['name'], delta_entity +
-            1, eval_entity['ranking_entity'], eval_accuracy * 100
-        ))
+        print(('Entity "{}" was ranked in {} place, with value {:.5},'
+               ' and it has {:.3%} accuracy.').format(eval_entity['name'], delta_entity + i + 1,
+                                                      eval_entity['ranking_entity'], eval_accuracy))
 
-    print('This scenario total accuracy was {}%.'.format(
-        scenario_evaluation['total_scenario_accuracy'] * 100))
+    print('This scenario total accuracy was {:.3%}.'.format(
+        scenario_evaluation['total_scenario_accuracy']))
 
     return scenario_evaluation
 
@@ -153,7 +153,7 @@ def evaluate_scenario(
 def evaluate_ranked_entities(
     ranked_entities: List[dict],
     faulty_entities: List[dict],
-    total_faulty_entities: int
+    total_ranked_entities: int
 ) -> List[dict]:
     """Evaluate ranked entities by determining the distance of the entity rank to the top.
     Evaluates also the parent entity rank.
@@ -162,8 +162,8 @@ def evaluate_ranked_entities(
     Args:
         ranked_entities (Optional[List[dict]]): list of ranked entities
         faulty_entities (List[dict]): list of faulty entities to be evaluated by rankings
-        total_faulty_entities (int): number of faulty entities to be evaluated. Aka,
-        len(faulty_entities).
+        total_ranked_entities (int): number of ranked entities to be evaluated. Aka,
+        len(ranked_entities).
 
     Returns:
         List[dict]: list of faulty entities evaluated and sorted
@@ -173,18 +173,18 @@ def evaluate_ranked_entities(
         entity_name = entity['name']
         entity_parent = entity['parent']
 
-        delta_entity = total_faulty_entities
+        delta_entity = total_ranked_entities
         ranking_entity = 0
-        delta_parent_entity = total_faulty_entities
+        delta_parent_entity = total_ranked_entities
         ranking_parent_entity = 0
         for i, ranked_entity in enumerate(ranked_entities):
             if ranked_entity['properties']['name'] == entity_name:
                 delta_entity = i
                 ranking_entity = ranked_entity['entity_rank']
-            elif ranked_entity['properties']['parent_name'] == entity_parent:
+            elif ranked_entity['properties']['name'] == entity_parent:
                 delta_parent_entity = i
                 ranking_parent_entity = ranked_entity['entity_rank']
-            if delta_entity + delta_parent_entity < (2 * total_faulty_entities - 1):
+            if delta_entity < total_ranked_entities and delta_parent_entity < total_ranked_entities:
                 break
 
         entity_evaluated = entity.copy()
@@ -233,7 +233,7 @@ def calculate_ranking_accuracy(
     parent_accuracy = 1 - (delta_parent_entity / total_ranked_entities)
     weighted_parent_accuracy = parent_weight * parent_accuracy
     total_entity_accuracy = entity_accuracy + weighted_parent_accuracy
-    return total_entity_accuracy / total_faulty_entities
+    return float(format(total_entity_accuracy / total_faulty_entities, '.5f'))
 
 
 def run_evaluator(scenarios_dir_name: str) -> None:
@@ -255,19 +255,18 @@ def run_evaluator(scenarios_dir_name: str) -> None:
     scenarios_dir = os.path.join(os.getcwd(), scenarios_dir_name)
     for filename in os.listdir(scenarios_dir):
         try:
-            current_scenario = get_scenario(filename)
+            current_scenario = get_scenario(
+                os.path.join(scenarios_dir, filename))
             execution_id = str(uuid4())
             with Pool(1) as pool:
-                scenario_run = pool.apply_async(run, args=(
-                    execution_id, good_entities_id, faulty_entities_id, ranking_metrics,
-                    ranking_merge_operator))
-                # maybe required some waiting
-                launch_scenario(current_scenario)
-                scenario_run.wait()
+                pool.apply_async(
+                    launch_scenario, kwds={'scenario': current_scenario})
+                entities_rankings = run(execution_id, good_entities_id, faulty_entities_id,
+                                        ranking_metrics, ranking_merge_operator)
                 evaluation_results = evaluate_scenario(
-                    scenario_run.get(), current_scenario)
+                    entities_rankings, current_scenario)
                 write_results_to_file(evaluation_results,
-                                      filename+'_evaluation', execution_id)
+                                      filename+'.evaluation', execution_id)
         except AttributeError as err:
             logging.exception(err)
         except RuntimeError:
