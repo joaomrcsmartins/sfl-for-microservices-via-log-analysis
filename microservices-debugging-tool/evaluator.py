@@ -128,7 +128,8 @@ def evaluate_scenario(
         delta_entity = eval_entity['delta_entity'] - i
         delta_parent_entity = eval_entity['delta_parent_entity'] - i
         eval_accuracy = calculate_ranking_accuracy(
-            delta_entity, delta_parent_entity, total_faulty_entities, total_ranked_entities)
+            delta_entity, delta_parent_entity, total_faulty_entities, total_ranked_entities,
+            parent_weight=1/total_ranked_entities)
         scenario_evaluation['total_scenario_accuracy'] += eval_accuracy
         total_ranked_entities -= 1
 
@@ -138,11 +139,15 @@ def evaluate_scenario(
                 'name': eval_entity['name'],
                 'ranking_value': eval_entity['ranking_entity'],
                 'ranking_position': delta_entity + i + 1,
-                'accuracy': eval_accuracy
+                'accuracy': eval_accuracy * total_faulty_entities,
+                'global_accuracy': eval_accuracy
             })
         print(('Entity "{}" was ranked in {} place, with value {:.5},'
-               ' and it has {:.3%} accuracy.').format(eval_entity['name'], delta_entity + i + 1,
-                                                      eval_entity['ranking_entity'], eval_accuracy))
+               ' and it has {:.3%} accuracy. Contributes with {:.3%} to total accuracy').format(
+                   eval_entity['name'], delta_entity +
+            i + 1, eval_entity['ranking_entity'], eval_accuracy *
+            total_faulty_entities, eval_accuracy
+        ))
 
     print('This scenario total accuracy was {:.3%}.'.format(
         scenario_evaluation['total_scenario_accuracy']))
@@ -232,7 +237,8 @@ def calculate_ranking_accuracy(
     entity_accuracy = 1 - (delta_entity / total_ranked_entities)
     parent_accuracy = 1 - (delta_parent_entity / total_ranked_entities)
     weighted_parent_accuracy = parent_weight * parent_accuracy
-    total_entity_accuracy = entity_accuracy + weighted_parent_accuracy
+    total_entity_accuracy = min(
+        entity_accuracy + weighted_parent_accuracy, 1.0)
     return float(format(total_entity_accuracy / total_faulty_entities, '.5f'))
 
 
