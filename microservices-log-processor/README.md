@@ -107,13 +107,13 @@ For more pipeline configuration options, visit the [docs](https://www.elastic.co
 To build the image (first run or if it is modified):
 
 ```powershell
-docker build -t logstash .
+docker build -t log-processor .
 ```
 
 To run the container, use the command:
 
 ```powershell
-docker run --rm -it --network="host" --mount type=bind,source="$(pwd)"/data,target=/data logstash
+docker run --rm -it --network="host" --mount type=bind,source="$(pwd)"/data,target=/data log-processor
 ```
 
 ## How to run
