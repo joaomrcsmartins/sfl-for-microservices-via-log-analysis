@@ -1,0 +1,12 @@
+{
+    "good_logs_exchange": "robot-shop-good-logs",
+    "faulty_logs_exchange": "robot-shop-bad-logs",
+    "good_logs_path": ".\\test_logs\\load-gen-good.log",
+    "faulty_logs_path": ".\\test_logs\\load-gen-bad.log",
+    "faulty_entities": [
+        {
+            "name": "NA",
+            "parent": "robot-shop_payment"
+        }
+    ]
+}
