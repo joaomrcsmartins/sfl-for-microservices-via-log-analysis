@@ -16,6 +16,8 @@ from sfldebug.tools.writer import write_results_to_file
 
 GOOD_LOGS_PATH = 'good_logs_path'
 FAULTY_LOGS_PATH = 'faulty_logs_path'
+GOOD_LOGS_EXCHANGE = 'good_logs_exchange'
+FAULTY_LOGS_EXCHANGE = 'faulty_logs_exchange'
 FAULTY_ENTITIES = 'faulty_entities'
 SCENARIO_KEYS = [GOOD_LOGS_PATH, FAULTY_LOGS_PATH, FAULTY_ENTITIES]
 LOG_PROCESSING_TIMEOUT_SECONDS = 4
@@ -62,10 +64,8 @@ def launch_scenario(scenario: dict) -> None:
 
     good_logs_path = scenario[GOOD_LOGS_PATH]
     faulty_logs_path = scenario[FAULTY_LOGS_PATH]
-
-    # TODO check final exchanges names for testing log processor
-    good_logs_exchange = 'pet-a-pet-good-logs'
-    bad_logs_exchange = 'pet-a-pet-bad-logs'
+    good_logs_exchange = scenario[GOOD_LOGS_EXCHANGE]
+    faulty_logs_exchange = scenario[FAULTY_LOGS_EXCHANGE]
 
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(host='localhost'))
@@ -78,12 +78,12 @@ def launch_scenario(scenario: dict) -> None:
             channel.basic_publish(
                 exchange=good_logs_exchange, routing_key=good_logs_exchange, body=log)
 
-    channel.exchange_declare(exchange=bad_logs_exchange, durable=True)
+    channel.exchange_declare(exchange=faulty_logs_exchange, durable=True)
     with open(os.path.abspath(faulty_logs_path), 'r', encoding='utf-8') as log_file:
 
         for log in log_file:
-            channel.basic_publish(exchange=bad_logs_exchange,
-                                  routing_key=bad_logs_exchange, body=log)
+            channel.basic_publish(exchange=faulty_logs_exchange,
+                                  routing_key=faulty_logs_exchange, body=log)
     # wait for log processing
     time.sleep(LOG_PROCESSING_TIMEOUT_SECONDS)
     print('Sending channel shutdown signals.')
@@ -142,7 +142,7 @@ def evaluate_scenario(
                 'accuracy': eval_accuracy * total_faulty_entities,
                 'global_accuracy': eval_accuracy
             })
-        print(('Entity "{}" was ranked in {} place, with value {:.5},'
+        print(('Entity "{}" was ranked in {} place, with value {:.5f},'
                ' and it has {:.3%} accuracy. Contributes with {:.3%} to total accuracy').format(
                    eval_entity['name'], delta_entity +
             i + 1, eval_entity['ranking_entity'], eval_accuracy *
