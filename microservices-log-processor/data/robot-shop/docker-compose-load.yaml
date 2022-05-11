@@ -1,0 +1,23 @@
+version: '3'
+services:
+  load:
+    image: ${REPO}/rs-load:${TAG}
+    build:
+      context: load-gen
+    environment:
+      HOST: http://172.24.0.1:8080
+      NUM_CLIENTS: 10
+      RUN_TIME: 5m
+      ERROR: 0
+      SILENT: 0
+    depends_on:
+      - web
+    logging: &logging
+      driver: "json-file"
+      options:
+        max-size: "25m"
+        max-file: "2"
+networks:
+  default:
+    external:
+      name: robot-shop-network

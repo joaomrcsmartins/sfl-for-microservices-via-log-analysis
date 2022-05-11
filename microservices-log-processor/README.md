@@ -126,7 +126,7 @@ The steps to take sequentially are:
 
    ```yaml
    - pipeline.id: file-logstash-rabbitmq
-    path.config: "/usr/share/logstash/pipeline/logstash-rabbitmq.conf"
+     path.config: "/usr/share/logstash/pipeline/logstash-rabbitmq.conf"
    ```
 
 4. Run the Logstash in the Docker image using the command above in the [previous section](#docker-image))
