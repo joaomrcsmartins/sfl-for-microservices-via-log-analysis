@@ -1,7 +1,6 @@
 from typing import Any, Set
 
 from sfldebug.entity import Entity
-from sfldebug.tools.object import merge_into_list
 import sfldebug.tools.logger as sfl_logger
 
 default_analysis_format = {
@@ -13,6 +12,9 @@ default_analysis_format = {
 
 # each unique execution has a unique request/correlation id
 unique_executions: Set[str] = set()
+
+# number of entity executions without a request/correlation id associated
+total_detached_executions: int = 0
 
 
 def increment_execution(
@@ -30,28 +32,24 @@ def increment_execution(
         entities (Set[Entity]): set of entities to be analyzed
         execution_key (str): key to increment in
     """
+    global total_detached_executions
     for entity in entities:
         key = '{}'.format(entity.__hash__())
 
+        entity_detached_execs = len(entity.references.get('default', []))
+        total_detached_executions += entity_detached_execs
         entity_requests = entity.references.keys()
         unique_executions.update(entity_requests)
 
-        times_executed = len(entity_requests)
+        times_executed = entity.get_number_unique_exec()
         if key in entities_analyzed:
             stored_entity = entities_analyzed[key]
             stored_entity[execution_key] += times_executed
 
             analyzed_entity_refs = stored_entity['properties']['references']
             entity_refs = entity.references
-            # references of the same entity that are related to different requests
-            missing_references = {k: entity_refs.get(
-                k) for k in entity_refs.keys() - analyzed_entity_refs.keys()}
-            # references of the same entity that are related to the same request
-            merged_references = {k: merge_into_list(entity_refs.get(k), analyzed_entity_refs.get(
-                k)) for k in entity_refs.keys() & analyzed_entity_refs.keys()}
-            # add missing references to the stored entity
-            analyzed_entity_refs.update(missing_references)
-            analyzed_entity_refs.update(merged_references)
+            Entity.merge_references(analyzed_entity_refs, entity_refs)
+
             # add missing children names to the stored entity
             analyzed_entity_children = stored_entity['properties']['children_names']
             analyzed_entity_children.update(entity.children_names)
@@ -92,7 +90,10 @@ def analyze_entities(
     increment_execution(entities_analyzed, good_entities, 'good_executed')
     sfl_logger.logger.info('Analyzed execution of good entities.')
 
-    n_unique_executions = len(unique_executions)
+    n_unique_executions = len(unique_executions) + total_detached_executions
+    if 'default' in unique_executions:
+        n_unique_executions -= 1
+
     for entity in entities_analyzed.values():
         entity['good_passed'] = n_unique_executions - \
             entity['good_executed']
