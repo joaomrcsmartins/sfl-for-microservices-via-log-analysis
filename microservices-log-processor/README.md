@@ -116,18 +116,25 @@ To run the container, use the command:
 docker run --rm -it --network="host" --mount type=bind,source="$(pwd)"/data,target=/data log-processor
 ```
 
-## How to run
+## How to run the tool demo case
 
 The steps to take sequentially are:
 
 1. Run the RabbitMQ server in the Docker image.
 2. Run the Python script for the RabbitMQ messages receiver (```rabbit_mq_receive.py```)
-3. Run the Logstash in the Docker image
+3. Make sure the tool's demo pipeline is uncommented:
+
+   ```yaml
+   - pipeline.id: file-logstash-rabbitmq
+    path.config: "/usr/share/logstash/pipeline/logstash-rabbitmq.conf"
+   ```
+
+4. Run the Logstash in the Docker image using the command above in the [previous section](#docker-image))
    1. The file will be read, and the first results can be seen
-4. Run the Python script for the RabbitMQ messages sender (```rabbit_mq_send.py```)
+5. Run the Python script for the RabbitMQ messages sender (```rabbit_mq_send.py```)
    1. The logs will be parsed by Logstash and sent to the receiver
-5. The Logstash instance will keep running, add more logs in ```log4jexamples.log``` or send logs to exchange ```logstash-input``` (follow the script above) in RabbitMQ to keep processing logs
-6. Stop the receiver program to write the contents in the JSON file (```logstash-rabbitmq.json```), the messages received meanwhile will be printed in the terminal
+6. The Logstash instance will keep running, add more logs in ```log4jexamples.log``` or send logs to exchange ```logstash-input``` (follow the script above) in RabbitMQ to keep processing logs
+7. Stop the receiver program to write the contents in the JSON file (```logstash-rabbitmq.json```), the messages received meanwhile will be printed in the terminal
 
 ## Versions
 

@@ -1,6 +1,12 @@
+# Tool simple demo
 #- pipeline.id: file-logstash-rabbitmq
 #  path.config: "/usr/share/logstash/pipeline/logstash-rabbitmq.conf"
-# - pipeline.id: logtstash-sfl-demo-petapet
-#   path.config: "/usr/share/logstash/pipeline/logstash-sfl-demo.conf"
-- pipeline.id: logstash-robot-shop
-  path.config: "/usr/share/logstash/pipeline/logstash-robot-shop.conf"
+# SFL simple demo pet-a-pet
+- pipeline.id: logtstash-sfl-demo-petapet
+  path.config: "/usr/share/logstash/pipeline/logstash-sfl-demo.conf"
+# Instana's Robot Shop Log processor (Docker Compose)
+# - pipeline.id: logstash-robot-shop
+#   path.config: "/usr/share/logstash/pipeline/logstash-robot-shop.conf"
+# Send Robot Shop processed logs to evaluator
+- pipeline.id: logstash-robot-shop-evalutor
+  path.config: "/usr/share/logstash/pipeline/logstash-robot-shop-eval.conf"
