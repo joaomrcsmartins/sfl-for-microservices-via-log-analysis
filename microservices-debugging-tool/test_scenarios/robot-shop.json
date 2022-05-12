@@ -5,8 +5,8 @@
     "faulty_logs_path": ".\\test_logs\\load-gen-bad.log",
     "faulty_entities": [
         {
-            "name": "NA",
-            "parent": "robot-shop_payment"
+            "name": "robot-shop_payment",
+            "parent": ""
         }
     ]
 }

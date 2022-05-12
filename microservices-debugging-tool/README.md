@@ -52,7 +52,7 @@ Each scenario json file must contain the following attributes:
 * **"faulty_logs_exchange"** : MQ exchange to send the bad executions logs
 * **"faulty_entities"** : List of faulty entities expected to be in the rankings. List of object with "name" and "parent", containing the name of the faulty entity and the name of its parent, respectively.
 
-> ***TIP***: If you don't expect any method entities, only service, just place a random "name" and the service name in "parent". Then in the evaluator, in **evaluate_scenario()**, change the argument *parent_weight* in **calculate_ranking_accuracy()** to **1**.
+> ***TIP***: If you don't expect any method entities, only service, just put the service name in "name" and leave "parent" empty ("").
 
 The prerequisites are the same for the tool, since it is executed inside the evaluation.
 
