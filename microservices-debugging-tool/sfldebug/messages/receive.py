@@ -36,20 +36,21 @@ def setup_mq_channel(
     # By default logstash creates durable exchanges
     channel.exchange_declare(exchange=exchange, durable=True)
 
-    result = channel.queue_declare(queue='')
+    result = channel.queue_declare(queue='', durable=True)
     queue_name = result.method.queue
 
     # Bind the queue to receive logs from logstash with the appropriate routing key
     channel.queue_bind(exchange=exchange, queue=queue_name,
                        routing_key=routing_key)
 
+    channel.basic_qos(prefetch_count=1)
     # Define the action upon receiving a message
     channel.basic_consume(
         queue=queue_name, on_message_callback=callback, auto_ack=True)
 
     # Define the action to stop consuming when a message through 'channel-stop' is received
     channel.exchange_declare(exchange='channel-stop', durable=True)
-    stop_queue = channel.queue_declare(queue='channel-stop')
+    stop_queue = channel.queue_declare(queue='channel-stop', durable=True)
     stop_queue_name = stop_queue.method.queue
     channel.queue_bind(exchange='channel-stop',
                        routing_key='', queue=stop_queue_name)
