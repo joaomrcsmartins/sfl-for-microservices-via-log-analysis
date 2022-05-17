@@ -1,8 +1,8 @@
 {
     "good_logs_exchange": "pet-a-pet-good-logs",
     "faulty_logs_exchange": "pet-a-pet-bad-logs",
-    "good_logs_path": ".\\test_logs\\good_logfile.log",
-    "faulty_logs_path": ".\\test_logs\\bad_logfile.log",
+    "good_logs_path": "..\\microservices-log-processor\\data\\test_logs\\good_logfile.log",
+    "faulty_logs_path": "..\\microservices-log-processor\\data\\test_logs\\bad_logfile.log",
     "faulty_entities": [
         {
             "name": "increase_snack_balance",
