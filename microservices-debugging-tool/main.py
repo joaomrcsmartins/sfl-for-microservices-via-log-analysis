@@ -1,5 +1,5 @@
 # pylint: disable=broad-except,dangerous-default-value
-from typing import List, Optional
+from typing import Callable, List, Optional
 from uuid import uuid4
 
 import sfldebug.tools.logger as sfl_logger
@@ -16,6 +16,7 @@ def run(
     execution_id: str,
     good_entities_id: str,
     faulty_entities_id: str,
+    receiver_method: Callable[[str, str, str], dict],
     rankings_metrics: List[RankingMetrics] = [RankingMetrics.OCHIAI],
     ranking_merge_operator: RankMergeOperator = RankMergeOperator.AVG
 ) -> Optional[List[dict]]:
@@ -41,13 +42,19 @@ def run(
         execution_id (str): a unique id to be used while logging and storing results.
         good_entities_id (str): the name of the exchange to receive logs from good executions.
         faulty_entities_id (str): the name of the exchange to receive logs from faulty executions.
+        receiver_method (Callable[[str, str, str], dict]): method to receive log messages and parse
+        entities. Must receive three arguments, two strings for good and faulty entities ids, and a
+        third for the execution id. The return value must be a dict with two pairs key-value. The
+        keys for the object must be the good and faulty entities id, and the values must be the
+        sets of parsed entities, objects of class sfldebug.entity.Entity.
         rankings_metrics (List[RankingMetrics], optional): the list of metrics used to rank the
         entities processed from the logs. Defaults to [RankingMetrics.OCHIAI].
         ranking_merge_operator (RankMergeOperator, optional): the operator used to merge the
         rankings from different metrics. Defaults to RankMergeOperator.AVG.
 
     Returns:
-        List[dict]: the list of ranked entities with their properties and references
+        Optional[List[dict]]: the list of ranked entities with their properties and references.
+        If there are errors while executing, returns None.
     """
     successful_run = False
     entities_ranked: Optional[List[dict]] = None
@@ -56,7 +63,7 @@ def run(
         sfl_logger.config_logger(execution_id)
 
         # receive logs and parse into entities
-        entities = receive_mq(
+        entities = receiver_method(
             good_entities_id, faulty_entities_id, execution_id)
 
         # analyze entity statistics, hit spectra
@@ -88,5 +95,5 @@ if __name__ == '__main__':
 
     EXECUTION_ID = str(uuid4())
 
-    run(EXECUTION_ID, GOOD_ENTITIES_ID, FAULTY_ENTITIES_ID,
+    run(EXECUTION_ID, GOOD_ENTITIES_ID, FAULTY_ENTITIES_ID, receive_mq,
         RANKING_METRICS, RANKING_MERGE_OPERATOR)
