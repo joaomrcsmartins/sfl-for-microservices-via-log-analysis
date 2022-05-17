@@ -9,6 +9,7 @@ import json
 import pika
 
 from main import run
+from sfldebug.messages.receive import receive_file, receive_mq
 from sfldebug.tools.ranking_metrics import RankingMetrics
 from sfldebug.tools.ranking_merge import RankMergeOperator
 from sfldebug.tools.object import cmp_deltas
@@ -242,8 +243,9 @@ def calculate_ranking_accuracy(
     return float(format(total_entity_accuracy / total_faulty_entities, '.5f'))
 
 
-def run_evaluator(scenarios_dir_name: str) -> None:
-    """Run the tool evaluator by setting up and execution the scenarios saved inside the folder
+def run_evaluator_mq(scenarios_dir_name: str) -> None:
+    """Version of the evaluator that sends logs into the debugging tool via RabbitMQ.
+    Run the tool evaluator by setting up and execution the scenarios saved inside the folder
     passed as argument.
     For each file inside the folder, reads the contents and sets up the scenario.
     The logs found in each scenario are sent to the log processor tool that must be running.
@@ -268,7 +270,7 @@ def run_evaluator(scenarios_dir_name: str) -> None:
                 pool.apply_async(
                     launch_scenario, kwds={'scenario': current_scenario})
                 entities_rankings = run(execution_id, good_entities_id, faulty_entities_id,
-                                        ranking_metrics, ranking_merge_operator)
+                                        receive_mq, ranking_metrics, ranking_merge_operator)
                 evaluation_results = evaluate_scenario(
                     entities_rankings, current_scenario)
                 write_results_to_file(evaluation_results,
@@ -282,6 +284,46 @@ def run_evaluator(scenarios_dir_name: str) -> None:
             logging.exception(err)
 
 
+def run_evaluator_file(scenarios_dir_name: str) -> None:
+    """Version of the evaluator that sends the logs path and the debugging tool reads to extract
+    the entities.
+    Run the tool evaluator by setting up and execution the scenarios saved inside the folder passed
+    as argument.
+    For each file inside the folder, reads the contents and sets up the scenario.
+    Once the debugging tool returns the results, they are evaluated according to the method
+    specified in evaluate_scenario.
+    The results of each scenario are saved to a file and printed on the console.
+
+    Args:
+        scenarios_dir_name (str): name of the folder where the scenarios are stored
+    """
+
+    ranking_metrics = [RankingMetrics.OCHIAI, RankingMetrics.JACCARD]
+    ranking_merge_operator = RankMergeOperator.AVG
+    scenarios_dir = os.path.join(os.getcwd(), scenarios_dir_name)
+    for filename in os.listdir(scenarios_dir):
+        try:
+            current_scenario = get_scenario(
+                os.path.join(scenarios_dir, filename))
+            execution_id = str(uuid4())
+
+            entities_rankings = run(execution_id, current_scenario[GOOD_LOGS_PATH],
+                                    current_scenario[FAULTY_LOGS_PATH], receive_file,
+                                    ranking_metrics, ranking_merge_operator)
+            evaluation_results = evaluate_scenario(
+                entities_rankings, current_scenario)
+            write_results_to_file(evaluation_results,
+                                  filename+'.evaluation', execution_id)
+        except AttributeError as err:
+            logging.exception(err)
+        except RuntimeError:
+            logging.exception(RuntimeError(
+                'Failed run in scenario of "{}"'.format(filename)))
+        except ValueError as err:
+            logging.exception(err)
+
+
 if __name__ == '__main__':
-    run_evaluator('test_scenarios')
+    # run_evaluator_mq('test_scenarios')
+    run_evaluator_file('test_scenarios')
     # TODO turn into single scenario tester with file name as terminal argument
