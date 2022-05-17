@@ -19,7 +19,7 @@ def __break_entity_analytics(entity_analytics: dict) -> Tuple[int, int, int, int
     good_passed = extract_field('good_passed', entity_analytics)
     faulty_executed = extract_field('faulty_executed', entity_analytics)
     faulty_passed = extract_field('faulty_passed', entity_analytics)
-    sfl_logger.logger.debug('Break entity: %s-"%s" GE-%d GP-%d FE-%d FP-%d.',
+    sfl_logger.logger.info('Break entity: %s-"%s" GE-%d GP-%d FE-%d FP-%d.',
                             entity_analytics['properties']['parent_name'],
                             entity_analytics['properties']['name'],
                             good_executed, good_passed, faulty_executed, faulty_passed)
@@ -335,7 +335,7 @@ class RankingMetrics(str, Enum):
 
     def __call__(self, *args):
         ranking = self.__METRICS__[self.value](*args)
-        sfl_logger.logger.debug('Calculated ranking using metric "%s" is: %f.',
+        sfl_logger.logger.info('Calculated ranking using metric "%s" is: %f.',
                                 self.value, ranking)
         return ranking
 

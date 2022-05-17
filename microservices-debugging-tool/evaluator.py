@@ -284,3 +284,4 @@ def run_evaluator(scenarios_dir_name: str) -> None:
 
 if __name__ == '__main__':
     run_evaluator('test_scenarios')
+    # TODO turn into single scenario tester with file name as terminal argument

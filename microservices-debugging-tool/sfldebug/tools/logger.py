@@ -30,7 +30,7 @@ def config_logger(
 
     file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(log_formatter)
-    console_handler.setLevel(logging.DEBUG)
+    console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(log_formatter)
 
     logger.addHandler(file_handler)
