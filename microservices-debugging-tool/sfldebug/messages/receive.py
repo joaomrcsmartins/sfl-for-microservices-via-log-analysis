@@ -7,6 +7,7 @@ from pika.adapters.blocking_connection import BlockingChannel
 
 import sfldebug.tools.logger as sfl_logger
 import sfldebug.messages.parse_message as pm
+import sfldebug.tools.object as sfl_obj
 from sfldebug.entity import Entity
 
 
@@ -145,3 +146,53 @@ def receive_mq(
 
         sfl_logger.logger.info('Message receiving complete.')
         return {good_entities_id: good_entities, faulty_entities_id: faulty_entities}
+
+
+def receive_file(
+    good_entities_file: str,
+    faulty_entities_file: str,
+    execution_id: str
+) -> dict:
+    """Receives log data through files.
+    Open each file and extract the entities contained in each line.
+    Each line must be in a stringified json format.
+    Then for each file the entities set is collected and then returned in a dict, to be analyzed.
+
+    Args:
+        good_entities_file (str): path of the file where the good entities' log structured data is 
+        stored
+        faulty_entities_file (str): path of the file where the faulty entities' log structured data is 
+        stored
+        execution_id (str): id of the current execution
+
+    Returns:
+        dict: set with the parsed data for the 'good' and 'faulty' entities
+    """
+
+    sfl_logger.logger.info('Reading files: "%s" and "%s".',
+                           good_entities_file, faulty_entities_file)
+    good_entities: Set[Entity] = set()
+    with open(good_entities_file, 'r', encoding='utf-8') as entities_file:
+
+        for entity_line in entities_file:
+            pm.parse_json_entity(entity_line)
+
+        good_entities_filename = sfl_obj.extract_filename(good_entities_file)
+        good_entities = pm.flush_mq_messages(
+            good_entities_filename, execution_id)
+        pm.clear_entities()
+
+    faulty_entities: Set[Entity] = set()
+    with open(faulty_entities_file, 'r', encoding='utf-8') as entities_file:
+
+        for entity_line in entities_file:
+            pm.parse_json_entity(entity_line)
+
+        faulty_entities_filename = sfl_obj.extract_filename(
+            faulty_entities_file)
+        faulty_entities = pm.flush_mq_messages(
+            faulty_entities_filename, execution_id)
+        pm.clear_entities()
+
+    sfl_logger.logger.info('Files reading complete.')
+    return {good_entities_file: good_entities, faulty_entities_file: faulty_entities}

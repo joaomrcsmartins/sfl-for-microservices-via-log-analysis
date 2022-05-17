@@ -43,9 +43,24 @@ def parse_mq_message(
         body (any): contents of the message
     """
     del channel, method, properties  # ignore unused arguments
-    json_body = json.loads(body)
-    log_entities = build_entity(json_body)
+    parse_json_entity(body)
+
+
+def parse_json_entity(message: str):
+    """Parse a message into json and build the entity from the structured data. Update the entities
+    set.
+
+    Args:
+        message (str): The message in json line format to be parsed
+    """
+    message_json = json.loads(message)
+    log_entities = build_entity(message_json)
     entities.update(log_entities)
+
+
+def clear_entities():
+    """Clear the entities set. Useful when running multiple scenarios in a row."""
+    entities.clear()
 
 
 def flush_mq_messages(

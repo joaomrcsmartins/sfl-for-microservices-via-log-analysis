@@ -1,4 +1,23 @@
+import re
 from typing import Any, List, Optional
+
+
+def extract_filename(filepath: str) -> str:
+    """Extract the name of the file from the file path.
+
+    Args:
+        filepath (str): full or relative path of a file
+
+    Returns:
+        str: name of the file (extension excluded)
+    """
+    unix_match = re.search('.*?/?(\w+)\.\w+', filepath, re.IGNORECASE)
+    windows_match = re.search('.*?\\\\?(\w+)\.\w+', filepath, re.IGNORECASE)
+    if unix_match is not None:
+        return unix_match.group(1)
+    if windows_match is not None:
+        return windows_match.group(1)
+    return ''
 
 
 def extract_field(
@@ -104,6 +123,7 @@ def cmp_entities(
     if rank1 > rank2:
         return -1
     return 0
+
 
 def cmp_deltas(
     eval1: dict,
