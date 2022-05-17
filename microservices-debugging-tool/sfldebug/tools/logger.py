@@ -33,5 +33,11 @@ def config_logger(
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(log_formatter)
 
+    # Add logger console handler if not already added
+    has_console_handler = False
+    for handler in logger.handlers:
+        has_console_handler |= isinstance(handler, logging.StreamHandler)
+    if not has_console_handler:
+        logger.addHandler(console_handler)
+
     logger.addHandler(file_handler)
-    logger.addHandler(console_handler)
