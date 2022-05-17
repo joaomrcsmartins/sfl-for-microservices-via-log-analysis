@@ -1,3 +1,4 @@
+# pylint: disable=global-statement
 from typing import Any, Set
 
 from sfldebug.entity import Entity
@@ -14,7 +15,14 @@ default_analysis_format = {
 unique_executions: Set[str] = set()
 
 # number of entity executions without a request/correlation id associated
-total_detached_executions: int = 0
+TOTAL_DETACHED_EXECUTIONS: int = 0
+
+
+def clear_analytics():
+    """Clear analytics objects. Useful when running multiple scenarios in a row."""
+    global TOTAL_DETACHED_EXECUTIONS
+    unique_executions.clear()
+    TOTAL_DETACHED_EXECUTIONS = 0
 
 
 def increment_execution(
@@ -32,12 +40,12 @@ def increment_execution(
         entities (Set[Entity]): set of entities to be analyzed
         execution_key (str): key to increment in
     """
-    global total_detached_executions
+    global TOTAL_DETACHED_EXECUTIONS
     for entity in entities:
         key = '{}'.format(entity.__hash__())
 
         entity_detached_execs = len(entity.references.get('default', []))
-        total_detached_executions += entity_detached_execs
+        TOTAL_DETACHED_EXECUTIONS += entity_detached_execs
         entity_requests = entity.references.keys()
         unique_executions.update(entity_requests)
 
@@ -55,7 +63,8 @@ def increment_execution(
             analyzed_entity_children.update(entity.children_names)
         else:
             # if not analyzed before, create a new entry with the first references
-            new_entity_analysis: dict[str, Any] = default_analysis_format.copy()
+            new_entity_analysis: dict[str,
+                                      Any] = default_analysis_format.copy()
             new_entity_analysis[execution_key] += times_executed
             new_entity_analysis['properties'] = entity.get_properties()
             # and add it to the analyzed entities set
@@ -90,7 +99,7 @@ def analyze_entities(
     increment_execution(entities_analyzed, good_entities, 'good_executed')
     sfl_logger.logger.info('Analyzed execution of good entities.')
 
-    n_unique_executions = len(unique_executions) + total_detached_executions
+    n_unique_executions = len(unique_executions) + TOTAL_DETACHED_EXECUTIONS
     if 'default' in unique_executions:
         n_unique_executions -= 1
 
@@ -101,4 +110,5 @@ def analyze_entities(
             entity['faulty_executed']
     sfl_logger.logger.info(
         'Finished analyzing all entities. Number of unique executions: %d.', n_unique_executions)
+    clear_analytics()
     return entities_analyzed
