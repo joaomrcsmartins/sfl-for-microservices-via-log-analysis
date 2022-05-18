@@ -83,6 +83,7 @@ def run(
             logger.info('Succesfully executed, terminating.')
         else:
             logger.fatal('Errors occured, shutting down.')
+        sfl_logger.clean_handlers()
     return entities_ranked
 
 

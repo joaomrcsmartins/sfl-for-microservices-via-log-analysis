@@ -6,6 +6,12 @@ logger: logging.Logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
+def clean_handlers() -> None:
+    """Remove the handlers attached to the logger. Useful when running multiple scenarios in a row.
+    """
+    logger.handlers.clear()
+
+
 def config_logger(
     execution_id: str
 ) -> None:
