@@ -84,7 +84,10 @@ def flush_mq_messages(
     if write_to_file:
         json_entities = {"entities": []}
         for entity in parsed_entities:
-            json_entities['entities'].append(entity.__dict__)
+            entity_dict = entity.__dict__
+            entity_dict['ref_count'] = Entity.count_references(
+                entity_dict['references'])
+            json_entities['entities'].append(entity_dict)
 
         filename = 'entities-records-' + file_id
         write_results_to_file(json_entities, filename, exec_id)

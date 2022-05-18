@@ -60,6 +60,21 @@ class Entity:
         return len(self.references.keys())
 
     @classmethod
+    def count_references(
+            cls,
+            references: dict[str, List]
+    ) -> int:
+        """Get the total number of references present in the entity
+
+        Returns:
+            int: the count of references in total
+        """
+        count = 0
+        for key in references:
+            count += len(references[key])
+        return count
+
+    @classmethod
     def merge_references(
         cls,
         new_references: dict[str, List],

@@ -108,6 +108,8 @@ def analyze_entities(
             entity['good_executed']
         entity['faulty_passed'] = n_unique_executions - \
             entity['faulty_executed']
+        entity['properties']['ref_count'] = Entity.count_references(
+            entity['properties']['references'])
     sfl_logger.logger.info(
         'Finished analyzing all entities. Number of unique executions: %d.', n_unique_executions)
     clear_analytics()
