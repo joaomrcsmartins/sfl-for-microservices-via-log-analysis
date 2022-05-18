@@ -159,10 +159,10 @@ def receive_file(
     Then for each file the entities set is collected and then returned in a dict, to be analyzed.
 
     Args:
-        good_entities_file (str): path of the file where the good entities' log structured data is 
+        good_entities_file (str): path of the file where the good entities' log structured data is
         stored
-        faulty_entities_file (str): path of the file where the faulty entities' log structured data is 
-        stored
+        faulty_entities_file (str): path of the file where the faulty entities' log structured data
+        is stored
         execution_id (str): id of the current execution
 
     Returns:
@@ -177,7 +177,8 @@ def receive_file(
         for entity_line in entities_file:
             pm.parse_json_entity(entity_line)
 
-        good_entities_filename = sfl_obj.extract_filename(good_entities_file)
+        good_entities_filename = sfl_obj.extract_filename(
+            good_entities_file)
         good_entities = pm.flush_mq_messages(
             good_entities_filename, execution_id)
         pm.clear_entities()

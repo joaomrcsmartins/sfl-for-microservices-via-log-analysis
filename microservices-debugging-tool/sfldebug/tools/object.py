@@ -12,12 +12,12 @@ def extract_filename(filepath: str) -> str:
     Returns:
         str: name of the file (extension excluded)
     """
-    unix_match = re.search('.*?/?(\\w+)\\.\\w+', filepath, re.IGNORECASE)
-    windows_match = re.search('.*?(\\\\)?(\\w+)\\.\\w+', filepath, re.IGNORECASE)
+    unix_match = re.search('.*?/?(\\w[\\w|-]+)\\.\\w+', filepath, re.IGNORECASE)
+    windows_match = re.search('.*?[\\\\]?(\\w[\\w|-]+)\\.\\w+', filepath, re.IGNORECASE)
     if unix_match is not None:
         return unix_match.group(1)
     if windows_match is not None:
-        return windows_match.group(2)
+        return windows_match.group(1)
     return ''
 
 
