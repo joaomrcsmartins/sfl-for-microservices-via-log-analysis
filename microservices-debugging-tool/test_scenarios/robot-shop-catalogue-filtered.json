@@ -1,12 +1,12 @@
 {
     "good_logs_exchange": "robot-shop-good-logs",
     "faulty_logs_exchange": "robot-shop-bad-logs",
-    "good_logs_path": "..\\microservices-log-processor\\data\\test_logs_filtered\\load-gen-good-catalogue.log",
-    "faulty_logs_path": "..\\microservices-log-processor\\data\\test_logs_filtered\\load-gen-bad-catalogue.log",
+    "good_logs_path": ".\\test_logs\\filtered\\load-gen-good-catalogue.log",
+    "faulty_logs_path": ".\\test_logs\\filtered\\load-gen-bad-catalogue.log",
     "faulty_entities": [
         {
-            "name": "robot-shop-catalogue",
-            "parent": ""
+            "name": "/products",
+            "parent": "robot-shop-catalogue"
         }
     ]
 }

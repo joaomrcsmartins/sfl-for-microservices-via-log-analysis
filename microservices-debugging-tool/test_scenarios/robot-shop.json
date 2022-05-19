@@ -1,11 +1,15 @@
 {
     "good_logs_exchange": "robot-shop-good-logs",
     "faulty_logs_exchange": "robot-shop-bad-logs",
-    "good_logs_path": "..\\microservices-log-processor\\data\\test_logs\\load-gen-good.log",
-    "faulty_logs_path": "..\\microservices-log-processor\\data\\test_logs\\load-gen-bad.log",
+    "good_logs_path": ".\\test_logs\\load-gen-good.log",
+    "faulty_logs_path": ".\\test_logs\\load-gen-bad.log",
     "faulty_entities": [
         {
             "name": "robot-shop_payment",
+            "parent": ""
+        },
+        {
+            "name": "robot-shop_web",
             "parent": ""
         }
     ]
