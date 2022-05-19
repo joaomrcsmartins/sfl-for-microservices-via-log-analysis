@@ -1,0 +1,267 @@
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 1 -> In users.py/User/decrease_snack_balance():38 - "Drew Socks" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 2 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 3 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 4 -> In users.py/User/decrease_snack_balance():38 - "Sophie's Diary Owner" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 8 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 11 -> In users.py/User/decrease_snack_balance():38 - "Drew Socks" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 13 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 16 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 18 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 24 -> In users.py/User/decrease_snack_balance():38 - "Drew Socks" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 25 -> In users.py/User/decrease_snack_balance():38 - "Sophie's Diary Owner" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 26 -> In users.py/User/decrease_snack_balance():38 - "Sophie's Diary Owner" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 30 -> In users.py/User/decrease_snack_balance():38 - "Sophie's Diary Owner" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 31 -> In users.py/User/decrease_snack_balance():38 - "Drew Socks" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 32 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 34 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 36 -> In users.py/User/decrease_snack_balance():38 - "Sophie's Diary Owner" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 38 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 39 -> In users.py/User/decrease_snack_balance():38 - "Sophie's Diary Owner" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 43 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of -1, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 44 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 45 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 46 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 47 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 52 -> In users.py/User/decrease_snack_balance():38 - "Sophie's Diary Owner" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 53 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of -1, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 60 -> In users.py/User/decrease_snack_balance():38 - "Sophie's Diary Owner" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 63 -> In users.py/User/decrease_snack_balance():38 - "Sophie's Diary Owner" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 64 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 66 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 68 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 70 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 72 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 73 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 75 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 78 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 79 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 80 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 82 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 85 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 91 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 92 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 96 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 98 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 99 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 100 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 101 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 102 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 103 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 104 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 105 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 111 -> In users.py/User/decrease_snack_balance():38 - "Daisy" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 113 -> In users.py/User/decrease_snack_balance():38 - "Daisy" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 114 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 115 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 118 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 119 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 120 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 123 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 124 -> In users.py/User/decrease_snack_balance():38 - "Daisy" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 125 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 127 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 130 -> In users.py/User/decrease_snack_balance():38 - "Daisy" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 132 -> In users.py/User/decrease_snack_balance():38 - "Daisy" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 133 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 134 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 137 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 139 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 142 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 143 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 145 -> In users.py/User/decrease_snack_balance():38 - "Daisy" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 148 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 152 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 156 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 157 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 159 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 160 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 161 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 162 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 163 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 164 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 167 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 169 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 172 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 173 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 174 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 177 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 179 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 181 -> In users.py/User/decrease_snack_balance():38 - "Daisy" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 185 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 187 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 188 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 190 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 191 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 192 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 199 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 200 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 205 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 206 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 211 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 213 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 215 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 222 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 231 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 237 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 240 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 242 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 244 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 246 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 248 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 250 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 251 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 255 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 260 -> In users.py/User/decrease_snack_balance():38 - "Steve" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 264 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 268 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 271 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 272 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 273 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 278 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 280 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 281 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 284 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 285 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 287 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 290 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 292 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 293 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 295 -> In users.py/User/decrease_snack_balance():38 - "Vianetta" has snack balance of 0, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 297 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 300 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 304 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 305 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 320 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 321 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 324 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 325 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 332 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 333 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 335 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 338 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 340 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 351 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 359 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 361 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 367 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 368 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 369 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 376 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 382 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 388 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 389 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 398 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 399 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 400 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 407 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 410 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 411 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 412 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 417 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 419 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 426 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 428 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 431 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 432 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 437 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 440 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 444 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 450 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 451 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 457 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 459 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 462 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 471 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 472 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 474 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 475 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 477 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 481 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 482 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 487 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 492 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 494 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 495 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 497 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 507 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 516 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 520 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 521 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 527 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 529 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 535 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 541 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 542 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 543 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 544 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 545 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 552 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 554 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 555 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 558 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 559 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 560 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 564 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 565 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 570 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 571 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 574 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 575 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 576 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 583 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 584 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 586 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 592 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 595 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 598 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 603 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 614 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 620 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 622 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 631 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 636 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 654 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 656 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 659 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 674 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 678 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 685 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 688 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -7
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 692 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 693 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 697 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 708 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 709 -> In users.py/User/decrease_snack_balance():38 - "Daisy" has snack balance of -1, cannot pet a pet without snacks
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 712 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 713 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 716 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 722 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 727 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -9
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 734 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 738 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 747 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -2
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 753 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -10
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 755 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -8
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 761 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 762 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 765 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -5
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 766 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 770 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 784 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -1
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 787 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 788 -> In users.py/User/increase_snack_balance():29 - "Vianetta" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 800 -> In users.py/User/increase_snack_balance():29 - "Daisy" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 802 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 806 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 807 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 808 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 810 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 814 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 817 -> In users.py/User/increase_snack_balance():29 - "Drew Socks" trying to add snacks with negative value -3
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 827 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 848 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 853 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 855 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -6
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 862 -> In users.py/User/increase_snack_balance():29 - "Sophie's Diary Owner" trying to add snacks with negative value -4
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 863 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value 0
+2022-04-07 17:46:22 :: ERROR :: Service: Users - Request ID: 870 -> In users.py/User/increase_snack_balance():29 - "Steve" trying to add snacks with negative value -6
