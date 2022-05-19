@@ -1,7 +1,7 @@
 # pylint: disable=global-statement
 from typing import Any, Set
 
-from sfldebug.entity import Entity
+from sfldebug.entity import Entity, EntityType
 import sfldebug.tools.logger as sfl_logger
 
 default_analysis_format = {
@@ -44,10 +44,11 @@ def increment_execution(
     for entity in entities:
         key = '{}'.format(entity.__hash__())
 
-        entity_detached_execs = len(entity.references.get('default', []))
-        TOTAL_DETACHED_EXECUTIONS += entity_detached_execs
-        entity_requests = entity.references.keys()
-        unique_executions.update(entity_requests)
+        if entity.get_properties()['entity_type'] == EntityType.SERVICE:
+            entity_detached_execs = len(entity.references.get('default', []))
+            TOTAL_DETACHED_EXECUTIONS += entity_detached_execs
+            entity_requests = entity.references.keys()
+            unique_executions.update(entity_requests)
 
         times_executed = entity.get_number_unique_exec()
         if key in entities_analyzed:
