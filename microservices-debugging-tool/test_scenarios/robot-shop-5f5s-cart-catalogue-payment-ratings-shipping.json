@@ -1,0 +1,28 @@
+{
+    "good_logs_exchange": "robot-shop-good-logs",
+    "faulty_logs_exchange": "robot-shop-bad-logs",
+    "good_logs_path": ".\\test_logs\\load-gen-good-method.log",
+    "faulty_logs_path": ".\\test_logs\\5_fault\\5_service\\load-gen-bad-cart-catalogue-payment-ratings-shipping-method.log",
+    "faulty_entities": [
+        {
+            "name": "/cart",
+            "parent": "robot-shop-cart"
+        },
+        {
+            "name": "/product",
+            "parent": "robot-shop-catalogue"
+        },
+        {
+            "name": "/pay",
+            "parent": "robot-shop-payment"
+        },
+        {
+            "name": "/codes",
+            "parent": "robot-shop-shipping"
+        },
+        {
+            "name": "/rate",
+            "parent": "robot-shop-ratings"
+        }
+    ]
+}

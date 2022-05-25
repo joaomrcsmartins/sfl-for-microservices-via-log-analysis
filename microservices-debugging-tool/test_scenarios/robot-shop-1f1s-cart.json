@@ -1,8 +1,8 @@
 {
     "good_logs_exchange": "robot-shop-good-logs",
     "faulty_logs_exchange": "robot-shop-bad-logs",
-    "good_logs_path": ".\\test_logs\\filtered\\load-gen-good-cart.log",
-    "faulty_logs_path": ".\\test_logs\\filtered\\load-gen-bad-cart.log",
+    "good_logs_path": ".\\test_logs\\load-gen-good-method.log",
+    "faulty_logs_path": ".\\test_logs\\1_fault\\1_service\\load-gen-bad-cart-method.log",
     "faulty_entities": [
         {
             "name": "/cart",
