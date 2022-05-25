@@ -12,7 +12,7 @@ from main import run
 from sfldebug.messages.receive import receive_file, receive_mq
 from sfldebug.tools.ranking_metrics import RankingMetrics
 from sfldebug.tools.ranking_merge import RankMergeOperator
-from sfldebug.tools.object import cmp_deltas
+from sfldebug.tools.object import cmp_deltas, extract_filename
 from sfldebug.tools.writer import write_results_to_file
 
 GOOD_LOGS_PATH = 'good_logs_path'
@@ -305,7 +305,7 @@ def run_evaluator_file(scenarios_dir_name: str) -> None:
         try:
             current_scenario = get_scenario(
                 os.path.join(scenarios_dir, filename))
-            execution_id = str(uuid4())
+            execution_id = extract_filename(filename)
 
             entities_rankings = run(execution_id, current_scenario[GOOD_LOGS_PATH],
                                     current_scenario[FAULTY_LOGS_PATH], receive_file,
