@@ -5,11 +5,11 @@
     "faulty_logs_path": ".\\test_logs\\5_fault\\2_service\\load-gen-bad-payment-ratings-method.log",
     "faulty_entities": [
         {
-            "name": "/rate",
+            "name": "/api/rate",
             "parent": "robot-shop-ratings"
         },
         {
-            "name": "/fetch",
+            "name": "/api/fetch",
             "parent": "robot-shop-ratings"
         },
         {

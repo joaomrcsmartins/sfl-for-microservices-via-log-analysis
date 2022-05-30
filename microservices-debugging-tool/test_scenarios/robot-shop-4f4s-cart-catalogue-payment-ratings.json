@@ -17,7 +17,7 @@
             "parent": "robot-shop-payment"
         },
         {
-            "name": "/rate",
+            "name": "/api/rate",
             "parent": "robot-shop-ratings"
         }
     ]

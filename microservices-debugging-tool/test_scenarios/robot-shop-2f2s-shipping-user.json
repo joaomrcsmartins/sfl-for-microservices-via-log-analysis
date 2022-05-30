@@ -5,7 +5,7 @@
     "faulty_logs_path": ".\\test_logs\\2_fault\\2_service\\load-gen-bad-shipping-user-method.log",
     "faulty_entities": [
         {
-            "name": "/codes",
+            "name": "c.instana.robotshop.shipping.Controller",
             "parent": "robot-shop-shipping"
         },
         {

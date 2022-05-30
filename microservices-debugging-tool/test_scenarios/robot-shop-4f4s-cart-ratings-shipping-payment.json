@@ -9,11 +9,11 @@
             "parent": "robot-shop-cart"
         },
         {
-            "name": "/rate",
+            "name": "/api/rate",
             "parent": "robot-shop-ratings"
         },
         {
-            "name": "/codes",
+            "name": "c.instana.robotshop.shipping.Controller",
             "parent": "robot-shop-shipping"
         },
         {

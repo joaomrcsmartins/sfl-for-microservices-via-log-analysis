@@ -21,7 +21,7 @@
             "parent": "robot-shop-web"
         },
         {
-            "name": "/rate",
+            "name": "/api/rate",
             "parent": "robot-shop-ratings"
         }
     ]

@@ -13,7 +13,7 @@
             "parent": "robot-shop-user"
         },
         {
-            "name": "/codes",
+            "name": "c.instana.robotshop.shipping.Controller",
             "parent": "robot-shop-shipping"
         },
         {

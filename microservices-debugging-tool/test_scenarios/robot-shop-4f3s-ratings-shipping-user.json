@@ -9,15 +9,15 @@
             "parent": "robot-shop-user"
         },
         {
-            "name": "/codes",
+            "name": "c.instana.robotshop.shipping.Controller",
             "parent": "robot-shop-shipping"
         },
         {
-            "name": "/rate",
+            "name": "/api/rate",
             "parent": "robot-shop-ratings"
         },
         {
-            "name": "/fetch",
+            "name": "/api/fetch",
             "parent": "robot-shop-ratings"
         }
     ]
