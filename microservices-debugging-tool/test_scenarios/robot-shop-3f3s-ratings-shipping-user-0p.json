@@ -1,0 +1,20 @@
+{
+    "good_logs_exchange": "robot-shop-good-logs",
+    "faulty_logs_exchange": "robot-shop-bad-logs",
+    "good_logs_path": ".\\test_logs\\load-gen-good-method-0p.log",
+    "faulty_logs_path": ".\\test_logs\\3_fault\\3_service\\load-gen-bad-ratings-shipping-user-method-0p.log",
+    "faulty_entities": [
+        {
+            "name": "/login",
+            "parent": "robot-shop-user"
+        },
+        {
+            "name": "c.instana.robotshop.shipping.Controller",
+            "parent": "robot-shop-shipping"
+        },
+        {
+            "name": "/api/rate",
+            "parent": "robot-shop-ratings"
+        }
+    ]
+}

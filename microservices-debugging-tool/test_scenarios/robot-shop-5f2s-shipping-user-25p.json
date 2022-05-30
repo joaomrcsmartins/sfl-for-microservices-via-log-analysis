@@ -1,0 +1,20 @@
+{
+    "good_logs_exchange": "robot-shop-good-logs",
+    "faulty_logs_exchange": "robot-shop-bad-logs",
+    "good_logs_path": ".\\test_logs\\load-gen-good-method-25p.log",
+    "faulty_logs_path": ".\\test_logs\\5_fault\\2_service\\load-gen-bad-shipping-user-method-25p.log",
+    "faulty_entities": [
+        {
+            "name": "c.instana.robotshop.shipping.Controller",
+            "parent": "robot-shop-shipping"
+        },
+        {
+            "name": "/login",
+            "parent": "robot-shop-user"
+        },
+        {
+            "name": "/order",
+            "parent": "robot-shop-user"
+        }
+    ]
+}

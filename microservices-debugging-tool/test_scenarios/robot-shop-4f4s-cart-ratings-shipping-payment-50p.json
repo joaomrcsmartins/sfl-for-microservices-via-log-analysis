@@ -1,0 +1,24 @@
+{
+    "good_logs_exchange": "robot-shop-good-logs",
+    "faulty_logs_exchange": "robot-shop-bad-logs",
+    "good_logs_path": ".\\test_logs\\load-gen-good-method-50p.log",
+    "faulty_logs_path": ".\\test_logs\\4_fault\\4_service\\load-gen-bad-cart-ratings-shipping-payment-method-50p.log",
+    "faulty_entities": [
+        {
+            "name": "/cart",
+            "parent": "robot-shop-cart"
+        },
+        {
+            "name": "/api/rate",
+            "parent": "robot-shop-ratings"
+        },
+        {
+            "name": "c.instana.robotshop.shipping.Controller",
+            "parent": "robot-shop-shipping"
+        },
+        {
+            "name": "/pay",
+            "parent": "robot-shop-payment"
+        }
+    ]
+}

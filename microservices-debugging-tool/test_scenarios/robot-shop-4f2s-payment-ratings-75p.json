@@ -1,0 +1,20 @@
+{
+    "good_logs_exchange": "robot-shop-good-logs",
+    "faulty_logs_exchange": "robot-shop-bad-logs",
+    "good_logs_path": ".\\test_logs\\load-gen-good-method-75p.log",
+    "faulty_logs_path": ".\\test_logs\\4_fault\\2_service\\load-gen-bad-payment-ratings-method-75p.log",
+    "faulty_entities": [
+        {
+            "name": "/api/rate",
+            "parent": "robot-shop-ratings"
+        },
+        {
+            "name": "/api/fetch",
+            "parent": "robot-shop-ratings"
+        },
+        {
+            "name": "/pay",
+            "parent": "robot-shop-payment"
+        }
+    ]
+}

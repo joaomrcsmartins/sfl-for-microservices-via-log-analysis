@@ -1,0 +1,12 @@
+{
+    "good_logs_exchange": "robot-shop-good-logs",
+    "faulty_logs_exchange": "robot-shop-bad-logs",
+    "good_logs_path": ".\\test_logs\\load-gen-good-method-75p.log",
+    "faulty_logs_path": ".\\test_logs\\1_fault\\1_service\\load-gen-bad-catalogue-method-75p.log",
+    "faulty_entities": [
+        {
+            "name": "/product",
+            "parent": "robot-shop-catalogue"
+        }
+    ]
+}
