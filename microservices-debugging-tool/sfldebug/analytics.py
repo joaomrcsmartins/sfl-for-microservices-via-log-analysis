@@ -11,42 +11,36 @@ default_analysis_format = {
     'faulty_passed': 0
 }
 
-# each unique execution has a unique request/correlation id
-unique_executions: Set[str] = set()
-
-# number of entity executions without a request/correlation id associated
-TOTAL_DETACHED_EXECUTIONS: int = 0
-
-
-def clear_analytics():
-    """Clear analytics objects. Useful when running multiple scenarios in a row."""
-    global TOTAL_DETACHED_EXECUTIONS
-    unique_executions.clear()
-    TOTAL_DETACHED_EXECUTIONS = 0
-
 
 def increment_execution(
     entities_analyzed: dict,
     entities: Set[Entity],
     execution_key: str
-) -> None:
+) -> int:
     """Increment the number of 'execution_key' in 'entities_analyzed' for each elem of 'entities'.
     If the element is not in 'entities_analyzed', it is created and added with the increment.
     Modifies the dict in 'entities_analyzed'.
     It also updates the references and children names of the analyzed entities.
+    Returns the count of unique executions discovered in the analyzed entities.
 
     Args:
         entities_analyzed (dict): dict to be modified with each entity analytics
         entities (Set[Entity]): set of entities to be analyzed
         execution_key (str): key to increment in
+
+    Returns:
+        int: the count of unique executions
     """
-    global TOTAL_DETACHED_EXECUTIONS
+    # number of entity executions without a request/correlation id associated
+    total_detached_executions: int = 0
+    # each unique execution has a unique request/correlation id
+    unique_executions: Set[str] = set()
     for entity in entities:
         key = '{}'.format(entity.__hash__())
 
         if entity.get_properties()['entity_type'] == EntityType.SERVICE:
             entity_detached_execs = len(entity.references.get('default', []))
-            TOTAL_DETACHED_EXECUTIONS += entity_detached_execs
+            total_detached_executions += entity_detached_execs
             entity_requests = entity.references.keys()
             unique_executions.update(entity_requests)
 
@@ -71,6 +65,11 @@ def increment_execution(
             # and add it to the analyzed entities set
             entities_analyzed[key] = new_entity_analysis
 
+    n_unique_executions = len(unique_executions) + total_detached_executions
+    if 'default' in unique_executions:
+        n_unique_executions -= 1
+    return n_unique_executions
+
 
 def analyze_entities(
     good_entities: Set[Entity],
@@ -93,25 +92,26 @@ def analyze_entities(
 
     entities_analyzed: dict[str, dict[str, Any]] = {}
 
-    increment_execution(entities_analyzed, faulty_entities,
-                        'faulty_executed')
+    n_unique_faulty_executions = increment_execution(entities_analyzed, faulty_entities,
+                                                     'faulty_executed')
     sfl_logger.logger.info('Analyzed execution of faulty entities.')
 
-    increment_execution(entities_analyzed, good_entities, 'good_executed')
+    n_unique_good_executions = increment_execution(
+        entities_analyzed, good_entities, 'good_executed')
     sfl_logger.logger.info('Analyzed execution of good entities.')
 
-    n_unique_executions = len(unique_executions) + TOTAL_DETACHED_EXECUTIONS
-    if 'default' in unique_executions:
-        n_unique_executions -= 1
-
     for entity in entities_analyzed.values():
-        entity['good_passed'] = n_unique_executions - \
+        entity['good_passed'] = n_unique_good_executions - \
             entity['good_executed']
-        entity['faulty_passed'] = n_unique_executions - \
+        entity['faulty_passed'] = n_unique_faulty_executions - \
             entity['faulty_executed']
         entity['properties']['ref_count'] = Entity.count_references(
             entity['properties']['references'])
-    sfl_logger.logger.info(
-        'Finished analyzing all entities. Number of unique executions: %d.', n_unique_executions)
-    clear_analytics()
+    sfl_logger.logger.info((
+        'Finished analyzing all entities. '
+        'Number of unique faulty executions: %d. '
+        'Number of unique good executions: %d'), n_unique_faulty_executions,
+        n_unique_good_executions)
+
+
     return entities_analyzed
