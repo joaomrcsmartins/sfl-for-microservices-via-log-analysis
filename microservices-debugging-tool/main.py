@@ -73,6 +73,17 @@ def run(
         # rank each entity according to the selected metrics
         entities_ranked = rank(
             entities_analytics, rankings_metrics, ranking_merge_operator)
+
+        # write entity references separately for further inspection, if needed
+        entities_with_references = [entity['properties']
+                                    for entity in entities_ranked]
+        write_results_to_file(entities_with_references,
+                              'entities-references', execution_id)
+
+        # remove references from the rank to alleviate
+        for entity in entities_ranked:
+            del entity['properties']['references']
+
         write_results_to_file(
             entities_ranked, 'entities-ranking', execution_id)
         successful_run = True
