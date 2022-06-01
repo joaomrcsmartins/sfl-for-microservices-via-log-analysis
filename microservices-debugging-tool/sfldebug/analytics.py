@@ -71,6 +71,50 @@ def increment_execution(
     return n_unique_executions
 
 
+def weight_service_entities(entities_analyzed: dict[str, dict[str, Any]]) -> None:
+    """Reduces the value of the service entity analytics when there are method entities available.
+    For each service entity, calculate for each metric the average of its children (method entity).
+    In essence, the weight results in dividing the count of each metric of the service entity, by
+    the number of children it has.
+    If the entity does not have children, it is left intact.
+
+    Args:
+        entities_analyzed (dict[str, dict[str, Any]]): the set of analyzed entities
+    """
+    for service_entity in entities_analyzed.values():
+        service_entity_properties = service_entity['properties']
+        if service_entity_properties['entity_type'] != EntityType.SERVICE:
+            continue
+        children_names = service_entity_properties['children_names']
+        len_children = len(children_names)
+        if len_children == 0:
+            continue
+
+        avg_good_executed_executions = 0
+        avg_good_passed_executions = 0
+        avg_faulty_executed_executions = 0
+        avg_faulty_passed_executions = 0
+        for child_name in children_names:
+            method_hash = '{}'.format(
+                hash(child_name + EntityType.METHOD + service_entity_properties['name']))
+
+            if method_hash in entities_analyzed:
+                child_entity = entities_analyzed[method_hash]
+                avg_good_executed_executions += child_entity['good_executed']
+                avg_good_passed_executions += child_entity['good_passed']
+                avg_faulty_executed_executions += child_entity['faulty_executed']
+                avg_faulty_passed_executions += child_entity['faulty_passed']
+        avg_good_executed_executions /= len_children
+        avg_good_passed_executions /= len_children
+        avg_faulty_executed_executions /= len_children
+        avg_faulty_passed_executions /= len_children
+
+        service_entity['good_executed'] = avg_good_executed_executions
+        service_entity['good_passed'] = avg_good_passed_executions
+        service_entity['faulty_executed'] = avg_faulty_executed_executions
+        service_entity['faulty_passed'] = avg_faulty_passed_executions
+
+
 def analyze_entities(
     good_entities: Set[Entity],
     faulty_entities: Set[Entity]
@@ -113,5 +157,6 @@ def analyze_entities(
         'Number of unique good executions: %d'), n_unique_faulty_executions,
         n_unique_good_executions)
 
+    weight_service_entities(entities_analyzed)
 
     return entities_analyzed
