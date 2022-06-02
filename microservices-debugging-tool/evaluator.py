@@ -1,3 +1,5 @@
+from enum import Enum
+from math import ceil
 import os
 from multiprocessing import Pool
 import time
@@ -23,6 +25,20 @@ FAULTY_ENTITIES = 'faulty_entities'
 SCENARIO_KEYS = [GOOD_LOGS_PATH, FAULTY_LOGS_PATH, FAULTY_ENTITIES]
 LOG_PROCESSING_TIMEOUT_SECONDS = 4
 DEFAULT_PARENT_ENTITY_WEIGHT = 0.4
+
+
+class TieBreaker(str, Enum):
+    """TieBreaker strategy enum when comparing the ranks of entities with the same value.
+
+    BEST_CASE is when it is assigned the highest position in the rank
+    WORST_CASE is when it is assigned the lowest position in the rank
+    AVERAGE is when it is assigned the average position in the rank
+    AS_IS is when the rank is left as is.
+    """
+    BEST_CASE = 'BEST_CASE'
+    WORST_CASE = 'WORST_CASE'
+    AVERAGE = 'AVERAGE'
+    AS_IS = 'AS_IS'
 
 
 def get_scenario(sc_filepath: str) -> dict:
@@ -96,7 +112,8 @@ def launch_scenario(scenario: dict) -> None:
 
 def evaluate_scenario(
     ranked_entities: Optional[List[dict]],
-    scenario: dict
+    scenario: dict,
+    tiebreaker: TieBreaker
 ) -> dict:
     """Evaluate a particular scenario by analyzing the position of the faulty entities in the
     tool's ranking. For each entity the accuracy of its given ranking is calculated.
@@ -106,6 +123,7 @@ def evaluate_scenario(
     Args:
         ranked_entities (Optional[List[dict]]): the ranked entities provided by the tool.
         scenario (dict): the scenario object containing the list of faulty entities already known.
+        tiebreaker (TieBreaker): tiebreaker strategy for entities with same value in the ranking.
 
     Raises:
         RuntimeError: Is the ranked list is empty or missing, raises an exception.
@@ -121,10 +139,11 @@ def evaluate_scenario(
 
     total_ranked_entities = len(ranked_entities)
     evaluated_entities = evaluate_ranked_entities(
-        ranked_entities, faulty_entities, total_ranked_entities)
+        ranked_entities, faulty_entities, total_ranked_entities, tiebreaker)
 
     scenario_evaluation = {'evaluated_entities': [],
-                           'total_scenario_accuracy': 0}
+                           'total_scenario_accuracy': 0,
+                           'tiebreaker': tiebreaker}
     for i, eval_entity in enumerate(evaluated_entities):
         delta_entity = eval_entity['delta_entity'] - i
         delta_parent_entity = eval_entity['delta_parent_entity'] - i
@@ -159,17 +178,19 @@ def evaluate_scenario(
 def evaluate_ranked_entities(
     ranked_entities: List[dict],
     faulty_entities: List[dict],
-    total_ranked_entities: int
+    total_ranked_entities: int,
+    tiebreaker: TieBreaker
 ) -> List[dict]:
     """Evaluate ranked entities by determining the distance of the entity rank to the top.
     Evaluates also the parent entity rank.
     The result is sorted according to the entity delta, in ascending order.
 
     Args:
-        ranked_entities (Optional[List[dict]]): list of ranked entities
+        ranked_entities (List[dict]): list of ranked entities
         faulty_entities (List[dict]): list of faulty entities to be evaluated by rankings
         total_ranked_entities (int): number of ranked entities to be evaluated. Aka,
         len(ranked_entities).
+        tiebreaker (TieBreaker): tiebreaker strategy for entities with same value in the ranking.
 
     Returns:
         List[dict]: list of faulty entities evaluated and sorted
@@ -185,10 +206,11 @@ def evaluate_ranked_entities(
         ranking_parent_entity = 0
         for i, ranked_entity in enumerate(ranked_entities):
             if ranked_entity['properties']['name'] == entity_name:
-                delta_entity = i
+                delta_entity = break_ties(ranked_entities, i, tiebreaker)
                 ranking_entity = ranked_entity['entity_rank']
             elif ranked_entity['properties']['name'] == entity_parent:
-                delta_parent_entity = i
+                delta_parent_entity = break_ties(
+                    ranked_entities, i, tiebreaker)
                 ranking_parent_entity = ranked_entity['entity_rank']
             if delta_entity < total_ranked_entities and delta_parent_entity < total_ranked_entities:
                 break
@@ -203,6 +225,61 @@ def evaluate_ranked_entities(
     cmp_entity_rank = cmp_to_key(cmp_deltas)
     entities_evaluated.sort(key=cmp_entity_rank)
     return entities_evaluated
+
+
+def break_ties(
+    ranked_entities: List[dict],
+    start_pos: int,
+    tiebreaker: TieBreaker
+) -> int:
+    """Break ties by calculating the delta_entity for each entity with same value according to the
+    tiebreaking strategy.
+
+    Args:
+        ranked_entities (List[dict]): list of ranked entities to find tiebreak in
+        start_pos (int): starting position of the tiebreaking entity
+        tiebreaker (TieBreaker): tiebreaking strategy
+
+    Args:
+        ranked_entities (List[dict]): _description_
+        start_pos (int): _description_
+        tiebreaker (TieBreaker): _description_
+
+    Returns:
+        int: the delta entity for the entity given its starting position
+    """
+    if tiebreaker == TieBreaker.BEST_CASE:
+        current_rank_value = ranked_entities[start_pos]['entity_rank']
+        while start_pos-1 >= 0:
+            if ranked_entities[start_pos-1]['entity_rank'] == current_rank_value:
+                start_pos -= 1
+            else:
+                break
+        return start_pos
+    if tiebreaker == TieBreaker.WORST_CASE:
+        current_rank_value = ranked_entities[start_pos]['entity_rank']
+        while start_pos+1 < len(ranked_entities):
+            if ranked_entities[start_pos+1]['entity_rank'] == current_rank_value:
+                start_pos += 1
+            else:
+                break
+        return start_pos
+    if tiebreaker == TieBreaker.AVERAGE:
+        current_rank_value = ranked_entities[start_pos]['entity_rank']
+        prev_pos = start_pos
+        next_pos = start_pos
+        while prev_pos-1 >= 0:
+            if ranked_entities[prev_pos-1]['entity_rank'] == current_rank_value:
+                prev_pos -= 1
+            else:
+                break
+        while next_pos+1 < len(ranked_entities):
+            if ranked_entities[next_pos+1]['entity_rank'] == current_rank_value:
+                next_pos += 1
+            else:
+                break
+        return ceil((prev_pos + next_pos)/2)
+    return start_pos
 
 
 def calculate_ranking_accuracy(
@@ -243,7 +320,10 @@ def calculate_ranking_accuracy(
     return float(format(total_entity_accuracy / total_faulty_entities, '.5f'))
 
 
-def run_evaluator_mq(scenarios_dir_name: str) -> None:
+def run_evaluator_mq(
+    scenarios_dir_name: str,
+    tiebreaker: TieBreaker = TieBreaker.AS_IS
+) -> None:
     """Version of the evaluator that sends logs into the debugging tool via RabbitMQ.
     Run the tool evaluator by setting up and execution the scenarios saved inside the folder
     passed as argument.
@@ -254,7 +334,9 @@ def run_evaluator_mq(scenarios_dir_name: str) -> None:
     The results of each scenario are saved to a file and printed on the console.
 
     Args:
-        scenarios_dir_name (str): name of the folder where the scenarios are stored
+        scenarios_dir_name (str): name of the folder where the scenarios are stored.
+        tiebreaker (TieBreaker, optional): tiebreaker strategy for entities with same value in the
+        ranking. Defaults to TieBreaker.AS_IS.
     """
     good_entities_id = 'logstash-output-good'
     faulty_entities_id = 'logstash-output-bad'
@@ -272,7 +354,7 @@ def run_evaluator_mq(scenarios_dir_name: str) -> None:
                 entities_rankings = run(execution_id, good_entities_id, faulty_entities_id,
                                         receive_mq, ranking_metrics, ranking_merge_operator)
                 evaluation_results = evaluate_scenario(
-                    entities_rankings, current_scenario)
+                    entities_rankings, current_scenario, tiebreaker)
                 write_results_to_file(evaluation_results,
                                       filename+'.evaluation', execution_id)
         except AttributeError as err:
@@ -284,7 +366,10 @@ def run_evaluator_mq(scenarios_dir_name: str) -> None:
             logging.exception(err)
 
 
-def run_evaluator_file(scenarios_dir_name: str) -> None:
+def run_evaluator_file(
+    scenarios_dir_name: str,
+    tiebreaker: TieBreaker = TieBreaker.AS_IS
+) -> None:
     """Version of the evaluator that sends the logs path and the debugging tool reads to extract
     the entities.
     Run the tool evaluator by setting up and execution the scenarios saved inside the folder passed
@@ -295,7 +380,9 @@ def run_evaluator_file(scenarios_dir_name: str) -> None:
     The results of each scenario are saved to a file and printed on the console.
 
     Args:
-        scenarios_dir_name (str): name of the folder where the scenarios are stored
+        scenarios_dir_name (str): name of the folder where the scenarios are stored.
+        tiebreaker (TieBreaker, optional): tiebreaker strategy for entities with same value in the
+        ranking. Defaults to TieBreaker.AS_IS.
     """
 
     ranking_metrics = [RankingMetrics.OCHIAI, RankingMetrics.JACCARD]
@@ -311,7 +398,7 @@ def run_evaluator_file(scenarios_dir_name: str) -> None:
                                     current_scenario[FAULTY_LOGS_PATH], receive_file,
                                     ranking_metrics, ranking_merge_operator)
             evaluation_results = evaluate_scenario(
-                entities_rankings, current_scenario)
+                entities_rankings, current_scenario, tiebreaker)
             write_results_to_file(evaluation_results,
                                   filename+'.evaluation', execution_id)
         except AttributeError as err:
@@ -325,5 +412,4 @@ def run_evaluator_file(scenarios_dir_name: str) -> None:
 
 if __name__ == '__main__':
     # run_evaluator_mq('test_scenarios')
-    run_evaluator_file('test_scenarios')
-    # TODO turn into single scenario tester with file name as terminal argument
+    run_evaluator_file('test_scenarios', TieBreaker.BEST_CASE)
