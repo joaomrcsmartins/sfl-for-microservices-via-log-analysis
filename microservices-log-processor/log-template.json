@@ -11,7 +11,7 @@
         "line": "[OPTIONAL] <integer> of the line of the logged activity",
         "methodName": "[OPTIONAL] <string> of the method invoked"
     },
-    "logLevel": "[OPTIONAL] <string> of log level: TRACE, DEBUG, INFO, WARN, ERROR, or FATAL",
+    "logLevel": "[OPTIONAL] <string> of log level (e.g: DEBUG, INFO, ERROR, 1, 2, 3)",
     "message": "[OPTIONAL] <string> of a message explaining the logged activity",
     "microserviceName": "[REQUIRED] <string> of the microservice name",
     "parentSpanID": "[OPTIONAL] <string> of the span ID of the parent service that invoked the current service",

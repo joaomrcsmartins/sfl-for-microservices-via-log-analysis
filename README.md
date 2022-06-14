@@ -1,6 +1,6 @@
-# thesis-meic-debugging-microservices-applications
+# Spectrum-based Fault Localization for Microservices via Log Analysis
 
-Code repository that supports my Master Thesis. The goal is to develop a novel technique for debugging microservices by leveraging logging and tracing information and applying an SFL (spectrum-based fault localization) technique based on that information.
+Code repository that supports my Master Thesis. The goal is to develop a novel technique for debugging microservices by leveraging logging information and applying the SFL (spectrum-based fault localization) technique based on that information.
 
 The project is two-fold (at the moment). First, there must be a way to parse log information and extract it in a programmable format. The project files dedicated to it are in [microservices-log-processor](https://github.com/joaomrcsmartins/thesis-meic-debugging-microservices-applications/tree/main/microservices-log-processor).
 
@@ -33,9 +33,7 @@ The SFL debugging tool will process the entities and rank them, as explained in 
 
 ### Instana's Robot Shop
 
-This demo is based on [Instana's Robot Shop](https://github.com/instana/robot-shop) demo application.
-
-There are some changes to the docker-compose file to help log shipping to the log processor. The changes are stored in [microservices-log-processor/data/robot-shop/](microservices-log-processor/data/robot-shop/). Just copy the contents to the files in the original repo.
+This demo is based on [Instana's Robot Shop](https://github.com/instana/robot-shop) demo application. A fork has been created to store all the changes made, and it can be accessed in [here](https://github.com/joaomrcsmartins/robot-shop-sfl).
 
 It is also necessary to create docker network named **robot-shop-network**. See how to [here](https://docs.docker.com/engine/reference/commandline/network_create/).
 

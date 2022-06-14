@@ -1,6 +1,6 @@
 # Microservice Log Processor
 
-This tool is built to receive logs (already parsed or not), parse the data required for debugging in a standard format, and publish it in an MQ in a RabbitMQ server, as to be later collected.
+This tool is built to receive logs (already parsed or not), parse the data required for debugging in a standard format, and publish it in an MQ in a RabbitMQ server, as to be later collected, or in a file.
 
 The prerequisites for this tool are to have Docker and Python (optional) installed. Docker is required to run the RabbitMQ server and the Logstash Pipeline.
 

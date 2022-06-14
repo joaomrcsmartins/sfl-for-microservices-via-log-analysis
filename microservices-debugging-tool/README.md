@@ -3,7 +3,7 @@
 The microservices debugging tool works by applying the known SFL technique on the information extraction from logs produced by microservices.
 
 Once the logs have been processed by the log processor tool, they are sent to be collected.
-This tool sets up communication to start receiving them with message queues.
+This tool sets up communication to start receiving them with message queues or read the files with extracted data from logs.
 They required to be separated into two different sets of logs, one belonging to correct executions of the microservices and the other belonging to faulty executions of the microservices.
 
 By each log received, the log data is parsed into a entity object, which is the fundamental element of SFL.
@@ -11,9 +11,10 @@ In this approach, two types of entities are currently created, with different gr
 The represents the Method Entity, created when the log contains relevant data about the invoked method. Since log uniformity is not assumed or always feasible,
 the tool accepts the two levels of granularity and ranks the two types together.
 
-After receiving all the data, the communication is shutdown (manually with CTRL+C, or by sending stop messages to the channels) and collected entities are merged into unique entities with their references.
+After receiving all the data, the communication is shutdown (manually with CTRL+C, or by sending stop messages to the channels) and collected entities are merged into unique entities with their references. In case the data is read from files, this step is skipped.
 
 The analysis is the first part of the SFL techniques, which tracks the *hit spectra*, i.e., when an entity is executed or not in each unique request (execution).
+For service entities, their values are attenuated with the average of their children entities (method) replacing its original value.
 
 Once that is complete, the ranking of the entities takes place, by applying one or more metrics currently available, and merging them using a common operator (mean or median at this moment).
 Finally the ranked entities are sorted and the final result saved into a JSON file to be analyzed by the developer.
@@ -24,7 +25,7 @@ The tool also provides logging of the execution so that in each run the user can
 
 * Python 3.X
 * Pip
-* [Microservices Log Processor](../microservices-log-processor/) set up and running outputting logs to both channels **logstash-output-good** and **logstash-output-bad**
+* (Optional, if RabbitMQ is needed to receive the data) [Microservices Log Processor](../microservices-log-processor/) set up and running outputting logs to both channels **logstash-output-good** and **logstash-output-bad**
 
 ## Installation and setup
 
@@ -37,7 +38,7 @@ The tool also provides logging of the execution so that in each run the user can
    1. And inside start the application: ```python main.py```
 
 2. Or instead, simply execute: ```pipenv run python main.py```
-3. To stop message receiving press CTRL+C or use the same MQ channel and send a message (content is irrelevant) to the exchange **'channel-stop'** (two messages in total, one for the good logs channel, and another for the bad logs channel)
+3. (Optional step, if RabbitMQ is in use) To stop message receiving press CTRL+C or use the same MQ channel and send a message (content is irrelevant) to the exchange **'channel-stop'** (two messages in total, one for the good logs channel, and another for the bad logs channel)
 4. After that the processing and ranking is completed and the logs are stored in **/logs** and the rankings and other results are stored in **/results**
 
 ## Running the evaluator
@@ -48,8 +49,8 @@ Each scenario json file must contain the following attributes:
 
 * **"good_logs_path"** : path of the good executions logs
 * **"faulty_logs_path"** : path of the faulty executions logs
-* **"good_logs_exchange"** : MQ exchange to send the good executions logs
-* **"faulty_logs_exchange"** : MQ exchange to send the bad executions logs
+* **"good_logs_exchange"** : MQ exchange to send the good executions logs (Optional)
+* **"faulty_logs_exchange"** : MQ exchange to send the bad executions logs (Optional)
 * **"faulty_entities"** : List of faulty entities expected to be in the rankings. List of object with "name" and "parent", containing the name of the faulty entity and the name of its parent, respectively.
 
 > ***TIP***: If you don't expect any method entities, only service, just put the service name in "name" and leave "parent" empty ("").
