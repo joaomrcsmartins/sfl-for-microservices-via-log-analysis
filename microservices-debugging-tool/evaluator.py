@@ -394,11 +394,17 @@ def run_evaluator_file(
                 os.path.join(scenarios_dir, filename))
             execution_id = extract_filename(filename)
 
+            # track execution
+            start_time = time.time()
             entities_rankings = run(execution_id, current_scenario[GOOD_LOGS_PATH],
                                     current_scenario[FAULTY_LOGS_PATH], receive_file,
                                     ranking_metrics, ranking_merge_operator)
+            # stop execution
+            execution_time = time.time() - start_time
             evaluation_results = evaluate_scenario(
                 entities_rankings, current_scenario, tiebreaker)
+            evaluation_results['execution_time'] = '{:.5f}'.format(
+                execution_time)
             write_results_to_file(evaluation_results,
                                   filename+'.evaluation', execution_id)
         except AttributeError as err:
@@ -412,4 +418,4 @@ def run_evaluator_file(
 
 if __name__ == '__main__':
     # run_evaluator_mq('test_scenarios')
-    run_evaluator_file('test_scenarios', TieBreaker.BEST_CASE)
+    run_evaluator_file('test_scenarios', TieBreaker.AS_IS)
